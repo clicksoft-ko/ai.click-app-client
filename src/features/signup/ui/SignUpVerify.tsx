@@ -2,7 +2,7 @@ import { Button } from "@/widgets/ui/button";
 
 import { SocketIOProvider } from "@/shared/providers/socket-io.provider";
 import { Input } from "@/widgets/ui/input";
-import { useSignUpVerify } from "../hook/use-sign-up-verify";
+import { useSignUpVerify } from "../hooks/use-sign-up-verify";
 import { VerifyDialog } from "./VerifyDialog";
 import { ErrorBox } from "@/widgets/errors/error-box";
 import { envUtil } from "@/shared/utils/env";

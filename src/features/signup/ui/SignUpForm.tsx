@@ -1,7 +1,7 @@
 import { Button } from "@/widgets/ui/button";
 import { Input } from "@/widgets/ui/input";
 import { FaLock, FaUser } from "react-icons/fa";
-import { useVerify } from "../hook/use-verify";
+import { useVerify } from "../hooks/use-verify";
 import { useActionState, useRef, useState } from "react";
 import { handleKeyDownToNext } from "@/shared/utils/input";
 

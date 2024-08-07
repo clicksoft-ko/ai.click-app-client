@@ -1,7 +1,10 @@
 export const paths = {
-  root: "/",
+  root: "/",  
   test: "/test",
   signIn: "/signin",
   signUp: "/signup",
   findPw: "/findpw",
+
+  medical: "/medical",
+  ward: "/ward",
 }

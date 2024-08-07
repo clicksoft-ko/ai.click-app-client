@@ -1,0 +1,15 @@
+.insulin {
+  grid-template-columns: 80px 3fr minmax(auto, 60px) minmax(auto, 60px);
+}
+
+.textList {
+  grid-template-columns: minmax(40px, auto) 1fr;
+}
+
+.rx-order {
+  grid-template-columns: minmax(5rem, auto) minmax(15rem, 1fr) minmax(4rem, 4rem) minmax(2rem, 2.5rem) minmax(2rem, 2.5rem) minmax(4rem, 12rem);
+}
+
+.rx-diagnosis {
+  grid-template-columns: minmax(5rem, auto) minmax(15rem, 1fr)
+}

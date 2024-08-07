@@ -1,4 +1,4 @@
-import { ChildrenProps } from "@/shared/interfaces";
+import { ChildrenProps } from "@/shared/interfaces/props";
 import { createContext, useState } from "react";
 
 export interface VerifyState {

@@ -1,6 +1,6 @@
 import React from "react";
 import { ErrorBoundary, FallbackProps } from "react-error-boundary";
-import { ChildrenProps } from "@/shared/interfaces";
+import { ChildrenProps } from "@/shared/interfaces/props";
 
 const RootErrorFallback: React.FC<FallbackProps> = ({
   error,

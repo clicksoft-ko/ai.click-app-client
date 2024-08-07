@@ -6,7 +6,7 @@ export const useSignUpVerify = () => {
   const [hsUserId, setHsUserId] = useState("");
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("");
-  const { state, setVerify } = useVerify();
+  const { setVerify } = useVerify();
 
   const {
     mutateAsync,

@@ -8,6 +8,8 @@ import { Navigate, createBrowserRouter } from "react-router-dom";
 import { RootLayout, AccountsLayout, DefaultLayout } from "./layouts";
 import { RootPage } from "@/pages/root";
 import { TestPage } from "@/pages/test";
+import { MedicalPage } from "@/pages/medical";
+import { WardPage } from "@/pages/ward";
 
 const ProtectedRoute = ({ element }: { element: JSX.Element }) => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -33,6 +35,14 @@ const router: any = createBrowserRouter([
           {
             path: paths.root,
             element: <RootPage />,
+          },
+          {
+            path: paths.medical,
+            element: <MedicalPage />,
+          },
+          {
+            path: paths.ward,
+            element: <WardPage />,
           },
           {
             path: paths.test,

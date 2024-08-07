@@ -18,6 +18,7 @@ module.exports = {
     },
     extend: {
       fontFamily: {
+        "nanum-neo" : ["NanumNeo", "sans-serif"],
         "noto-sans-kr": ["Noto Sans KR", "sans-serif"],
       },
       colors: {

@@ -1,4 +1,4 @@
-import { SiginInForm } from "@/features/signin";
+import { SiginInForm } from "@/features/signin/ui";
 import { AccountWrapper } from "@/widgets/accounts";
 
 export const SignIn = () => {

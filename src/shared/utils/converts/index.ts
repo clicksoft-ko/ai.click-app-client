@@ -1,0 +1,1 @@
+export * from './convert-birth-to-age';

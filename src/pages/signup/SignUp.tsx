@@ -1,5 +1,5 @@
 import { SignUpForm } from "@/features/signup";
-import { useVerify } from "@/features/signup/hook/use-verify";
+import { useVerify } from "@/features/signup/hooks/use-verify";
 import { SignUpVerify } from "@/features/signup/ui/SignUpVerify";
 import { AccountWrapper } from "@/widgets/accounts";
 

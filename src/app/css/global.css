@@ -74,6 +74,6 @@
 
 @layer base {
   html {
-    @apply font-noto-sans-kr text-base;
+    @apply font-nanum-neo text-base;
   }
 }

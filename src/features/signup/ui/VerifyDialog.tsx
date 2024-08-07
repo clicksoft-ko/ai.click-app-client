@@ -12,11 +12,10 @@ import {
 } from "@/widgets/ui/dialog";
 import { Input } from "@/widgets/ui/input";
 import { useEffect, useId, useReducer, useRef } from "react";
-import { useVerify } from "../hook/use-verify";
+import { useVerify } from "../hooks/use-verify";
+import { OpenProps } from "@/shared/interfaces/props";
 
-interface Props {
-  open: boolean;
-  setOpen: (open: boolean) => void;
+interface Props extends OpenProps {
   roomKey: string | undefined;
 }
 

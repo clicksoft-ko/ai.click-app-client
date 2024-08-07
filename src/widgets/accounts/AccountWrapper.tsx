@@ -1,4 +1,4 @@
-import { ChildrenProps } from "@/shared/interfaces";
+import { ChildrenProps } from "@/shared/interfaces/props";
 import { paths } from "@/shared/paths";
 import { Link, useLocation } from "react-router-dom";
 import { Fragment } from "react/jsx-runtime";
