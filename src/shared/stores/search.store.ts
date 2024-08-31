@@ -1,4 +1,4 @@
-import { MedicalTab, WardTab } from "@/features/root/medical/enums"
+import { MedicalTab, WardTab } from "@/features/root/enums"
 import { StateCreator, create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { DateRange } from "../interfaces/shadcn";

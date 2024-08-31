@@ -1,7 +1,7 @@
+import { WardTab } from "@/features/root/enums";
 import { useInfiniteEmit } from "@/shared/hooks/socket-io";
 import { usePatientStore } from "@/shared/stores";
 import { useMedicalStore } from "@/shared/stores/search.store";
-import { WardTab } from "../../enums";
 
 export const useNursingRecord = () => {
   const dateRange = useMedicalStore((state) => state.dateRange);

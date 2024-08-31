@@ -32,6 +32,12 @@ export const SelectPatSheet = ({ open, setOpen }: Props) => {
     scrollToTop();
   }, [searchString, weib]);
 
+  useEffect(() => {
+    if (open) {
+      setSearchString("");
+    }
+  }, [open]);
+
   function handleSelectPatient(patient: Patient): void {
     setPatientInfo(patient);
     setOpen(false);
@@ -40,7 +46,7 @@ export const SelectPatSheet = ({ open, setOpen }: Props) => {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetContent ref={targetRef} className="min-w-[70%] overflow-auto p-0">
-        <SheetHeader className="sticky top-0 bg-white p-4">
+        <SheetHeader className="sticky top-0 z-10 bg-white p-4">
           <SheetTitle>인적사항 조회</SheetTitle>
           <SheetDescription>인적사항을 조회하고 선택하세요.</SheetDescription>
           <PatSearchInput

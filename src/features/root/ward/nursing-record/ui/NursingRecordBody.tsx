@@ -8,7 +8,5 @@ export const NursingRecordBody = () => {
     <NursingRecordBox key={ns.id} nursingRecord={ns} />
   ));
 
-  console.log("nur", data);
-
   return <InfiniteBodyWrapper {...result}>{components}</InfiniteBodyWrapper>;
 };

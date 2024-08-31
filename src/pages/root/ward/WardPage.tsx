@@ -1,8 +1,9 @@
-import { WardTab } from "@/features/root/medical/enums";
-import { NursingRecordBody } from "@/features/root/medical/nursing-record/ui";
-import { MedicalSearchTab } from "@/features/root/medical/ui";
+import { NursingRecordBody } from "@/features/root/ward/nursing-record/ui";
 import { useMedicalStore } from "@/shared/stores";
 import { useEffect } from "react";
+import { WardTab } from "@/features/root/enums";
+import { SearchTabControl } from "@/features/root/ui";
+import { VitalSignBody } from "@/features/root/ward/vital-sign/ui";
 
 export const WardPage = () => {
   const tabTypes = Object.values(WardTab);
@@ -14,7 +15,7 @@ export const WardPage = () => {
 
   return (
     <>
-      <MedicalSearchTab tabTypes={tabTypes} />
+      <SearchTabControl tabTypes={tabTypes} />
       <Bodies />
     </>
   );
@@ -26,8 +27,10 @@ function Bodies() {
   switch (tabs) {
     case WardTab.간호:
       component = <NursingRecordBody />;
-    // case WardTab.IO:
-    // return <ProgressNoteBody />;
+      break;
+    case WardTab.Vital:
+      component = <VitalSignBody />;
+      break;
     // default:
     // return <PrescriptionBody />;
   }

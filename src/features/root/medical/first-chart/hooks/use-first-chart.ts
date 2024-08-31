@@ -1,7 +1,7 @@
 import { useInfiniteEmit } from "@/shared/hooks/socket-io";
 import { usePatientStore } from "@/shared/stores";
 import { useMedicalStore } from "@/shared/stores/search.store";
-import { MedicalTab } from "../../enums";
+import { MedicalTab } from "../../../enums";
 
 export const useFirstChart = () => {
   const dateRange = useMedicalStore((state) => state.dateRange);

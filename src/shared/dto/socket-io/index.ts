@@ -7,3 +7,5 @@ export * from './order-type';
 export * from './get-first-charts.dto';
 export * from './get-progress-notes.dto';
 export * from './get-nursing-records.dto';
+export * from './title-value-detail';
+export * from './get-vital-signs.dto';

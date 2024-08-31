@@ -1,8 +1,8 @@
-import { MedicalTab } from "@/features/root/medical/enums";
+import { MedicalTab } from "@/features/root/enums";
 import { FirstChartBody } from "@/features/root/medical/first-chart/ui";
 import { PrescriptionBody } from "@/features/root/medical/prescription/ui";
 import { ProgressNoteBody } from "@/features/root/medical/progress-note/ui";
-import { MedicalSearchTab } from "@/features/root/medical/ui/MedicalSearchTab";
+import { SearchTabControl } from "@/features/root/ui/SearchTabControl";
 import { useMedicalStore } from "@/shared/stores/search.store";
 import { useEffect } from "react";
 
@@ -17,7 +17,7 @@ export const MedicalPage = () => {
 
   return (
     <>
-      <MedicalSearchTab tabTypes={tabTypes} />
+      <SearchTabControl tabTypes={tabTypes} />
       <div className="overflow-auto">
         <div className="p-2">{bodies(tabs as MedicalTab)}</div>
       </div>

@@ -49,10 +49,10 @@ export function PatSearchInput({ weib, onChange, onWeibChagne }: Props) {
         </ToggleGroupItem>
         <ToggleGroupItem
           className="whitespace-nowrap"
-          value={Weib.외래.toString()}
-          aria-label="외래"
+          value={Weib.전체.toString()}
+          aria-label="전체"
         >
-          외래
+          전체
         </ToggleGroupItem>
       </ToggleGroup>
     </div>

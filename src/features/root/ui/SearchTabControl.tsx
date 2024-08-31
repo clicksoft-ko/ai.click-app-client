@@ -1,7 +1,7 @@
 import { TabType, useMedicalStore } from "@/shared/stores";
 import { Button, DateRangePicker, Input } from "@/widgets/ui";
 import { CustomRadio, RadioGroup } from "@/widgets/ui/radio";
-import { MedicalTab as MedicalTab, WardTab } from "../enums";
+import { MedicalTab, WardTab } from "../enums";
 import { useQueryClient } from "@tanstack/react-query";
 import { PathTypeKey } from "@/shared/hooks/types";
 
@@ -13,12 +13,13 @@ const queryObj: {
   [MedicalTab.경과]: "getProgressNotes",
 
   [WardTab.간호]: "getNursingRecords",
+  [WardTab.Vital]: "getVitalSigns",
 };
 
 interface Props {
   tabTypes: TabType[];
 }
-export const MedicalSearchTab = ({ tabTypes }: Props) => {
+export const SearchTabControl = ({ tabTypes }: Props) => {
   const tab = useMedicalStore((state) => state.tab);
   const isPending = useMedicalStore((state) => state.isPending);
   const searchString = useMedicalStore((state) => state.searchString);

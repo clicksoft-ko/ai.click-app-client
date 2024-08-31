@@ -1,17 +1,17 @@
+import { WardTab } from "@/features/root/enums";
 import { useInfiniteEmit } from "@/shared/hooks/socket-io";
 import { usePatientStore } from "@/shared/stores";
 import { useMedicalStore } from "@/shared/stores/search.store";
-import { MedicalTab } from "../../../enums";
 
-export const useProgressNote = () => {
+export const useVitalSign = () => {
   const dateRange = useMedicalStore((state) => state.dateRange);
   const tab = useMedicalStore((state) => state.tab);
   const searchString = useMedicalStore(state => state.searchString)
   const { patient } = usePatientStore();
-  const enabled = tab === MedicalTab.경과 && !!patient;
+  const enabled = tab === WardTab.Vital && !!patient;
 
   const result = useInfiniteEmit({
-    path: "getProgressNotes",
+    path: "getVitalSigns",
     dtoFn({ page, count }) {
       return {
         count,

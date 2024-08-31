@@ -8,8 +8,8 @@ import { Navigate, createBrowserRouter } from "react-router-dom";
 import { RootLayout, AccountsLayout, DefaultLayout } from "./layouts";
 import { RootPage } from "@/pages/root";
 import { TestPage } from "@/pages/test";
-import { MedicalPage } from "@/pages/medical";
-import { WardPage } from "@/pages/ward";
+import { MedicalPage } from "@/pages/root/medical";
+import { WardPage } from "@/pages/root/ward";
 
 const ProtectedRoute = ({ element }: { element: JSX.Element }) => {
   const { isAuthenticated, isLoading } = useAuth();
