@@ -1,14 +1,14 @@
 import { ClassNameProps } from "@/shared/interfaces/props";
 import Lottie from "react-lottie-player";
 import loading from "./files/loading-ani.json";
+import redCheck from "./files/red-check-ani.json";
 
-interface DataType {
-  loading: any;
-}
-
-const dataObj: DataType = {
+const dataObj = {
   loading,
+  redCheck,
 };
+
+type DataType = typeof dataObj;
 
 interface Props extends ClassNameProps {
   data: keyof DataType;

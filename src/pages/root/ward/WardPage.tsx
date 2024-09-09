@@ -1,6 +1,7 @@
 import { WardTab } from "@/features/root/enums";
 import { useTabStates } from "@/features/root/hooks";
 import { SearchTabControl } from "@/features/root/ui";
+import InsulinBody from "@/features/root/ward/insulin/ui/InsulinBody";
 import { IOSheetBody } from "@/features/root/ward/io-sheet/ui";
 import { NursingRecordBody } from "@/features/root/ward/nursing-record/ui";
 import { VitalSignBody } from "@/features/root/ward/vital-sign/ui";
@@ -42,6 +43,9 @@ function Bodies() {
       break;
     case WardTab.IO:
       component = <IOSheetBody />;
+      break;
+    case WardTab.RI:
+      component = <InsulinBody />;
       break;
     // default:
     // return <PrescriptionBody />;

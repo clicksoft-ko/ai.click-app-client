@@ -1,4 +1,4 @@
-import { GetFirstChartsDto, GetFirstChartsResultDto, GetIOSheetsDto, GetIOSheetsResultDto, GetNursingRecordsDto, GetNursingRecordsResultDto, GetPrescriptionsDto, GetPrescriptionsResultDto, GetProgressNotesDto, GetProgressNotesResultDto, GetVitalSignsDto, GetVitalSignsResultDto, WinAccountVerificationDto, WinAccountVerificationResultDto } from "@/shared/dto/socket-io";
+import { GetFirstChartsDto, GetFirstChartsResultDto, GetInsulinsDto, GetInsulinsResultDto, GetIOSheetsDto, GetIOSheetsResultDto, GetNursingRecordsDto, GetNursingRecordsResultDto, GetPrescriptionsDto, GetPrescriptionsResultDto, GetProgressNotesDto, GetProgressNotesResultDto, GetVitalSignsDto, GetVitalSignsResultDto, WinAccountVerificationDto, WinAccountVerificationResultDto } from "@/shared/dto/socket-io";
 import { GetPatientsDto, GetPatientsResultDto } from "@/shared/dto/socket-io/get-patients.dto";
 
 export interface PathTypeMap {
@@ -33,6 +33,10 @@ export interface PathTypeMap {
   getIOSheets: {
     dto: GetIOSheetsDto;
     result: GetIOSheetsResultDto;
+  }
+  getInsulins: {
+    dto: GetInsulinsDto;
+    result: GetInsulinsResultDto;
   }
 }
 

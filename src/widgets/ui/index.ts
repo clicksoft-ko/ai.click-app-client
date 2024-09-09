@@ -10,3 +10,4 @@ export * from './GenderIcon';
 export * from './calendar';
 export * from './popover';
 export * from './date-range-picker';
+export * from './badge';
