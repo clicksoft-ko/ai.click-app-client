@@ -3,12 +3,7 @@ import { ChildrenClassNameProps } from "@/shared/interfaces/props";
 import { cn } from "@/shared/utils";
 import { ErrorBox } from "@/widgets/errors/error-box";
 import { LottiePlayer } from "@/widgets/lotties/LottiePlayer";
-import {
-  useCallback,
-  useLayoutEffect,
-  useRef,
-  useState
-} from "react";
+import { useCallback, useLayoutEffect, useRef, useState } from "react";
 
 interface Props extends ChildrenClassNameProps {
   error: SocketErrorResponse | undefined;
@@ -51,14 +46,17 @@ interface Rect {
   height: number;
 }
 
-export function useElementRect<T extends HTMLElement>(): [Rect, React.RefObject<T | null>] {
+export function useElementRect<T extends HTMLElement>(): [
+  Rect,
+  React.RefObject<T>,
+] {
   const [rect, setRect] = useState<Rect>({
     x: 0,
     y: 0,
     width: 0,
     height: 0,
   });
-  const elementRef = useRef<T | null>(null);
+  const elementRef = useRef<T>(null);
 
   const updateRect = useCallback(() => {
     if (elementRef.current) {
@@ -91,11 +89,11 @@ export function useElementRect<T extends HTMLElement>(): [Rect, React.RefObject<
         subtree: true,
       });
 
-      window.addEventListener('resize', updateRect);
+      window.addEventListener("resize", updateRect);
 
       return () => {
         mutationObserver.disconnect();
-        window.removeEventListener('resize', updateRect);
+        window.removeEventListener("resize", updateRect);
       };
     }
   }, [updateRect]);

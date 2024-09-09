@@ -17,8 +17,12 @@ module.exports = {
       },
     },
     extend: {
+      height: {
+        header: "3.5rem",
+        bodyExceptHeader: "calc(100vh - 3.5rem)",
+      },
       fontFamily: {
-        "nanum-neo" : ["NanumNeo", "sans-serif"],
+        "nanum-neo": ["NanumNeo", "sans-serif"],
         "noto-sans-kr": ["Noto Sans KR", "sans-serif"],
       },
       colors: {

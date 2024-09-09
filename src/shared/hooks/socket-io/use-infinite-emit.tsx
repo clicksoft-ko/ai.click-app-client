@@ -1,6 +1,6 @@
 import { useInViewEx } from "@/shared/hooks";
 import { useEmitWithAck, useSocketIO } from "@/shared/hooks/socket-io";
-import { ExtractDto, PathTypeMap } from "@/shared/hooks/types";
+import { ExtractDto, PathTypeKey, PathTypeMap } from "@/shared/hooks/types";
 import { useMedicalStore } from "@/shared/stores/search.store";
 import {
   InfiniteData,
@@ -9,9 +9,9 @@ import {
 } from "@tanstack/react-query";
 import { useEffect } from "react";
 
-type TPathType = keyof PathTypeMap;
 
-interface UseInifiniteCommonArgs<TPath extends TPathType> {
+
+interface UseInifiniteCommonArgs<TPath extends PathTypeKey> {
   path: TPath;
   queryKey: any[];
   dtoFn: ({
@@ -25,7 +25,7 @@ interface UseInifiniteCommonArgs<TPath extends TPathType> {
   enabled?: boolean;
 }
 
-export function useInfiniteEmit<TPath extends TPathType>({
+export function useInfiniteEmit<TPath extends PathTypeKey>({
   path,
   queryKey,
   dtoFn,

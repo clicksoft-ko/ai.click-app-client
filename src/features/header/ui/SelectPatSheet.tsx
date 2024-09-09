@@ -14,15 +14,18 @@ import { useInfiniteSelectPat } from "../hooks";
 import { PatSearchInput } from "./PatSearchInput";
 import { PatBox } from "./PatBox";
 import { InfiniteBodyWrapper } from "@/features/root/ui";
+import { useQueryClient } from "@tanstack/react-query";
+import { PathTypeKey } from "@/shared/hooks/types";
 
 interface Props extends OpenProps {}
 
 export const SelectPatSheet = ({ open, setOpen }: Props) => {
+  const queryClient = useQueryClient();
   const { setPatientInfo } = usePatientStore();
   const [weib, setWeib] = useState(Weib.입원);
   const [searchString, setSearchString] = useState("");
   const { targetRef, scrollToTop } = useScrollHandler<HTMLDivElement>();
-  const { data, ...result } = useInfiniteSelectPat({
+  const { data, refetch, ...result } = useInfiniteSelectPat({
     enabled: open,
     searchString,
     weib,
@@ -52,7 +55,10 @@ export const SelectPatSheet = ({ open, setOpen }: Props) => {
           <PatSearchInput
             weib={weib}
             onChange={setSearchString}
-            onWeibChagne={setWeib}
+            onWeibChagne={(weib) => {
+              queryClient.removeQueries({ queryKey: ["getPatients" as PathTypeKey] });
+              setWeib(weib);
+            }}
           />
         </SheetHeader>
 

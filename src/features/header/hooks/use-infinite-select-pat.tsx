@@ -1,5 +1,6 @@
 import { Weib } from "@/shared/dto/socket-io";
 import { useInfiniteEmit } from "@/shared/hooks/socket-io";
+import { PathTypeKey } from "@/shared/hooks/types";
 import dayjs from "dayjs";
 
 interface Args {
@@ -20,7 +21,7 @@ export const useInfiniteSelectPat = ({ searchString, weib, enabled }: Args) => {
         ymd: dayjs().format("YYYYMMDD"),
       };
     },
-    queryKey: [searchString, weib],
+    queryKey: ["getPatients" as PathTypeKey, searchString, weib],
     enabled,
   });
 };

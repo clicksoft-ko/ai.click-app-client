@@ -14,6 +14,7 @@ const queryObj: {
 
   [WardTab.간호]: "getNursingRecords",
   [WardTab.Vital]: "getVitalSigns",
+  [WardTab.IO]: "getIOSheets",
 };
 
 interface Props {
@@ -27,6 +28,7 @@ export const SearchTabControl = ({ tabTypes }: Props) => {
   const setTab = useMedicalStore((state) => state.setTab);
   const setDateRange = useMedicalStore((state) => state.setDateRange);
   const queryClient = useQueryClient();
+  const dateRange = useMedicalStore((state) => state.dateRange);
 
   function onSearchStringChange(e: React.ChangeEvent<HTMLInputElement>): void {
     if (tab) setSearchString(tab, e.target.value);
@@ -44,7 +46,7 @@ export const SearchTabControl = ({ tabTypes }: Props) => {
   }
 
   return (
-    <div className="sticky top-14 flex justify-between gap-1 border-b bg-white p-2">
+    <div className="sticky z-50 top-14 flex justify-between gap-1 border-b bg-white p-2">
       <RadioGroup
         className="flex gap-2 rounded border bg-gray-100 p-1"
         value={tab}
@@ -64,7 +66,10 @@ export const SearchTabControl = ({ tabTypes }: Props) => {
           value={searchString?.[tab ?? ""] ?? ""}
           onChange={onSearchStringChange}
         />
-        <DateRangePicker onDateChange={setDateRange} />
+        <DateRangePicker
+          defaultDateRange={dateRange}
+          onDateChange={setDateRange}
+        />
         <Button type="submit" disabled={isPending} className="h-full">
           조회
         </Button>

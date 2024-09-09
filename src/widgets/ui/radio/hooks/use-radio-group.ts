@@ -1,6 +1,6 @@
-import { use } from "react"
+import { useContext } from "react"
 import { RadioGroupContext } from "../provider"
 
 export const useRadioGroup = () => {
-  return use(RadioGroupContext);
+  return useContext(RadioGroupContext);
 }
