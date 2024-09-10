@@ -9,8 +9,6 @@ import {
 } from "@tanstack/react-query";
 import { useEffect } from "react";
 
-
-
 interface UseInifiniteCommonArgs<TPath extends PathTypeKey> {
   path: TPath;
   queryKey: any[];
@@ -65,8 +63,6 @@ export function useInfiniteEmit<TPath extends PathTypeKey>({
       queryClient.resetQueries({ queryKey: [path] });
     };
   }, [enabled]);
-
-  console.log(path, data);
 
   return { inViewEl, error, isPending, data, refetch };
 }

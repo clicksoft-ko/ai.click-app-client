@@ -4,3 +4,4 @@ export enum MedicalTab {
   경과 = "경과",
   검사 = "검사",
 }
+

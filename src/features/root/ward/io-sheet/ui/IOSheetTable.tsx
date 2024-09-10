@@ -35,7 +35,10 @@ export function IOSheetTable({ data }: Props) {
   const { getShowTotal, getSum, getRowTotalSum } = useTotalCalculate();
 
   return (
-    <table className={cn(styles.table)} style={{ width: table.getTotalSize() }}>
+    <table
+      className={cn(styles.table)}
+      style={{ width: table.getTotalSize() }}
+    >
       <thead>
         <IOSheetColumnHeader table={table} styles={styles} />
       </thead>

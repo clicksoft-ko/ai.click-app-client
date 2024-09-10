@@ -21,6 +21,9 @@ module.exports = {
         header: "3.5rem",
         bodyExceptHeader: "calc(100vh - 3.5rem)",
       },
+      spacing: {
+        header: "3.5rem",
+      },
       fontFamily: {
         "nanum-neo": ["NanumNeo", "sans-serif"],
         "noto-sans-kr": ["Noto Sans KR", "sans-serif"],

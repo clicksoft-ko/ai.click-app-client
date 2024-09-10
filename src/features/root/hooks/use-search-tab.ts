@@ -13,6 +13,7 @@ const useSearchTab = () => {
   const showKeywords = useMemo(() => {
     return tab === MedicalTab.경과 || tab === WardTab.간호;
   }, [tab]);
+  
   return {
     tab,
     isPending,

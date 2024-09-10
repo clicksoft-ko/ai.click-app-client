@@ -2,36 +2,20 @@ import { MedicalTab } from "@/features/root/enums";
 import { FirstChartBody } from "@/features/root/medical/first-chart/ui";
 import { PrescriptionBody } from "@/features/root/medical/prescription/ui";
 import { ProgressNoteBody } from "@/features/root/medical/progress-note/ui";
-import { SearchTabControl } from "@/features/root/ui/SearchTabControl";
-import { useMedicalStore } from "@/shared/stores/search.store";
-import { useEffect } from "react";
+import { CarouselWrapper } from "@/features/root/ui";
+import { TabType } from "@/shared/stores/search.store";
+import { useMemo, JSX } from "react";
 
-const tabTypes = Object.values(MedicalTab);
 export const MedicalPage = () => {
-  const setTab = useMedicalStore((state) => state.setTab);
-  const tabs = useMedicalStore((state) => state.tab);
-
-  useEffect(() => {
-    setTab(MedicalTab.처방);
-  }, []);
-
-  return (
-    <>
-      <SearchTabControl tabTypes={tabTypes} />
-      <div className="overflow-auto">
-        <div className="p-2">{bodies(tabs as MedicalTab)}</div>
-      </div>
-    </>
+  const slides: [TabType, JSX.Element][] = useMemo(
+    () => [
+      [MedicalTab.처방, <PrescriptionBody key="prescription" />],
+      [MedicalTab.초진, <FirstChartBody key="prescription" />],
+      [MedicalTab.경과, <ProgressNoteBody key="prescription" />],
+      [MedicalTab.검사, <PrescriptionBody key="prescription2" />],
+    ],
+    [],
   );
-};
 
-function bodies(tabs: MedicalTab | undefined) {
-  switch (tabs) {
-    case MedicalTab.초진:
-      return <FirstChartBody />;
-    case MedicalTab.경과:
-      return <ProgressNoteBody />;
-    default:
-      return <PrescriptionBody />;
-  }
-}
+  return <CarouselWrapper slides={slides} defaultTab={MedicalTab.처방} />;
+};

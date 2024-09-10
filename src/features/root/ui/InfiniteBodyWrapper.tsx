@@ -1,9 +1,10 @@
 import { SocketErrorResponse } from "@/shared/dto/socket-io";
+import { useElementRect } from "@/shared/hooks";
 import { ChildrenClassNameProps } from "@/shared/interfaces/props";
 import { cn } from "@/shared/utils";
 import { ErrorBox } from "@/widgets/errors/error-box";
 import { LottiePlayer } from "@/widgets/lotties/LottiePlayer";
-import { useCallback, useLayoutEffect, useRef, useState } from "react";
+import { JSX } from "react";
 
 interface Props extends ChildrenClassNameProps {
   error: SocketErrorResponse | undefined;
@@ -18,11 +19,16 @@ export const InfiniteBodyWrapper = ({
   isPending,
 }: Props) => {
   const [rect, ref] = useElementRect<HTMLDivElement>();
-  console.log(rect);
 
   return (
-    <div ref={ref} className={cn("flex flex-col gap-2", className)}>
-      {children}
+    <div ref={ref} className={cn("flex h-full flex-col gap-2", className)}>
+      {children && (Array.isArray(children) ? children.length > 0 : true) ? (
+        children
+      ) : (
+        <div className="flex h-full items-center justify-center">
+          조회된 자료가 없습니다.
+        </div>
+      )}
       <ErrorBox errorMessage={error?.message} />
       {inViewEl}
       {isPending && (
@@ -38,65 +44,3 @@ export const InfiniteBodyWrapper = ({
     </div>
   );
 };
-
-interface Rect {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
-
-export function useElementRect<T extends HTMLElement>(): [
-  Rect,
-  React.RefObject<T>,
-] {
-  const [rect, setRect] = useState<Rect>({
-    x: 0,
-    y: 0,
-    width: 0,
-    height: 0,
-  });
-  const elementRef = useRef<T>(null);
-
-  const updateRect = useCallback(() => {
-    if (elementRef.current) {
-      const newRect = elementRef.current.getBoundingClientRect();
-      if (
-        rect.x !== newRect.x ||
-        rect.y !== newRect.y ||
-        rect.width !== newRect.width ||
-        rect.height !== newRect.height
-      ) {
-        setRect({
-          x: newRect.x,
-          y: newRect.y,
-          width: newRect.width,
-          height: newRect.height,
-        });
-      }
-    }
-  }, [rect]);
-
-  useLayoutEffect(() => {
-    if (elementRef.current) {
-      updateRect();
-
-      const mutationObserver = new MutationObserver(updateRect);
-
-      mutationObserver.observe(elementRef.current, {
-        attributes: true,
-        childList: true,
-        subtree: true,
-      });
-
-      window.addEventListener("resize", updateRect);
-
-      return () => {
-        mutationObserver.disconnect();
-        window.removeEventListener("resize", updateRect);
-      };
-    }
-  }, [updateRect]);
-
-  return [rect, elementRef];
-}

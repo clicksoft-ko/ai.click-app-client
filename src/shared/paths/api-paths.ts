@@ -1,9 +1,9 @@
 export const apiPaths = {
   auth: {
-    signUp: "/api/auth/signup",
-    signIn: "/api/auth/signin",
-    refreshToken: "/api/auth/refresh-token",
-    roomKey: (hsUserId: string) => `/api/auth/roomKey/${hsUserId}`
+    signUp: "/auth/signup",
+    signIn: "/auth/signin",
+    refreshToken: "/auth/refresh-token",
+    roomKey: (hsUserId: string) => `/auth/roomKey/${hsUserId}`
   },
-  user: "/api/user",
+  user: "/user",
 }

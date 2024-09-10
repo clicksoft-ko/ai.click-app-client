@@ -10,6 +10,7 @@ import { RootPage } from "@/pages/root";
 import { TestPage } from "@/pages/test";
 import { MedicalPage } from "@/pages/root/medical";
 import { WardPage } from "@/pages/root/ward";
+import { JSX } from "react";
 
 const ProtectedRoute = ({ element }: { element: JSX.Element }) => {
   const { isAuthenticated, isLoading } = useAuth();

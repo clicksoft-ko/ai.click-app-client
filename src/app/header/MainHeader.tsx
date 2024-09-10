@@ -11,7 +11,7 @@ const links = [
 
 export const MainHeader = () => {
   return (
-    <header className="h-header sticky top-0 z-50 flex items-center justify-between bg-gray-100 px-2">
+    <header className="w-full flex h-header items-center justify-between bg-gray-100 px-2">
       <nav className="flex items-center gap-2">
         <img
           className={cn(

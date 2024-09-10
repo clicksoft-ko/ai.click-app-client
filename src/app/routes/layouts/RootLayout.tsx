@@ -1,13 +1,24 @@
+import { MedicalTab, WardTab } from "@/features/root/enums";
+import { SearchTabControl } from "@/features/root/ui";
+import { paths } from "@/shared/paths";
 import { SocketIOProvider } from "@/shared/providers";
 import { envUtil } from "@/shared/utils/env";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { MainHeader } from "src/app/header";
 
+const wardTabs = Object.values(WardTab);
+const medicalTabs = Object.values(MedicalTab);
+
 export const RootLayout = () => {
+  const { pathname } = useLocation();
+
   return (
     <SocketIOProvider uri={envUtil.SOCKET_URL} use={true}>
-      <div>
+      <div className="flex h-full flex-col">
         <MainHeader />
+        <SearchTabControl
+          tabTypes={pathname.startsWith(paths.medical) ? medicalTabs : wardTabs}
+        />
         <Outlet />
       </div>
     </SocketIOProvider>

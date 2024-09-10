@@ -5,17 +5,10 @@ import { Button } from "@/widgets/ui/button";
 import { useNavigate } from "react-router-dom";
 
 export const RootPage = () => {
-  const { data, isPending, error, emit } = useEmitWithAck(
-    "winAccountVerification",
-    {
-      clearKey: !open,
-    },
-  );
+  const { emit } = useEmitWithAck("winAccountVerification", {
+    clearKey: !open,
+  });
 
-  console.log("isPending", isPending);
-  console.log("data", data);
-  console.log("error", error);
-  
   const navigate = useNavigate();
   const { user } = useAuth();
   return (

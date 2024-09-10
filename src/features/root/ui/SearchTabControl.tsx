@@ -51,7 +51,7 @@ export const SearchTabControl = ({ tabTypes }: Props) => {
   }
 
   return (
-    <div className="sticky top-14 z-50 flex justify-between gap-1 border-b bg-white p-2">
+    <div className="flex w-full justify-between gap-1 border-b bg-white p-2">
       <RadioGroup
         className="flex gap-2 rounded border bg-gray-100 p-1"
         value={tab}
