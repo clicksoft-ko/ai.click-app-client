@@ -22,13 +22,3 @@ jobs:
           context: .
           push: true
           tags: kaburi/click-app-client:latest, kaburi/click-app-client:${{ github.run_number }}
-      # - name: SSH and Deploy
-      #   uses: appleboy/ssh-action@v1.0.2
-      #   with:
-      #     host: ${{ secrets.SSH_HOST }}
-      #     username: ${{ secrets.SSH_USERNAME }}
-      #     key: ${{ secrets.SSH_PRIVATE_KEY }}
-      #     port: ${{ secrets.SSH_PORT }}
-      #     passphrase: ${{ secrets.SSH_PASSPHRASE }}
-      #     script: |
-      #       cd c:\web-release\click-app\clicksoft-app & git pull & pnpm install & pnpm deploy:prod
