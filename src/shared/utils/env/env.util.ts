@@ -4,7 +4,7 @@ class EnvUtil {
     return import.meta.env.MODE === "production";
   }
   get SOCKET_URL(): string {
-    return this.IS_PROD ? "https://sign.click-soft.co.kr/web-app" : "http://localhost:4001/web-app";
+    return this.IS_PROD ? "https://sock.click-soft.co.kr/web-app" : "http://localhost:4001/web-app";
   }
 
   get BACKEND_URL(): string {
