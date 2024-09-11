@@ -5,6 +5,7 @@ import { CustomRadio, RadioGroup } from "@/widgets/ui/radio";
 import { useQueryClient } from "@tanstack/react-query";
 import { MedicalTab, WardTab } from "../enums";
 import { useSearchTab } from "../hooks";
+import { cn } from "@/shared/utils";
 
 const queryObj: {
   [key: string]: PathTypeKey;
@@ -51,7 +52,9 @@ export const SearchTabControl = ({ tabTypes }: Props) => {
   }
 
   return (
-    <div className="flex w-full justify-between gap-1 border-b bg-white p-2">
+    <div className={cn("flex w-full justify-between gap-1 border-b bg-white p-2 overflow-hidden", 
+      "flex-col sm:flex-row"
+    )}>
       <RadioGroup
         className="flex gap-2 rounded border bg-gray-100 p-1"
         value={tab}
@@ -65,7 +68,7 @@ export const SearchTabControl = ({ tabTypes }: Props) => {
       <form className="flex gap-1" onSubmit={handleSubmit}>
         {showKeywords && (
           <Input
-            className="h-full w-36"
+            className="h-full min-w-20 max-w-36"
             placeholder="키워드 검색"
             value={searchString?.[tab ?? ""] ?? ""}
             onChange={onSearchStringChange}
@@ -90,7 +93,7 @@ interface MedicalRadioProps {
 function MedicalRadio({ tab }: MedicalRadioProps) {
   return (
     <CustomRadio
-      className="min-w-20 rounded p-1 text-center hover:cursor-pointer hover:bg-slate-200"
+      className="min-w-16 rounded p-1 text-center hover:cursor-pointer hover:bg-slate-200"
       classNames={{
         checked: "border !bg-white",
       }}
