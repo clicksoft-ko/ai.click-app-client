@@ -94,7 +94,7 @@ const CarouseBox = ({
         }
       }}
       ref={swipeRef}
-      className="h-full w-full overflow-auto p-2"
+      className="h-full w-full overflow-auto px-2 my-2"
       style={{ height }}
     >
       {children}
