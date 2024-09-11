@@ -18,8 +18,9 @@ module.exports = {
     },
     extend: {
       height: {
+        screen: "calc(var(--vh) * 100)",
         header: "3.5rem",
-        bodyExceptHeader: "calc(100vh - 3.5rem)",
+        bodyExceptHeader: "calc(var(--vh) - 3.5rem)",
       },
       spacing: {
         header: "3.5rem",
