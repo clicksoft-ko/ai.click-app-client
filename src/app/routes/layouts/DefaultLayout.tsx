@@ -6,7 +6,7 @@ export const DefaultLayout = () => {
   useDvh();
 
   return (
-    <div className={cn("h-screen w-full overflow-hidden")}>
+    <div className={cn("min-h-screen w-full overflow-hidden")}>
       <Outlet />
     </div>
   );
