@@ -17,8 +17,7 @@ export const RootPage = () => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           setLocation(position);
-        },
-        (err) => {},
+        }, 
       );
     } else {
     }
