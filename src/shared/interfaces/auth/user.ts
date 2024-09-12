@@ -5,6 +5,7 @@ export interface User {
   roomKey: string;
   hsUserId: string;
   csUserId: string;
+  orgName: string;
   name: string;
   email: string;
 }

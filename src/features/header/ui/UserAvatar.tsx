@@ -1,15 +1,50 @@
-import { imgPaths } from "@/shared/paths";
+import { useAuth } from "@/shared/hooks/auth";
+import { imgPaths, paths } from "@/shared/paths";
 import { cn } from "@/shared/utils";
+import { removeToken } from "@/shared/utils/cookies";
+import { Button, Popover, PopoverContent, PopoverTrigger } from "@/widgets/ui";
+import { useState } from "react";
+interface UserAvatarProps {}
+export function UserAvatar({}: UserAvatarProps) {
+  const [open, setOpen] = useState(false);
+  const { user } = useAuth(); 
 
-interface UserAvatarProps { }
-export function UserAvatar({ }: UserAvatarProps) {
   return (
-    <img
-      className={cn(
-        "m-1 h-9 w-9 rounded-full border border-primary/50 object-none",
-        "hover:cursor-pointer"
-      )}
-      src={imgPaths.logo.small}
-      alt="user" />
+    <>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger>
+          <img
+            // onClick={() => setOpen(true)}
+            className={cn(
+              "m-1 h-9 w-9 rounded-full border border-primary/50 object-none",
+              "hover:cursor-pointer",
+            )}
+            src={imgPaths.logo.small}
+            alt="user"
+          />
+        </PopoverTrigger>
+        <PopoverContent className="w-80">
+          <div className="grid gap-4">
+            <div className="space-y-2">
+              <h4 className="font-medium leading-none">{`${user?.email} - ${user?.name}(${user?.csUserId})`}</h4>
+              <p className="text-sm text-muted-foreground">
+                {`기관: ${user?.orgName} (${user?.hsUserId})`}
+              </p>
+            </div>
+            <div className="grid gap-2">
+              <Button
+                onClick={() => {
+                  removeToken();
+                  window.location.href = paths.signIn;
+                }}
+                variant={"destructive"}
+              >
+                로그아웃
+              </Button>
+            </div>
+          </div>
+        </PopoverContent>
+      </Popover>
+    </>
   );
 }
