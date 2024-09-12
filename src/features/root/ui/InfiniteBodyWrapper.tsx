@@ -21,7 +21,7 @@ export const InfiniteBodyWrapper = ({
   const [rect, ref] = useElementRect<HTMLDivElement>();
 
   return (
-    <div ref={ref} className={cn("flex h-full flex-col gap-2", className)}>
+    <div ref={ref} className={cn("flex h-full flex-col gap-2 mt-2", className)}>
       {children && (Array.isArray(children) ? children.length > 0 : true) ? (
         children
       ) : (

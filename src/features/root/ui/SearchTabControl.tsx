@@ -13,6 +13,7 @@ const queryObj: {
   [MedicalTab.처방]: "getPrescriptions",
   [MedicalTab.초진]: "getFirstCharts",
   [MedicalTab.경과]: "getProgressNotes",
+  [MedicalTab.검사]: "getLabs",
 
   [WardTab.간호]: "getNursingRecords",
   [WardTab.Vital]: "getVitalSigns",

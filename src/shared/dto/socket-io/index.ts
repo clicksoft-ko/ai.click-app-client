@@ -11,3 +11,5 @@ export * from './title-value-detail';
 export * from './get-vital-signs.dto';
 export * from './get-io-sheet.dto';
 export * from './get-insulins';
+export * from './get-labs';
+
