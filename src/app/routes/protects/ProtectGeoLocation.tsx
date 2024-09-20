@@ -21,7 +21,7 @@ export const ProtectGeoLocation = ({ element }: { element: JSX.Element }) => {
     enabled: isAuthenticated && !isLoading && !!location && isGeoAccess,
   });
 
-  if (!isGeoAccess)
+  if (!isLoading && !isGeoAccess)
     return (
       <GeoAccessMessage
         message="위치 엑세스를 허용으로 설정해주세요."
@@ -30,7 +30,11 @@ export const ProtectGeoLocation = ({ element }: { element: JSX.Element }) => {
     );
   if (isPending)
     return (
-      <GeoAccessMessage message="로딩 중..." description="로딩 중입니다." />
+      <GeoAccessMessage
+        message="로딩 중..."
+        description="로딩 중입니다."
+        showReloadButton={false}
+      />
     );
   if (isLoading || !user) return element;
   if (error)
