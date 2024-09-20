@@ -10,13 +10,15 @@ interface UseGeoLocationProps {
 }
 
 export const useGeoLocation = (props?: UseGeoLocationProps) => {
+  const use = props?.use ?? true;
+
   const [isLoading, setIsLoading] = useState(false);
   const [location, setLocation] = useState<GeoLocation>();
   // 위치 엑세스 허용 여부
   const [isGeoAccess, setIsGeoAccess] = useState(false);
 
   const updateLocation = useCallback(() => {
-    if (!props?.use) return;
+    if (!use) return;
     if (navigator.geolocation) {
       setIsLoading(true);
       navigator.geolocation.getCurrentPosition((position) => {
