@@ -3,4 +3,5 @@ import App from "./App.tsx";
 import "./css/reset.css";
 import "./css/index.css";
 import "./css/global.css";
+
 ReactDOM.createRoot(document.getElementById("root")!).render(<App />);

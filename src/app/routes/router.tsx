@@ -1,22 +1,17 @@
 import { VerifyProvider } from "@/features/signup/provider";
+import { RootPage } from "@/pages/root";
+import { MedicalPage } from "@/pages/root/medical";
+import { WardPage } from "@/pages/root/ward";
 import { SignIn } from "@/pages/signin";
 import { SignUp } from "@/pages/signup";
+import { TestPage } from "@/pages/test";
 import { useAuth } from "@/shared/hooks/auth";
 import { paths } from "@/shared/paths";
 import { ErrorPage } from "@/widgets/errors";
-import { Navigate, createBrowserRouter } from "react-router-dom";
-import { RootLayout, AccountsLayout, DefaultLayout } from "./layouts";
-import { RootPage } from "@/pages/root";
-import { TestPage } from "@/pages/test";
-import { MedicalPage } from "@/pages/root/medical";
-import { WardPage } from "@/pages/root/ward";
 import { JSX } from "react";
-
-const ProtectedRoute = ({ element }: { element: JSX.Element }) => {
-  const { isAuthenticated, isLoading } = useAuth();
-  if (isLoading) return <></>;
-  return isAuthenticated ? element : <Navigate to={paths.signIn} />;
-};
+import { Navigate, createBrowserRouter } from "react-router-dom";
+import { AccountsLayout, DefaultLayout, RootLayout } from "./layouts";
+import { ProtectedRoute, ProtectGeoLocation } from "./protects";
 
 const RedirectIfAuthenticated = ({ element }: { element: JSX.Element }) => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -31,7 +26,11 @@ const router: any = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        element: <ProtectedRoute element={<RootLayout />} />,
+        element: (
+          <ProtectedRoute
+            element={<ProtectGeoLocation element={<RootLayout />} />}
+          />
+        ),
         children: [
           {
             path: paths.root,

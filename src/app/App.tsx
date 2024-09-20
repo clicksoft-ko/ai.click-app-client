@@ -1,6 +1,6 @@
+import { TanstakQueryProivder } from "@/shared/providers";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./routes/router";
-import { TanstakQueryProivder } from "@/shared/providers";
 
 function App() {
   return (
