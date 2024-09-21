@@ -41,4 +41,5 @@ const links = {
   [paths.signIn]: [signUpObj, findPwObj],
   [paths.signUp]: [signInObj, findPwObj],
   [paths.findPw]: [signInObj, signUpObj],
+  [paths.error]: [],
 };

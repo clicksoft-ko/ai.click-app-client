@@ -12,6 +12,7 @@ import { JSX } from "react";
 import { Navigate, createBrowserRouter } from "react-router-dom";
 import { AccountsLayout, DefaultLayout, RootLayout } from "./layouts";
 import { ProtectedRoute, ProtectGeoLocation } from "./protects";
+import { CustomErrorPage } from "@/pages/error";
 
 const RedirectIfAuthenticated = ({ element }: { element: JSX.Element }) => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -58,7 +59,12 @@ const router: any = createBrowserRouter([
             element: <SignIn />,
           },
           {
+            path: paths.error,
+            element: <CustomErrorPage />,
+          },
+          {
             path: paths.signUp,
+
             element: (
               <VerifyProvider>
                 <SignUp />

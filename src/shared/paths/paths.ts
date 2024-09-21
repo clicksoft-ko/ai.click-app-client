@@ -4,6 +4,7 @@ export const paths = {
   signIn: "/signin",
   signUp: "/signup",
   findPw: "/findpw",
+  error: "/error",
 
   medical: "/medical",
   ward: "/ward",
