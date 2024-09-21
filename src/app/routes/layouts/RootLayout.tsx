@@ -14,7 +14,7 @@ export const RootLayout = () => {
 
   return (
     <SocketIOProvider uri={envUtil.SOCKET_URL} use={true}>
-      <div className="flex h-full flex-col">
+      <div className="flex h-screen flex-col overflow-hidden">
         <MainHeader />
         <SearchTabControl
           tabTypes={pathname.startsWith(paths.medical) ? medicalTabs : wardTabs}

@@ -1,14 +1,13 @@
+import { handleKeyDownToNext } from "@/shared/utils/input";
 import { Button } from "@/widgets/ui/button";
 import { Input } from "@/widgets/ui/input";
+import { useActionState, useRef, useState } from "react";
 import { FaLock, FaUser } from "react-icons/fa";
 import { useVerify } from "../hooks/use-verify";
-import { useActionState, useRef, useState } from "react";
-import { handleKeyDownToNext } from "@/shared/utils/input";
 
-import { signUpFormAction } from "../action/sign-up-form-action";
-import { Navigate } from "react-router-dom";
-import { paths } from "@/shared/paths";
+import { SignUpEmail } from "@/pages/signup";
 import { ErrorBox } from "@/widgets/errors/error-box";
+import { signUpFormAction } from "../action/sign-up-form-action";
 
 export const SignUpForm = () => {
   const { state } = useVerify();
@@ -23,7 +22,7 @@ export const SignUpForm = () => {
   );
 
   if (actionState.success) {
-    return <Navigate to={paths.signIn} />;
+    return <SignUpEmail email={email} />;
   }
 
   return (

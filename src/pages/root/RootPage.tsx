@@ -15,13 +15,16 @@ export const RootPage = () => {
 
   return (
     <div className="text-red-500">
-      <div className="flex flex-col gap-2">
-        <div>
-          lat: {location?.lat}
-          <br />
-          lng: {location?.lng}
+      <div className="flex flex-col gap-4 rounded-lg bg-white p-4 shadow-md">
+        <div className="text-lg font-semibold text-gray-700">
+          Latitude: <span className="text-blue-500">{location?.lat} * 100</span>
+        </div>
+        <div className="text-lg font-semibold text-gray-700">
+          Longitude:{" "}
+          <span className="text-blue-500">{location?.lng} * 100</span>
         </div>
       </div>
+
       {JSON.stringify(user)}
       <div className="rounded-lg border border-blue-500 p-10 text-blue-500">
         {JSON.stringify(location)}
