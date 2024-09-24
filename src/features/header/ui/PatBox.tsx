@@ -15,7 +15,7 @@ export const PatBox = ({ patient, onClick }: Props) => {
     >
       {patient.ibYmd && (
         <>
-          <div className="flex min-w-14 items-center justify-center">
+          <div className="flex min-w-14 max-w-8 items-center justify-center sm:max-w-none">
             {patient.wardName}
           </div>
           <div className="mx-2 w-[1px] bg-slate-300" />
@@ -39,8 +39,10 @@ export const PatBox = ({ patient, onClick }: Props) => {
             </div>
           </div>
           <div className="flex min-w-24 flex-col">
-            <div className="flex items-center gap-1 text-left">
-              {formatYmdToShort(patient.birthday)}
+            <div className="flex flex-col items-center gap-1 text-left sm:flex-row">
+              <span className="whitespace-nowrap">
+                {formatYmdToShort(patient.birthday)}
+              </span>
               <span>({convertBirthToAge(patient.birthday)}세)</span>
             </div>
           </div>

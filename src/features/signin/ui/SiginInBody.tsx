@@ -17,7 +17,7 @@ export const SiginInForm = () => {
   const passwordRef = useRef<HTMLInputElement>(null);
 
   if (isSuccess) {
-    return <Navigate to={paths.root} replace />;
+    return <Navigate to={paths.medical} replace />;
   }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {

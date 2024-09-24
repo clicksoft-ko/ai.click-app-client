@@ -6,6 +6,7 @@ import { JSX, useEffect, useRef, useState } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { scrollTopCarousels } from "../lib";
 
 interface Props {
   slides: [TabType, JSX.Element][];
@@ -37,6 +38,8 @@ export const CarouselWrapper = ({ slides, defaultTab }: Props) => {
     if (tabIndex !== undefined) {
       carouselRef.current?.goToSlide(tabIndex);
     }
+
+    scrollTopCarousels();
   }, [tab]);
 
   return (
@@ -63,16 +66,16 @@ export const CarouselWrapper = ({ slides, defaultTab }: Props) => {
         }}
       >
         {slides.map(([tab, component]) => (
-          <CarouseBox key={tab} height={rect.height} onCanSwipe={setCanSwipe}>
+          <CarouselBox key={tab} height={rect.height} onCanSwipe={setCanSwipe}>
             {component}
-          </CarouseBox>
+          </CarouselBox>
         ))}
       </Carousel>
     </div>
   );
 };
 
-const CarouseBox = ({
+const CarouselBox = ({
   children,
   height,
   onCanSwipe,
@@ -94,7 +97,7 @@ const CarouseBox = ({
         }
       }}
       ref={swipeRef}
-      className="h-full w-full overflow-auto px-2 my-2"
+      className="carousel-item my-2 h-full w-full overflow-auto px-2"
       style={{ height }}
     >
       {children}

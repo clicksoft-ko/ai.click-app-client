@@ -6,6 +6,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { MedicalTab, WardTab } from "../enums";
 import { useSearchTab } from "../hooks";
 import { cn } from "@/shared/utils";
+import { scrollTopCarousels } from "../lib";
 
 const queryObj: {
   [key: string]: PathTypeKey;
@@ -45,19 +46,24 @@ export const SearchTabControl = ({ tabTypes }: Props) => {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault();
-    window.scrollTo({ top: 0 });
+
     if (tab) {
       const key = queryObj[tab];
       queryClient.invalidateQueries({ queryKey: [key] });
     }
+
+    scrollTopCarousels();
   }
 
   return (
-    <div className={cn("flex w-full justify-between gap-1 border-b bg-white p-2 overflow-hidden", 
-      "flex-col sm:flex-row"
-    )}>
+    <div
+      className={cn(
+        "flex w-full justify-between gap-1 overflow-hidden border-b bg-white p-2",
+        "flex-col sm:flex-row",
+      )}
+    >
       <RadioGroup
-        className="flex gap-2 rounded border bg-gray-100 p-1"
+        className="flex gap-2 overflow-x-auto rounded border bg-gray-100 p-1"
         value={tab}
         onValueChange={(v) => setTab(v as TabType)}
       >

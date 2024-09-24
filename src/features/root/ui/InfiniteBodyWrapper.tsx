@@ -19,10 +19,12 @@ export const InfiniteBodyWrapper = ({
   isPending,
 }: Props) => {
   const [rect, ref] = useElementRect<HTMLDivElement>();
+  const hasChildren =
+    children && (Array.isArray(children) ? children.length > 0 : true);
 
   return (
-    <div ref={ref} className={cn("flex h-full flex-col gap-2 mt-2", className)}>
-      {children && (Array.isArray(children) ? children.length > 0 : true) ? (
+    <div ref={ref} className={cn("flex h-full flex-col gap-2", hasChildren ? "mt-2" : "", className)}>
+      {hasChildren ? (
         children
       ) : (
         <div className="flex h-full items-center justify-center">
