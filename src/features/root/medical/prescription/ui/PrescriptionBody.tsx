@@ -12,5 +12,12 @@ export function PrescriptionBody({}: Props) {
     element: (v) => <PrescriptionBox key={v.id} prescription={v} />,
   });
 
-  return <InfiniteBodyWrapper {...result}>{components}</InfiniteBodyWrapper>;
+  return (
+    <InfiniteBodyWrapper
+      className={(components?.length ?? 0) > 0 ? "w-fit md:w-full" : ""}
+      {...result}
+    >
+      {components}
+    </InfiniteBodyWrapper>
+  );
 }
