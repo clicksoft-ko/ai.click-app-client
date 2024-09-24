@@ -6,7 +6,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { MedicalTab, WardTab } from "../enums";
 import { useSearchTab } from "../hooks";
 import { cn } from "@/shared/utils";
-import { scrollTopCarousels } from "../lib";
+import { scrollClearCarousels } from "../lib";
 
 const queryObj: {
   [key: string]: PathTypeKey;
@@ -52,7 +52,7 @@ export const SearchTabControl = ({ tabTypes }: Props) => {
       queryClient.invalidateQueries({ queryKey: [key] });
     }
 
-    scrollTopCarousels();
+    scrollClearCarousels();
   }
 
   return (

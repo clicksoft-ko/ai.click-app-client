@@ -6,7 +6,7 @@ import { JSX, useEffect, useRef, useState } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { scrollTopCarousels } from "../lib";
+import { scrollClearCarousels } from "../lib";
 
 interface Props {
   slides: [TabType, JSX.Element][];
@@ -39,7 +39,7 @@ export const CarouselWrapper = ({ slides, defaultTab }: Props) => {
       carouselRef.current?.goToSlide(tabIndex);
     }
 
-    scrollTopCarousels();
+    scrollClearCarousels();
   }, [tab]);
 
   return (
