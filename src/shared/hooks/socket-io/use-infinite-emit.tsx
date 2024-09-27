@@ -40,7 +40,7 @@ export function useInfiniteEmit<TPath extends PathTypeKey>({
     queryKey: [path, ...queryKey],
     queryFn: ({ pageParam = 1 }) => {
       const dto = dtoFn({ page: pageParam, count });
-      return emit(dto);
+      return emit(dto as any);
     },
     getNextPageParam: (last, all) => getNextPageParam(count, last, all),
     select: (data) => select(data),

@@ -1,19 +1,15 @@
 import { handleKeyDownToNext } from "@/shared/utils/input";
 import { Button } from "@/widgets/ui/button";
 import { Input } from "@/widgets/ui/input";
-import { useActionState, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { FaLock, FaUser } from "react-icons/fa";
-import { useVerify } from "../hooks/use-verify";
-
+import { paths } from "@/shared/paths";
+import { parseErrorMessage } from "@/shared/utils/error";
 import { ErrorBox } from "@/widgets/errors/error-box";
-import { signUpFormAction } from "../action/sign-up-form-action";
-import { apiPaths, paths } from "@/shared/paths";
 import { useNavigate } from "react-router-dom";
 import { useSignUp } from "../hooks";
-import { parseErrorMessage } from "@/shared/utils/error";
 
 export const SignUpForm = () => {
-  const { state } = useVerify();
   const navigate = useNavigate();
   const csUserIdRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
