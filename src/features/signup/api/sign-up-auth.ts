@@ -5,8 +5,7 @@ type SignUpAuthDto = {
   hsUserId: string;
   csUserId: string;
   name: string;
-  email: string;
-  password: string;
+  roomKey: string;
 }
 
 export const signUpAuth = async (dto: SignUpAuthDto) => {

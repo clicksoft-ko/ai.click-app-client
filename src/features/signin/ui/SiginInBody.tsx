@@ -1,43 +1,54 @@
-import { Button } from "@/widgets/ui/button";
-import { Input } from "@/widgets/ui/input";
-import { FaUser } from "react-icons/fa";
-import { FaLock } from "react-icons/fa6";
-import { useSignIn } from "../hook";
-import { Navigate } from "react-router-dom";
 import { paths } from "@/shared/paths";
-import { ErrorBox } from "@/widgets/errors/error-box";
-import { useRef, useState } from "react";
 import { parseErrorMessage } from "@/shared/utils/error";
 import { handleKeyDownToNext } from "@/shared/utils/input";
+import { ErrorBox } from "@/widgets/errors/error-box";
+import { Button } from "@/widgets/ui/button";
+import { Input } from "@/widgets/ui/input";
+import { useRef, useState } from "react";
+import { FaUser } from "react-icons/fa";
+import { FaLock } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
+import { useSignIn } from "../hook";
 
 export const SiginInForm = () => {
-  const { error, isPending, isSuccess, validateError, signIn } = useSignIn();
-  const [email, setEmail] = useState("");
+  const navigate = useNavigate();
+  const [hsUserId, setHsUserId] = useState("");
+  const [csUserId, setCsUserId] = useState("");
   const [password, setPassword] = useState("");
+
+  const { error, isPending, validateError, signIn } = useSignIn({
+    onSuccess: () => {
+      navigate(paths.medical, { replace: true });
+    },
+  });
   const passwordRef = useRef<HTMLInputElement>(null);
-
-  if (isSuccess) {
-    return <Navigate to={paths.medical} replace />;
-  }
-
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
+ 
+  async function handleSubmit(
+    e: React.FormEvent<HTMLFormElement>,
+  ): Promise<void> {
     e.preventDefault();
-    signIn({ email, password });
+    await signIn({ hsUserId, csUserId, password });
   }
 
   return (
     <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
       <Input
-        placeholder="EMAIL"
-        type="email"
-        errorMessage={validateError?.email}
-        onChange={(e) => setEmail(e.target.value)}
+        placeholder="병원 아이디"
+        errorMessage={validateError?.hsUserId}
+        onChange={(e) => setHsUserId(e.target.value)}
+        onKeyDown={handleKeyDownToNext.bind(null, passwordRef)}
+        startComponent={<FaUser className="ml-4 text-primary" />}
+      />
+      <Input
+        placeholder="eClick 아이디"
+        errorMessage={validateError?.csUserId}
+        onChange={(e) => setCsUserId(e.target.value)}
         onKeyDown={handleKeyDownToNext.bind(null, passwordRef)}
         startComponent={<FaUser className="ml-4 text-primary" />}
       />
       <Input
         ref={passwordRef}
-        placeholder="PASSWORD"
+        placeholder="eClick 비밀번호"
         type="password"
         errorMessage={validateError?.password}
         onChange={(e) => setPassword(e.target.value)}

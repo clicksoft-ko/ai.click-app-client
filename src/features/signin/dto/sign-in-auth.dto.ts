@@ -1,4 +1,5 @@
 export interface SignInAuthDto {
-  email: string;
-  password: string;
+  hsUserId: string;
+  csUserId: string; 
+  roomKey: string;
 }

@@ -5,64 +5,61 @@ import { useActionState, useRef, useState } from "react";
 import { FaLock, FaUser } from "react-icons/fa";
 import { useVerify } from "../hooks/use-verify";
 
-import { SignUpEmail } from "@/pages/signup";
 import { ErrorBox } from "@/widgets/errors/error-box";
 import { signUpFormAction } from "../action/sign-up-form-action";
+import { apiPaths, paths } from "@/shared/paths";
+import { useNavigate } from "react-router-dom";
+import { useSignUp } from "../hooks";
+import { parseErrorMessage } from "@/shared/utils/error";
 
 export const SignUpForm = () => {
   const { state } = useVerify();
+  const navigate = useNavigate();
+  const csUserIdRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-  const confirmPasswordRef = useRef<HTMLInputElement>(null);
-  const [email, setEmail] = useState("");
+  const [hsUserId, setHsUserId] = useState("");
+  const [csUserId, setCsUserId] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [actionState, action, isPending] = useActionState(
-    signUpFormAction.bind(null, state!),
-    {},
-  );
+  const { signUp, isPending, error, validateError } = useSignUp({
+    onSuccess: () => {
+      navigate(paths.signIn);
+    },
+  });
 
-  if (actionState.success) {
-    return <SignUpEmail email={email} />;
-  }
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    signUp({ hsUserId, csUserId, password });
+  };
 
   return (
-    <form className="flex flex-col gap-2" action={action}>
-      <div className="mb-2 flex justify-between">
-        <span className="text-green-700">✅ 인증되었습니다.</span>
-        <span>{state?.name} 님</span>
-      </div>
+    <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
       <Input
-        name="email"
-        autoFocus
-        placeholder="EMAIL"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        onKeyDown={handleKeyDownToNext.bind(null, passwordRef)}
-        errorMessage={actionState.error?.email}
+        placeholder="병원 아이디"
+        value={hsUserId}        
+        onChange={(e) => setHsUserId(e.target.value)}
+        onKeyDown={handleKeyDownToNext.bind(null, csUserIdRef)}
+        errorMessage={validateError?.hsUserId}
         startComponent={<FaUser className="ml-4 text-primary" />}
       />
       <Input
-        name="password"
+        ref={csUserIdRef}
+        placeholder="eClick 아이디"
+        value={csUserId}
+        onChange={(e) => setCsUserId(e.target.value)}
+        onKeyDown={handleKeyDownToNext.bind(null, passwordRef)}
+        errorMessage={validateError?.csUserId}
+        startComponent={<FaUser className="ml-4 text-primary" />}
+      />
+      <Input
         ref={passwordRef}
-        placeholder="PASSWORD"
+        placeholder="eClick 비밀번호"
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        onKeyDown={handleKeyDownToNext.bind(null, confirmPasswordRef)}
-        errorMessage={actionState.error?.password}
+        errorMessage={validateError?.password}
         startComponent={<FaLock className="ml-4 text-primary" />}
       />
-      <Input
-        name="confirmPassword"
-        ref={confirmPasswordRef}
-        placeholder="CONFIRM PASSWORD"
-        type="password"
-        value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
-        errorMessage={actionState.error?.confirmPassword}
-        startComponent={<FaLock className="ml-4 text-primary" />}
-      />
-      <ErrorBox errorMessage={actionState.error?._form} />
+      <ErrorBox errorMessage={parseErrorMessage(error)} />
       <Button disabled={isPending}>회원가입</Button>
     </form>
   );

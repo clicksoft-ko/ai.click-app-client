@@ -7,7 +7,7 @@ import { useState } from "react";
 interface UserAvatarProps {}
 export function UserAvatar({}: UserAvatarProps) {
   const [open, setOpen] = useState(false);
-  const { user } = useAuth(); 
+  const { user } = useAuth();
 
   return (
     <>
@@ -16,7 +16,7 @@ export function UserAvatar({}: UserAvatarProps) {
           <img
             // onClick={() => setOpen(true)}
             className={cn(
-              "m-1 h-9 w-9 rounded-full border border-primary/50 object-none",
+              "m-1 h-11 w-11 rounded",
               "hover:cursor-pointer",
             )}
             src={imgPaths.logo.small}
@@ -26,9 +26,9 @@ export function UserAvatar({}: UserAvatarProps) {
         <PopoverContent className="w-80">
           <div className="grid gap-4">
             <div className="space-y-2">
-              <h4 className="font-medium leading-none">{`${user?.email} - ${user?.name}(${user?.csUserId})`}</h4>
+              <h4 className="font-medium leading-none">{`${user?.name}(${user?.csUserId})`}</h4>
               <p className="text-sm text-muted-foreground">
-                {`기관: ${user?.orgName} (${user?.hsUserId})`}
+                {`${user?.orgName} (${user?.hsUserId})`}
               </p>
             </div>
             <div className="grid gap-2">

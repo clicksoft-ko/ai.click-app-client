@@ -1,8 +1,6 @@
 import { MedicalTab, WardTab } from "@/features/root/enums";
 import { SearchTabControl } from "@/features/root/ui";
 import { paths } from "@/shared/paths";
-import { SocketIOProvider } from "@/shared/providers";
-import { envUtil } from "@/shared/utils/env";
 import { Outlet, useLocation } from "react-router-dom";
 import { MainHeader } from "src/app/header";
 
@@ -13,14 +11,14 @@ export const RootLayout = () => {
   const { pathname } = useLocation();
 
   return (
-    <SocketIOProvider uri={envUtil.SOCKET_URL} use={true}>
-      <div className="flex h-screen flex-col overflow-hidden">
-        <MainHeader />
-        <SearchTabControl
-          tabTypes={pathname.startsWith(paths.medical) ? medicalTabs : wardTabs}
-        />
-        <Outlet />
-      </div>
-    </SocketIOProvider>
+    // <SocketIOProvider uri={envUtil.SOCKET_URL} use={true}>
+    <div className="flex h-screen flex-col overflow-hidden">
+      <MainHeader />
+      <SearchTabControl
+        tabTypes={pathname.startsWith(paths.medical) ? medicalTabs : wardTabs}
+      />
+      <Outlet />
+    </div>
+    // </SocketIOProvider>
   );
 };

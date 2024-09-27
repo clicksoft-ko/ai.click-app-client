@@ -11,6 +11,8 @@ export function parseErrorMessage(ex: unknown): string | undefined {
     }
   } else if (ex instanceof Error) {
     return ex.message;
+  } else if (typeof ex === 'object' && 'message' in ex && typeof ex.message === 'string') {
+    return ex.message;
   }
   return "알 수 없는 오류가 발생했습니다.";
 }

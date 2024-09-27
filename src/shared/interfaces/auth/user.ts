@@ -7,5 +7,4 @@ export interface User {
   csUserId: string;
   orgName: string;
   name: string;
-  email: string;
 }

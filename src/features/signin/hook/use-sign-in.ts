@@ -1,36 +1,34 @@
-import { flattenZodError } from '@/shared/utils/error'
-import { useMutation } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
-import { z } from "zod"
-import { signInAuth } from '../api/sign-in-auth'
-import { SignInAuthDto } from '../dto'
+import { useAccount } from '@/features/common/hooks'
+import { AccountArgs } from '@/features/common/types'
 import { setToken } from '@/shared/utils/cookies/token'
+import { useMutation } from '@tanstack/react-query'
+import { signInAuth } from '../api/sign-in-auth'
+interface UseSignInProps {
+  onSuccess: () => void;
+}
 
-const signInSchema = z.object({
-  email: z.string().email({ message: "이메일을 확인해주세요." }),
-  password: z.string().min(1, { message: "비밀번호를 입력해주세요." }),
-})
-
-export const useSignIn = () => {
-  const { data, mutate, error, isPending, isSuccess } = useMutation({
+export const useSignIn = ({ onSuccess }: UseSignInProps) => {
+  const { verify, validateError, error, isPending } = useAccount();
+  const { mutateAsync: signInMutate, error: signInError, isPending: isSignInPending } = useMutation({
     mutationFn: signInAuth,
   })
-  const [validateError, setValidateError] = useState<SignInAuthDto>();
 
-  function signIn(dto: SignInAuthDto) {
-    const result = signInSchema.safeParse(dto);
-    if (result.error) {
-      const error = flattenZodError<SignInAuthDto>(result.error);
-      return setValidateError(error);
+  async function signIn(dto: AccountArgs) {
+    const { eClickUser, roomKey } = (await verify(dto)) || {};
+
+    if (eClickUser) {
+      const { accessToken } = await signInMutate({
+        hsUserId: dto.hsUserId, csUserId: dto.csUserId, roomKey: roomKey!,
+      });
+      setToken(accessToken);
+      onSuccess();
     }
-
-    mutate(dto);
   }
 
-  useEffect(() => {
-    if (data) {
-      setToken(data.accessToken);
-    }
-  }, [isSuccess])
-  return { validateError, error, isPending, isSuccess, signIn }
-}
+  return {
+    validateError,
+    error: error || signInError,
+    isPending: isPending || isSignInPending,
+    signIn
+  }
+} 
