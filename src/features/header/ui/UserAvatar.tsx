@@ -14,7 +14,6 @@ export function UserAvatar({}: UserAvatarProps) {
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger>
           <img
-            // onClick={() => setOpen(true)}
             className={cn(
               "m-1 h-11 w-11 rounded",
               "hover:cursor-pointer",
