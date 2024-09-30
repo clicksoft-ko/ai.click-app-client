@@ -4,6 +4,7 @@ import { axiosAuth } from "../axios/axios-ins";
 
 interface GeoRange {
   distance: number;
+  allowedDistance: number;
   message: string;  
 }
 
