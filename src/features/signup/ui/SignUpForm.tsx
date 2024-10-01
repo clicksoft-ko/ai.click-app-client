@@ -1,13 +1,14 @@
+import { paths } from "@/shared/paths";
+import { parseErrorMessage } from "@/shared/utils/error";
 import { handleKeyDownToNext } from "@/shared/utils/input";
+import { ErrorBox } from "@/widgets/errors/error-box";
 import { Button } from "@/widgets/ui/button";
 import { Input } from "@/widgets/ui/input";
 import { useRef, useState } from "react";
 import { FaLock, FaUser } from "react-icons/fa";
-import { paths } from "@/shared/paths";
-import { parseErrorMessage } from "@/shared/utils/error";
-import { ErrorBox } from "@/widgets/errors/error-box";
 import { useNavigate } from "react-router-dom";
 import { useSignUp } from "../hooks";
+import { AgreementCheckBox } from "./AgreementCheckBox";
 
 export const SignUpForm = () => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ export const SignUpForm = () => {
   const [hsUserId, setHsUserId] = useState("");
   const [csUserId, setCsUserId] = useState("");
   const [password, setPassword] = useState("");
+  const [agreement, setAgreement] = useState(false);
   const { signUp, isPending, error, validateError } = useSignUp({
     onSuccess: () => {
       navigate(paths.signIn);
@@ -31,7 +33,7 @@ export const SignUpForm = () => {
     <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
       <Input
         placeholder="병원 아이디"
-        value={hsUserId}        
+        value={hsUserId}
         onChange={(e) => setHsUserId(e.target.value)}
         onKeyDown={handleKeyDownToNext.bind(null, csUserIdRef)}
         errorMessage={validateError?.hsUserId}
@@ -55,8 +57,9 @@ export const SignUpForm = () => {
         errorMessage={validateError?.password}
         startComponent={<FaLock className="ml-4 text-primary" />}
       />
+      <AgreementCheckBox checked={agreement} setChecked={setAgreement} />
       <ErrorBox errorMessage={parseErrorMessage(error)} />
-      <Button disabled={isPending}>회원가입</Button>
+      <Button disabled={isPending || !agreement}>회원가입</Button>
     </form>
   );
 };

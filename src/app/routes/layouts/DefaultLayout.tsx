@@ -6,7 +6,7 @@ import { Outlet } from "react-router-dom";
 
 export const DefaultLayout = () => {
   useDvh();
-
+ 
   return (
     <SocketIOProvider uri={envUtil.SOCKET_URL} use={true}>
       <div className={cn("w-full")}>
