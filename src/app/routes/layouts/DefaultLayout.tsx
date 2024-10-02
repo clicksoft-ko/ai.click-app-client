@@ -25,8 +25,7 @@ export const DefaultLayout = () => {
     };
   }, []);
 
-  if (!isVisible)
-    return <div>화면이 비활성화되어 스크린샷 시도일 수 있습니다.</div>;
+  if (!isVisible) return <div>화면이 비활성화되어 스크린샷 시도일 수 있습니다.</div>;
 
   return (
     <SocketIOProvider uri={envUtil.SOCKET_URL} use={true}>

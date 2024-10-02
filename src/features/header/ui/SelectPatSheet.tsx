@@ -16,6 +16,7 @@ import { PatBox } from "./PatBox";
 import { InfiniteBodyWrapper } from "@/features/root/ui";
 import { useQueryClient } from "@tanstack/react-query";
 import { PathTypeKey } from "@/shared/hooks/types";
+import { scrollClearCarousels } from "@/features/root/lib";
 
 interface Props extends OpenProps {}
 
@@ -42,6 +43,7 @@ export const SelectPatSheet = ({ open, setOpen }: Props) => {
   }, [open]);
 
   function handleSelectPatient(patient: Patient): void {
+    scrollClearCarousels();
     setPatientInfo(patient);
     setOpen(false);
   }
@@ -56,7 +58,9 @@ export const SelectPatSheet = ({ open, setOpen }: Props) => {
             weib={weib}
             onChange={setSearchString}
             onWeibChagne={(weib) => {
-              queryClient.removeQueries({ queryKey: ["getPatients" as PathTypeKey] });
+              queryClient.removeQueries({
+                queryKey: ["getPatients" as PathTypeKey],
+              });
               setWeib(weib);
             }}
           />

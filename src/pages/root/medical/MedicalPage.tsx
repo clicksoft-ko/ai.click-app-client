@@ -1,4 +1,5 @@
 import { MedicalTab } from "@/features/root/enums";
+import { ConsultationBody } from "@/features/root/medical/consultation/ui";
 import { FirstChartBody } from "@/features/root/medical/first-chart/ui";
 import LabBody from "@/features/root/medical/lab/ui/LabBody";
 import { PrescriptionBody } from "@/features/root/medical/prescription/ui";
@@ -14,6 +15,7 @@ export const MedicalPage = () => {
       [MedicalTab.초진, <FirstChartBody />],
       [MedicalTab.경과, <ProgressNoteBody />],
       [MedicalTab.검사, <LabBody />],
+      [MedicalTab.협진, <ConsultationBody />],
     ],
     [],
   );

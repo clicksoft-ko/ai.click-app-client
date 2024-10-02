@@ -1,11 +1,11 @@
 import { PathTypeKey } from "@/shared/hooks/types";
 import { TabType } from "@/shared/stores";
+import { cn } from "@/shared/utils";
 import { Button, DateRangePicker, Input } from "@/widgets/ui";
 import { CustomRadio, RadioGroup } from "@/widgets/ui/radio";
 import { useQueryClient } from "@tanstack/react-query";
 import { MedicalTab, WardTab } from "../enums";
 import { useSearchTab } from "../hooks";
-import { cn } from "@/shared/utils";
 import { scrollClearCarousels } from "../lib";
 
 const queryObj: {
@@ -15,6 +15,7 @@ const queryObj: {
   [MedicalTab.초진]: "getFirstCharts",
   [MedicalTab.경과]: "getProgressNotes",
   [MedicalTab.검사]: "getLabs",
+  [MedicalTab.협진]: "getConsultations",
 
   [WardTab.간호]: "getNursingRecords",
   [WardTab.Vital]: "getVitalSigns",
