@@ -18,20 +18,19 @@ export const SiginInForm = () => {
   const [password, setPassword] = useState("");
   const [open, setOpen] = useState(false);
   const { error, isPending, validateError, signIn } = useSignIn({
-    onSuccess: () => setOpen(true),
+    onSuccess: () => navigate(paths.medical, { replace: true }),
   });
+  const csUserIdRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
-  async function handleSubmit(
-    e: React.FormEvent<HTMLFormElement>,
-  ): Promise<void> {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    await signIn({ hsUserId, csUserId, password });
+    setOpen(true);
   }
 
-  function handleAgreement(agreement: boolean): void {
+  async function handleAgreement(agreement: boolean) {
     if (agreement) {
-      navigate(paths.medical, { replace: true });
+      await signIn({ hsUserId, csUserId, password });
     }
   }
 
@@ -41,10 +40,11 @@ export const SiginInForm = () => {
         placeholder="병원 아이디"
         errorMessage={validateError?.hsUserId}
         onChange={(e) => setHsUserId(e.target.value)}
-        onKeyDown={handleKeyDownToNext.bind(null, passwordRef)}
+        onKeyDown={handleKeyDownToNext.bind(null, csUserIdRef)}
         startComponent={<FaUser className="ml-4 text-primary" />}
       />
       <Input
+        ref={csUserIdRef}
         placeholder="eClick 아이디"
         errorMessage={validateError?.csUserId}
         onChange={(e) => setCsUserId(e.target.value)}
@@ -60,7 +60,7 @@ export const SiginInForm = () => {
         startComponent={<FaLock className="ml-4 text-primary" />}
       />
       <ErrorBox errorMessage={parseErrorMessage(error)} />
-      <Button disabled={isPending}>로그인</Button>
+      <Button disabled={isPending || !hsUserId || !csUserId || !password}>로그인</Button>
       <AgreementDialog
         open={open}
         onOpenChange={setOpen}
