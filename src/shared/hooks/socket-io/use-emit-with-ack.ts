@@ -16,7 +16,7 @@ export function useEmitWithAck<TPath extends PathTypeKey>(path: TPath, args?: Ar
   type DtoType = ExtractDto<PathTypeMap[TPath]>;
   type ResultType = ExtractResult<PathTypeMap[TPath]>;
 
-  const { socket, isConnected } = useSocketIO();
+  const { socket, isConnected } = useSocketIO();  
   const { user } = useAuth();
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<SocketErrorResponse>();
@@ -34,7 +34,7 @@ export function useEmitWithAck<TPath extends PathTypeKey>(path: TPath, args?: Ar
     try {
       const { key, ...dtoWithoutKey } = dto;
       const response: SocketResponse<any> = await socket?.emitWithAck(path as string, {
-        key: args?.key ?? user?.roomKey ?? key,
+        key: args?.key ?? user?.roomKey ?? key,        
         userId: user?.csUserId,
         ...dtoWithoutKey,
       });

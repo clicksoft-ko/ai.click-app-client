@@ -1,11 +1,12 @@
 import { ContentInfo } from "./content-info";
+import { Weib } from "./get-patients.dto";
 
 export interface GetFirstChartsDto {
   chartNo: string;
   startYmd: string;
   endYmd: string;
 
-  // searchString: string;
+  weib: Weib;
   page: number;
   count: number;
 }

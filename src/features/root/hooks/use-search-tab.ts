@@ -1,19 +1,19 @@
-import { useMedicalStore } from '@/shared/stores';
+import { useSearchStore } from '@/shared/stores';
 import { useMemo } from 'react';
 import { MedicalTab, WardTab } from '../enums';
 
 const useSearchTab = () => {
-  const tab = useMedicalStore((state) => state.tab);
-  const isPending = useMedicalStore((state) => state.isPending);
-  const searchString = useMedicalStore((state) => state.searchString);
-  const setSearchString = useMedicalStore((state) => state.setSearchString);
-  const setTab = useMedicalStore((state) => state.setTab);
-  const setDateRange = useMedicalStore((state) => state.setDateRange);
-  const dateRange = useMedicalStore((state) => state.dateRange);
+  const tab = useSearchStore((state) => state.tab);
+  const isPending = useSearchStore((state) => state.isPending);
+  const searchString = useSearchStore((state) => state.searchString);
+  const setSearchString = useSearchStore((state) => state.setSearchString);
+  const setTab = useSearchStore((state) => state.setTab);
+  const setDateRange = useSearchStore((state) => state.setDateRange);
+  const dateRange = useSearchStore((state) => state.dateRange);
   const showKeywords = useMemo(() => {
     return tab === MedicalTab.경과 || tab === WardTab.간호;
   }, [tab]);
-  
+
   return {
     tab,
     isPending,
@@ -22,7 +22,7 @@ const useSearchTab = () => {
     setTab,
     setDateRange,
     dateRange,
-    showKeywords,
+    showKeywords, 
   }
 }
 

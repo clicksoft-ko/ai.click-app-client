@@ -1,14 +1,15 @@
 import { useInfiniteEmit } from "@/shared/hooks/socket-io";
 import { usePatientStore } from "@/shared/stores";
-import { useMedicalStore } from "@/shared/stores/search.store";
+import { useSearchStore } from "@/shared/stores/search.store";
 import { MedicalTab } from "../../../enums";
 
 export const usePrescription = () => {
-  const dateRange = useMedicalStore((state) => state.dateRange);
-  const tab = useMedicalStore((state) => state.tab);
+  const dateRange = useSearchStore((state) => state.dateRange);
+  const weib = useSearchStore((state) => state.weib);
+  const tab = useSearchStore((state) => state.tab);
   const { patient } = usePatientStore();
   const enabled = tab === MedicalTab.처방 && !!patient;
-  
+
   const result = useInfiniteEmit({
     path: "getPrescriptions",
     dtoFn({ page, count }) {
@@ -18,9 +19,10 @@ export const usePrescription = () => {
         chartNo: patient!.chartNo,
         startYmd: dateRange.startYmd,
         endYmd: dateRange.endYmd,
+        weib,
       };
     },
-    queryKey: [patient?.chartNo],
+    queryKey: [patient?.chartNo, weib],
     enabled,
   });
 

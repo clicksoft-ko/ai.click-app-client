@@ -1,7 +1,7 @@
 import { Patient, Weib } from "@/shared/dto/socket-io";
 import { useScrollHandler } from "@/shared/hooks";
 import { OpenProps } from "@/shared/interfaces/props";
-import { usePatientStore } from "@/shared/stores";
+import { usePatientStore, useSearchStore } from "@/shared/stores";
 import {
   Sheet,
   SheetContent,
@@ -25,6 +25,7 @@ export const SelectPatSheet = ({ open, setOpen }: Props) => {
   const { setPatientInfo } = usePatientStore();
   const [weib, setWeib] = useState(Weib.입원);
   const [searchString, setSearchString] = useState("");
+  const setGlobalWeib = useSearchStore((state) => state.setWeib);
   const { targetRef, scrollToTop } = useScrollHandler<HTMLDivElement>();
   const { data, refetch, ...result } = useInfiniteSelectPat({
     enabled: open,
@@ -45,6 +46,7 @@ export const SelectPatSheet = ({ open, setOpen }: Props) => {
   function handleSelectPatient(patient: Patient): void {
     scrollClearCarousels();
     setPatientInfo(patient);
+    setGlobalWeib(weib === Weib.입원 ? Weib.입원 : Weib.외래);
     setOpen(false);
   }
 

@@ -1,12 +1,12 @@
 import { useInfiniteEmit } from "@/shared/hooks/socket-io";
 import { usePatientStore } from "@/shared/stores";
-import { useMedicalStore } from "@/shared/stores/search.store";
+import { useSearchStore } from "@/shared/stores/search.store";
 import { MedicalTab } from "../../../enums";
 
 export const useProgressNote = () => {
-  const dateRange = useMedicalStore((state) => state.dateRange);
-  const tab = useMedicalStore((state) => state.tab);
-  const searchString = useMedicalStore(state => state.searchString)
+  const dateRange = useSearchStore((state) => state.dateRange);
+  const tab = useSearchStore((state) => state.tab);
+  const searchString = useSearchStore(state => state.searchString)
   const { patient } = usePatientStore();
   const enabled = tab === MedicalTab.경과 && !!patient;
 

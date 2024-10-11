@@ -1,4 +1,5 @@
 import { ContentInfo } from "./content-info";
+import { Weib } from "./get-patients.dto";
 
 export interface GetLabsDto {
   chartNo: string;
@@ -7,6 +8,7 @@ export interface GetLabsDto {
   page: number;
   count: number;
   searchString: string;
+  weib: Weib;
 }
 
 export type GetLabsResultDto = Lab[];

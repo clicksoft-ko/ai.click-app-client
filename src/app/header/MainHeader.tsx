@@ -1,10 +1,14 @@
-import { SelectPatButton, UserAvatar } from "@/features/header/ui";
+import {
+  SelectPatButton,
+  UserAvatar,
+  WeIbRadioGroup,
+} from "@/features/header/ui";
 import { imgPaths } from "@/shared/paths";
 import { cn } from "@/shared/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/widgets/ui";
+import { useState } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { Links } from "./Links";
-import { useState } from "react";
 
 export const MainHeader = () => {
   return (
@@ -23,7 +27,8 @@ export const MainHeader = () => {
         </div>
         <HamMenu />
       </nav>
-      <div className="flex">
+      <div className="flex gap-1">
+        <WeIbRadioGroup />
         <SelectPatButton />
         <UserAvatar />
       </div>

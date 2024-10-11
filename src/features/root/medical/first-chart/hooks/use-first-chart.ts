@@ -1,12 +1,13 @@
 import { useInfiniteEmit } from "@/shared/hooks/socket-io";
 import { usePatientStore } from "@/shared/stores";
-import { useMedicalStore } from "@/shared/stores/search.store";
+import { useSearchStore } from "@/shared/stores/search.store";
 import { MedicalTab } from "../../../enums";
 
 export const useFirstChart = () => {
-  const dateRange = useMedicalStore((state) => state.dateRange);
-  const tabs = useMedicalStore((state) => state.tab);
+  const dateRange = useSearchStore((state) => state.dateRange);
+  const tabs = useSearchStore((state) => state.tab);
   const { patient } = usePatientStore();
+  const weib = useSearchStore((state) => state.weib);
 
   return useInfiniteEmit({
     path: "getFirstCharts",
@@ -17,9 +18,10 @@ export const useFirstChart = () => {
         chartNo: patient!.chartNo,
         startYmd: dateRange.startYmd,
         endYmd: dateRange.endYmd,
+        weib,
       };
     },
-    queryKey: [patient?.chartNo],
+    queryKey: [patient?.chartNo, weib],
     enabled: tabs === MedicalTab.초진 && !!patient,
   });
 }

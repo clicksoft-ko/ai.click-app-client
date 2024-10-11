@@ -1,8 +1,8 @@
-import { useMedicalStore } from "@/shared/stores";
+import { useSearchStore } from "@/shared/stores";
 import { WardTab } from "../enums";
 
 export const useTabStates = () => {
-  const tabType = useMedicalStore((state) => state.tab);
+  const tabType = useSearchStore((state) => state.tab);
   const isInnerScrollable = tabType === WardTab.IO;
 
   return {

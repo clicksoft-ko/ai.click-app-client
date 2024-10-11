@@ -4,7 +4,9 @@ import { cn } from "@/shared/utils";
 import { removeToken } from "@/shared/utils/cookies";
 import { Button, Popover, PopoverContent, PopoverTrigger } from "@/widgets/ui";
 import { useState } from "react";
+
 interface UserAvatarProps {}
+
 export function UserAvatar({}: UserAvatarProps) {
   const [open, setOpen] = useState(false);
   const { user } = useAuth();
@@ -14,10 +16,7 @@ export function UserAvatar({}: UserAvatarProps) {
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger>
           <img
-            className={cn(
-              "m-1 h-11 w-11 rounded",
-              "hover:cursor-pointer",
-            )}
+            className={cn("mr-1 h-11 w-11 rounded", "hover:cursor-pointer")}
             src={imgPaths.logo.small}
             alt="user"
           />

@@ -1,7 +1,7 @@
 import { useInViewEx } from "@/shared/hooks";
 import { useEmitWithAck, useSocketIO } from "@/shared/hooks/socket-io";
 import { ExtractDto, PathTypeKey, PathTypeMap } from "@/shared/hooks/types";
-import { useMedicalStore } from "@/shared/stores/search.store";
+import { useSearchStore } from "@/shared/stores/search.store";
 import {
   InfiniteData,
   useInfiniteQuery,
@@ -32,7 +32,7 @@ export function useInfiniteEmit<TPath extends PathTypeKey>({
 }: UseInifiniteCommonArgs<TPath>) {
   const { isConnected } = useSocketIO();
   const queryClient = useQueryClient();
-  const setIsPending = useMedicalStore((state) => state.setIsPending);
+  const setIsPending = useSearchStore((state) => state.setIsPending);
   const { emit, error, isPending } = useEmitWithAck(path);
 
   const { data, fetchNextPage, refetch } = useInfiniteQuery({

@@ -1,6 +1,6 @@
 import { useElementRect } from "@/shared/hooks";
 import { ChildrenProps } from "@/shared/interfaces/props";
-import { TabType, useMedicalStore } from "@/shared/stores";
+import { TabType, useSearchStore } from "@/shared/stores";
 import { cn } from "@/shared/utils";
 import { JSX, useEffect, useRef, useState } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -14,8 +14,8 @@ interface Props {
 }
 
 export const CarouselWrapper = ({ slides, defaultTab }: Props) => {
-  const tab = useMedicalStore((state) => state.tab);
-  const setTab = useMedicalStore((state) => state.setTab);
+  const tab = useSearchStore((state) => state.tab);
+  const setTab = useSearchStore((state) => state.setTab);
   const [rect, ref] = useElementRect<HTMLDivElement>();
   const [canSwipe, setCanSwipe] = useState(false);
   const carouselRef = useRef<Carousel>(null);
