@@ -36,10 +36,10 @@ export const AccountWrapper = ({ header, children }: AccountWrapperProps) => {
 
 const signInObj = { [paths.signIn]: "로그인" };
 const signUpObj = { [paths.signUp]: "회원가입" };
-const findPwObj = { [paths.findPw]: "비밀번호 찾기" };
+// const findPwObj = { [paths.findPw]: "비밀번호 찾기" };
 const links = {
-  [paths.signIn]: [signUpObj, findPwObj],
-  [paths.signUp]: [signInObj, findPwObj],
+  [paths.signIn]: [signUpObj], // , findPwObj
+  [paths.signUp]: [signInObj], // , findPwObj
   [paths.findPw]: [signInObj, signUpObj],
   [paths.error]: [],
 };
