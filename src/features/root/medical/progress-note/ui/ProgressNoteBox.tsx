@@ -1,15 +1,16 @@
+import { useSearchString } from "@/features/root/hooks";
 import { ProgressNote } from "@/shared/dto/socket-io";
 import { HighlighterX } from "@/widgets/highlighter-x";
 import { SearchDataBox } from "@/widgets/search-data";
 
 interface Props {
   progressNote: ProgressNote;
-  searchString?: string;
 }
 
-export const ProgressNoteBox = ({ progressNote, searchString }: Props) => {
+export const ProgressNoteBox = ({ progressNote }: Props) => {
   const { writer, writeDateFullText, detail, doctorName, typeName } =
     progressNote;
+  const { searchString } = useSearchString();
 
   return (
     <SearchDataBox
