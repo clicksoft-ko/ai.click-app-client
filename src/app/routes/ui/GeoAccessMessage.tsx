@@ -1,5 +1,4 @@
-import { paths } from "@/shared/paths";
-import { removeToken } from "@/shared/utils/cookies";
+import { signOut } from "@/shared/utils/auth";
 import { Button } from "@/widgets/ui";
 
 interface GeoAccessMessageProps {
@@ -31,13 +30,7 @@ export const GeoAccessMessage = ({
           </Button>
         )}
         {showSignout && (
-          <Button
-            variant="destructive"
-            onClick={() => {
-              removeToken();
-              window.location.href = paths.signIn;
-            }}
-          >
+          <Button variant="destructive" onClick={signOut}>
             로그아웃
           </Button>
         )}

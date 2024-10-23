@@ -1,7 +1,7 @@
 import { useAuth } from "@/shared/hooks/auth";
-import { imgPaths, paths } from "@/shared/paths";
+import { imgPaths } from "@/shared/paths";
 import { cn } from "@/shared/utils";
-import { removeToken } from "@/shared/utils/cookies";
+import { signOut } from "@/shared/utils/auth";
 import { Button, Popover, PopoverContent, PopoverTrigger } from "@/widgets/ui";
 import { useState } from "react";
 
@@ -30,13 +30,7 @@ export function UserAvatar({}: UserAvatarProps) {
               </p>
             </div>
             <div className="grid gap-2">
-              <Button
-                onClick={() => {
-                  removeToken();
-                  window.location.href = paths.signIn;
-                }}
-                variant={"destructive"}
-              >
+              <Button onClick={signOut} variant={"destructive"}>
                 로그아웃
               </Button>
             </div>
