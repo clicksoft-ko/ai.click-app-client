@@ -26,6 +26,7 @@ export const ProtectGeoLocation = ({ element }: { element: JSX.Element }) => {
       <GeoAccessMessage
         message="위치 엑세스를 허용으로 설정해주세요."
         description="엑세스 권한을 주고 다시 시도해주세요."
+        showSignout={true}
       />
     );
   if (isPending)
@@ -42,6 +43,7 @@ export const ProtectGeoLocation = ({ element }: { element: JSX.Element }) => {
       <GeoAccessMessage
         message="에러가 발생했습니다."
         description={parseErrorMessage(error)}
+        showSignout={true}
       />
     );
   if (data?.message)
@@ -49,6 +51,7 @@ export const ProtectGeoLocation = ({ element }: { element: JSX.Element }) => {
       <GeoAccessMessage
         message={data.message}
         description="확인 후 다시 시도해주세요."
+        showSignout={true}
       />
     );
 
