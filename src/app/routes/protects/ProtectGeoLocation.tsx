@@ -1,14 +1,16 @@
 import { fetchGeoRange } from "@/shared/api/auth";
 import { useGeoLocation } from "@/shared/hooks";
 import { useAuth } from "@/shared/hooks/auth";
-import { apiPaths } from "@/shared/paths";
+import { apiPaths, paths } from "@/shared/paths";
 import { parseErrorMessage } from "@/shared/utils/error";
 import { useQuery } from "@tanstack/react-query";
 import { JSX } from "react";
 import { GeoAccessMessage } from "../ui";
+import { useLocation } from "react-router-dom";
 
 export const ProtectGeoLocation = ({ element }: { element: JSX.Element }) => {
   const { user, isAuthenticated } = useAuth();
+  const { pathname } = useLocation();
   const { location, isLoading, isGeoAccess } = useGeoLocation({
     use: isAuthenticated,
   });
@@ -21,6 +23,8 @@ export const ProtectGeoLocation = ({ element }: { element: JSX.Element }) => {
     enabled: isAuthenticated && !isLoading && !!location && isGeoAccess,
   });
 
+  if (pathname === paths.test) return element;
+  
   if (!isLoading && !isGeoAccess)
     return (
       <GeoAccessMessage

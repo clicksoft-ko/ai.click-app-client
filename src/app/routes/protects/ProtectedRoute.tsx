@@ -6,6 +6,7 @@ import { Navigate, useLocation } from "react-router-dom";
 export const ProtectedRoute = ({ element }: { element: JSX.Element }) => {
   const { pathname } = useLocation();
   const { isAuthenticated, isLoading } = useAuth();
+  if (pathname === paths.test) return element;
   if (isLoading) return <></>;
   if (!isAuthenticated) return <Navigate to={paths.signIn} />;
   return pathname === paths.root ? <Navigate to={paths.medical} /> : element;

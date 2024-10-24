@@ -11,3 +11,4 @@ export * from './calendar';
 export * from './popover';
 export * from './date-range-picker';
 export * from './badge';
+export * from './scroll-area';
