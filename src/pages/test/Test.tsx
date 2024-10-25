@@ -63,16 +63,7 @@ interface CustomDialogProps extends ChildrenClassNameProps {
   children: React.ReactNode;
 }
 
-const CustomDialog = ({
-  open,
-  onOpenChange,
-  dialogTrigger,
-  title,
-  description,
-  footer,
-  className,
-  children,
-}: CustomDialogProps) => {
+const CustomDialog = ({ open, children }: CustomDialogProps) => {
   return ReactDOM.createPortal(
     <div
       className={cn(

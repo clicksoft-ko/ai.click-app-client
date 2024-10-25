@@ -22,7 +22,7 @@ export function DatePicker() {
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? format(date, "yyyy-MM-dd") : <span>날짜 선택</span>}
+          {date ? format(date, "yyyy년 dd일") : <span>날짜 선택</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
@@ -32,6 +32,11 @@ export function DatePicker() {
           onSelect={setDate}
           locale={ko}
           initialFocus
+          formatters={{
+            formatCaption: (date, options) => {
+              return format(date, "yyyy년 M월", { locale: ko });
+            }
+          }}
         />
       </PopoverContent>
     </Popover>
