@@ -13,3 +13,4 @@ export * from './get-io-sheet.dto';
 export * from './get-insulins';
 export * from './get-labs';
 export * from './get-consultations.dto';
+export * from './get-vss-of-day.dto';

@@ -1,6 +1,6 @@
 import { Column } from "@tanstack/react-table";
 import { CSSProperties } from "react";
-import { Vs } from "../vs";
+import { Vs } from "@/shared/dto/socket-io";
 
 export const getCommonPinningStyles = (column: Column<Vs>): CSSProperties => {
   const isPinned = column.getIsPinned();

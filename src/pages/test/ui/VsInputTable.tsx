@@ -1,22 +1,26 @@
+import { Vs } from "@/shared/dto/socket-io";
 import { useVsInputStore } from "@/shared/stores";
 import { flexRender } from "@tanstack/react-table";
 import { useEffect } from "react";
+import { viewMenus } from "../consts/view-menus";
 import { useColumns } from "../hooks/use-columns";
 import { useTable } from "../hooks/use-table";
-import { viewMenus } from "../consts/view-menus";
-import { Vs, vss as originalVss } from "../vs";
 import { getCommonPinningStyles } from "../utils/get-common-pinning-styles";
-import { VsInputTableRow } from "./VsInputTableRow";
 import styles from "./VsInputTable.module.css";
+import { VsInputTableRow } from "./VsInputTableRow";
 
-export const VsInputTable = () => {
+interface VsInputTableProps {
+  originalVss: Vs[] | undefined;
+}
+
+export const VsInputTable = ({ originalVss }: VsInputTableProps) => {
   const vss = useVsInputStore((state) => state.vss);
   const setVss = useVsInputStore((state) => state.setVss);
   const { columns } = useColumns({ viewMenus });
-  const { table } = useTable({ vss, columns });
+  const { table } = useTable({ vss: vss ?? [], columns });
 
   useEffect(() => {
-    setVss([new Vs(), ...originalVss]);
+    setVss([new Vs(), ...(originalVss ?? [])]);
   }, [originalVss]);
 
   return (
@@ -43,6 +47,10 @@ export const VsInputTable = () => {
                     table.getState().columnPinning.left?.includes("time")
                   ) {
                     column.pin("left");
+                  }
+
+                  if (column.id === "[Delete]" && !column.getIsPinned()) {
+                    column.pin("right");
                   }
 
                   return (

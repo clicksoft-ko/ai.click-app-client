@@ -6,7 +6,7 @@ import { Column, Row } from "@tanstack/react-table";
 import dayjs from "dayjs";
 import { useEffect, useRef, useState } from "react";
 import { viewMenus } from "../consts/view-menus";
-import { Vs } from "../vs";
+import { Vs } from "@/shared/dto/socket-io";
 import { Keyboard } from "./Keyboard";
 import { TimeKeyboard } from "./TimeKeyboard";
 import { VsKeyboardWrapper } from "./VsKeyboardWrapper";

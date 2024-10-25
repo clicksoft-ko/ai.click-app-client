@@ -1,6 +1,6 @@
 import { cn } from "@/shared/utils";
 import { vsMenuName } from "../consts/vs-menu-name";
-import { Vs } from "../vs";
+import { Vs } from "@/shared/dto/socket-io";
 
 export const VsKeyboardHeader = ({
   vs,

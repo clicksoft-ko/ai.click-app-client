@@ -1,4 +1,4 @@
-import { Vs } from "../vs";
+import { Vs } from "@/shared/dto/socket-io";
 
 export const columnSettings: Partial<Record<keyof Vs, { size: number }>> = {
   hulap1: { size: 90 },

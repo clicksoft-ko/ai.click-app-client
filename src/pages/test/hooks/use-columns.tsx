@@ -2,7 +2,7 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { useMemo } from "react";
 import { columnSettings } from "../consts/column-settings";
 import { vsMenuName } from "../consts/vs-menu-name";
-import { Vs } from "../vs";
+import { Vs } from "@/shared/dto/socket-io";
 
 const columnHelper = createColumnHelper<Vs>();
 
@@ -17,6 +17,7 @@ export const useColumns = ({ viewMenus }: UseColumnsProps) => {
       header: string;
       size?: number;
     }> = [
+      { accessor: "[Delete]" as any, header: "", size: 40 },
       { accessor: "time", header: "시간", size: 80 },
       { accessor: "nurse", header: "담당간호사", size: 90 },
       ...viewMenus.map((menu) => ({

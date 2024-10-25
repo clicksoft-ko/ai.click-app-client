@@ -1,4 +1,4 @@
-import { GetConsultationsDto, GetConsultationsResultDto, GetFirstChartsDto, GetFirstChartsResultDto, GetInsulinsDto, GetInsulinsResultDto, GetIOSheetsDto, GetIOSheetsResultDto, GetLabsDto, GetLabsResultDto, GetNursingRecordsDto, GetNursingRecordsResultDto, GetPrescriptionsDto, GetPrescriptionsResultDto, GetProgressNotesDto, GetProgressNotesResultDto, GetVitalSignsDto, GetVitalSignsResultDto, WinAccountVerificationDto, WinAccountVerificationResultDto } from "@/shared/dto/socket-io";
+import { GetConsultationsDto, GetConsultationsResultDto, GetFirstChartsDto, GetFirstChartsResultDto, GetInsulinsDto, GetInsulinsResultDto, GetIOSheetsDto, GetIOSheetsResultDto, GetLabsDto, GetLabsResultDto, GetNursingRecordsDto, GetNursingRecordsResultDto, GetPrescriptionsDto, GetPrescriptionsResultDto, GetProgressNotesDto, GetProgressNotesResultDto, GetVitalSignsDto, GetVitalSignsResultDto, GetVssOfDayDto, GetVssOfDayResultDto, WinAccountVerificationDto, WinAccountVerificationResultDto } from "@/shared/dto/socket-io";
 import { GetPatientsDto, GetPatientsResultDto } from "@/shared/dto/socket-io/get-patients.dto";
 
 export interface PathTypeMap {
@@ -25,6 +25,10 @@ export interface PathTypeMap {
   getNursingRecords: {
     dto: GetNursingRecordsDto;
     result: GetNursingRecordsResultDto;
+  }
+  getVssOfDay: {
+    dto: GetVssOfDayDto;
+    result: GetVssOfDayResultDto;
   }
   getVitalSigns: {
     dto: GetVitalSignsDto;

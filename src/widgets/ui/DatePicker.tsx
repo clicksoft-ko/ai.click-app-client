@@ -8,16 +8,26 @@ import { Calendar } from "@/widgets/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/widgets/ui/popover";
 import { ko } from "date-fns/locale";
 
-export function DatePicker() {
-  const [date, setDate] = React.useState<Date>();
+interface DatePickerProps {
+  value: Date;
+  onChange?: (date: Date) => void;
+}
+
+export function DatePicker({ value, onChange }: DatePickerProps) {
+  const [date, setDate] = React.useState<Date>(value);
+  const [open, setOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    setDate(value);
+  }, [value]);
 
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
           variant={"outline"}
           className={cn(
-            "w-40 justify-start text-left font-normal",
+            "justify-start text-left font-normal",
             !date && "text-muted-foreground",
           )}
         >
@@ -29,14 +39,20 @@ export function DatePicker() {
         <Calendar
           mode="single"
           selected={date}
-          onSelect={setDate}
+          defaultMonth={date}
+          onSelect={(date) => {
+            setDate(date ?? new Date());
+            setOpen(false);
+            onChange?.(date ?? new Date());
+          }}
           locale={ko}
           initialFocus
           formatters={{
             formatCaption: (date) => {
               return format(date, "yyyy년 M월", { locale: ko });
-            }
+            },
           }}
+          today={new Date()}
         />
       </PopoverContent>
     </Popover>

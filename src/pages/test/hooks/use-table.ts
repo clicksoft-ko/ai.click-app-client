@@ -1,6 +1,5 @@
+import { Vs } from "@/shared/dto/socket-io";
 import { AccessorKeyColumnDef, getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { Vs } from "../vs";
-
 interface UseTableProps {
   vss: Vs[];
   columns: AccessorKeyColumnDef<Vs, string | number>[];
