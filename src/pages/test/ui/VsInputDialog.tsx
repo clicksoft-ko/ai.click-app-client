@@ -13,8 +13,8 @@ interface VsInputDialogProps {
 export const VsInputDialog = ({ open, setOpen }: VsInputDialogProps) => {
   const {
     emit: getVssOfDayEmit,
-    isPending: isGetVssOfDayPending,
-    error: getVssOfDayError,
+    // isPending: isGetVssOfDayPending,
+    // error: getVssOfDayError,
     data,
   } = useEmitWithAck("getVssOfDay", {});
   const [date, setDate] = useState<Date>(new Date());

@@ -50,7 +50,7 @@ export const VsInputTable = ({ originalVss }: VsInputTableProps) => {
                   }
 
                   if (column.id === "[Delete]" && !column.getIsPinned()) {
-                    column.pin("right");
+                    column.pin("left");
                   }
 
                   return (

@@ -8,7 +8,6 @@ import { useVsInputStore } from "@/shared/stores";
 
 export const VsInputTableRow = ({ row }: { row: Row<Vs> }) => {
   const [focused, setFocused] = useState(false);
-  const resetVsByRow = useVsInputStore((state) => state.resetVsByRow);
 
   return (
     <tr key={row.id}>
@@ -38,7 +37,7 @@ export const VsInputTableRow = ({ row }: { row: Row<Vs> }) => {
 const DeleteButton = ({ row }: { row: Row<Vs> }) => {
   const resetVsByRow = useVsInputStore((state) => state.resetVsByRow);
   const removeVsByRow = useVsInputStore((state) => state.removeVsByRow);
-  
+
   return (
     <div
       className="flex h-full w-full cursor-pointer items-center justify-center text-red-400 hover:text-red-600"
