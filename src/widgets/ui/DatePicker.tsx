@@ -33,7 +33,7 @@ export function DatePicker() {
           locale={ko}
           initialFocus
           formatters={{
-            formatCaption: (date, options) => {
+            formatCaption: (date) => {
               return format(date, "yyyy년 M월", { locale: ko });
             }
           }}

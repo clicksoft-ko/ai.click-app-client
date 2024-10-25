@@ -1,4 +1,4 @@
-import { AccessorKeyColumnDef, ColumnDef, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import { AccessorKeyColumnDef, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { Vs } from "../vs";
 
 interface UseTableProps {
