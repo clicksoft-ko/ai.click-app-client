@@ -1,5 +1,6 @@
 import { ChildrenProps } from "@/shared/interfaces/props";
 import { cn } from "@/shared/utils";
+import ReactDOM from "react-dom";
 
 interface VsKeyboardProps extends ChildrenProps {
   showKeyboard: boolean;
@@ -11,15 +12,16 @@ export const VsKeyboardWrapper = ({
   showKeyboard,
   children,
 }: VsKeyboardProps) => {
-  return (
+  return ReactDOM.createPortal(
     <div
       ref={ref}
       className={cn(
-        "fixed bottom-0 left-0 hidden w-screen",
+        "fixed bottom-0 left-0 z-[100000] hidden w-screen overflow-hidden bg-white",
         showKeyboard && "block",
       )}
     >
       {children}
-    </div>
+    </div>,
+    document.getElementById("bottom-portal")!,
   );
 };

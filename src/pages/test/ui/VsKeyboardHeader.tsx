@@ -13,7 +13,13 @@ export const VsKeyboardHeader = ({
   const vsValue = vs[currentValue];
 
   return (
-    <div className="flex items-center justify-between rounded-t-lg bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-500 p-4 shadow-lg">
+    <div className={cn(
+      "flex items-center justify-between",
+        "rounded-t-lg",
+        "bg-gradient-to-r from-slate-600 via-slate-700 to-slate-600",
+        "p-4",
+        "shadow-lg",
+    )}>
       <span className="text-xl font-bold text-white">
         시간: {vs.time.slice(0, 2)}:{vs.time.slice(2)}
       </span>

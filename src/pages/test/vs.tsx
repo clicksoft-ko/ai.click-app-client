@@ -33,7 +33,7 @@ export class Vs {
 export const vss: Vs[] = [
   {
     auto: 1,
-    time: "0900",
+    time: "0940",
     nurse: "김간호",
     hulap1: "120",
     hulap2: "80",

@@ -11,6 +11,7 @@ import { Keyboard } from "./Keyboard";
 import { TimeKeyboard } from "./TimeKeyboard";
 import { VsKeyboardWrapper } from "./VsKeyboardWrapper";
 import { VsKeyboardHeader } from "./VsKeyboardHeader";
+import { formatTime } from "@/shared/utils/formats";
 
 interface EditInputProps {
   row: Row<Vs>;
@@ -52,6 +53,28 @@ export const EditInput = ({ row, column, onFocus }: EditInputProps) => {
     showKeyboard,
   );
 
+  const handleNextColumnFocus = (row: Row<Vs>, column: Column<Vs>) => {
+    const isTimeColumn = column.id === "time";
+    const index = viewMenus.findIndex((menu) => menu === column.id);
+    const nextColumn = isTimeColumn
+      ? viewMenus?.[0]
+      : index === -1
+        ? undefined
+        : viewMenus?.[index + 1];
+
+    if (!nextColumn) {
+      setFocused(false);
+      setShowKeyboard(false);
+      return;
+    }
+
+    setShowKeyboard(false);
+    const nextInput = document.getElementById(
+      getInputId(row.index, nextColumn),
+    );
+    nextInput?.focus();
+  };
+
   return (
     <>
       <input
@@ -67,43 +90,35 @@ export const EditInput = ({ row, column, onFocus }: EditInputProps) => {
           (focused || showKeyboard) && "border border-blue-500 bg-white",
         )}
         type="text"
-        readOnly={!isTimeColumn}
-        value={value}
-        onChange={(e) => {
-          setVsByRow(row.index, vsKey, e.target.value);
-        }}
+        readOnly
+        value={isTimeColumn ? formatTime(value as string) : value}
+        // onChange={(e) => {
+        //   setVsByRow(row.index, vsKey, e.target.value);
+        // }}
       />
 
-      <VsKeyboardWrapper
-        ref={keyboardRef}
-        showKeyboard={showKeyboard}        
-      >
-        <VsKeyboardHeader vs={row.original} currentValue={vsKey} isTimeColumn={isTimeColumn}/>
+      <VsKeyboardWrapper ref={keyboardRef} showKeyboard={showKeyboard}>
+        <VsKeyboardHeader
+          vs={row.original}
+          currentValue={vsKey}
+          isTimeColumn={isTimeColumn}
+        />
         {isTimeColumn ? (
-          <TimeKeyboard />
+          <TimeKeyboard
+            showKeyboard={showKeyboard}
+            timeValue={row.original.time}
+            onValueChange={(time) => {
+              setVsByRow(row.index, vsKey, time);
+            }}
+            onNext={() => handleNextColumnFocus(row, column)}
+          />
         ) : (
           <VsInputKeyboard
             showKeyboard={showKeyboard}
             onValueChange={(value) => {
               setVsByRow(row.index, vsKey, value);
             }}
-            onNext={() => {
-              const index = viewMenus.findIndex((menu) => menu === column.id);
-              const nextColumn =
-                index === -1 ? undefined : viewMenus?.[index + 1];
-
-              if (!nextColumn) {
-                setFocused(false);
-                setShowKeyboard(false);
-                return;
-              }
-
-              setShowKeyboard(false);
-              const nextInput = document.getElementById(
-                getInputId(row.index, nextColumn),
-              );
-              nextInput?.focus();
-            }}
+            onNext={() => handleNextColumnFocus(row, column)}
           />
         )}
       </VsKeyboardWrapper>
