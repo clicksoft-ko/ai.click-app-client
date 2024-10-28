@@ -11,6 +11,7 @@ type Actions = {
   setVsByRow: (rowIndex: number, columnId: keyof Vs, value: string) => void;
   resetVsByRow: (rowIndex: number) => void;
   removeVsByRow: (rowIndex: number) => void;
+  clearVss: () => void;
 }
 
 const initialState: State = {
@@ -20,9 +21,10 @@ const initialState: State = {
 const stateCreator: StateCreator<State & Actions> = (set) => ({
   ...initialState,
   setVss: (vss) => set(() => ({ vss })),
+  clearVss: () => set(() => ({ vss: [{ auto: 0 }] })),
   resetVsByRow: (rowIndex: number) =>
     set((state) => ({
-      vss: state.vss.map((v, i) => i === rowIndex ? new Vs() : v),
+      vss: state.vss.map((v, i) => i === rowIndex ? { auto: 0 } : v),
     })),
   removeVsByRow: (rowIndex: number) =>
     set((state) => ({

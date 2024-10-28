@@ -7,8 +7,8 @@ import dayjs from "dayjs";
 import { useEffect, useRef, useState } from "react";
 import { viewMenus } from "../consts/view-menus";
 import { Vs } from "@/shared/dto/socket-io";
-import { Keyboard } from "./Keyboard";
-import { TimeKeyboard } from "./TimeKeyboard";
+import { NumberKeyboard } from "../../../widgets/keyboards/NumberKeyboard";
+import { TimeKeyboard } from "../../../widgets/keyboards/TimeKeyboard";
 import { VsKeyboardWrapper } from "./VsKeyboardWrapper";
 import { VsKeyboardHeader } from "./VsKeyboardHeader";
 import { formatTime } from "@/shared/utils/formats";
@@ -23,7 +23,7 @@ export const EditInput = ({ row, column, onFocus }: EditInputProps) => {
   const setVsByRow = useVsInputStore((state) => state.setVsByRow);
   const [focused, setFocused] = useState(false);
   const [showKeyboard, setShowKeyboard] = useState(false);
-  const isTimeValid = row.original.time.length >= 4;
+  const isTimeValid = (row.original.time ?? "").length >= 4;
   const inputRef = useRef<HTMLInputElement>(null);
   const keyboardRef = useRef<HTMLDivElement>(null);
   const vsKey = column.id as keyof Vs;
@@ -75,6 +75,7 @@ export const EditInput = ({ row, column, onFocus }: EditInputProps) => {
     nextInput?.focus();
   };
 
+
   return (
     <>
       <input
@@ -91,7 +92,7 @@ export const EditInput = ({ row, column, onFocus }: EditInputProps) => {
         )}
         type="text"
         readOnly
-        value={isTimeColumn ? formatTime(value as string) : value}
+        value={(isTimeColumn ? formatTime(value as string) : value) ?? ""}
         // onChange={(e) => {
         //   setVsByRow(row.index, vsKey, e.target.value);
         // }}
@@ -106,7 +107,7 @@ export const EditInput = ({ row, column, onFocus }: EditInputProps) => {
         {isTimeColumn ? (
           <TimeKeyboard
             showKeyboard={showKeyboard}
-            timeValue={row.original.time}
+            timeValue={row.original.time ?? ""}
             onValueChange={(time) => {
               setVsByRow(row.index, vsKey, time);
             }}
@@ -151,7 +152,7 @@ const VsInputKeyboard = ({
   }, [showKeyboard]);
 
   return (
-    <Keyboard
+    <NumberKeyboard
       onClick={(value) => setValue((prev) => prev + value)}
       onDelete={() => {
         const newValue = value.slice(0, -1);

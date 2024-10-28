@@ -20,7 +20,7 @@ export const VsInputTable = ({ originalVss }: VsInputTableProps) => {
   const { table } = useTable({ vss: vss ?? [], columns });
 
   useEffect(() => {
-    setVss([new Vs(), ...(originalVss ?? [])]);
+    setVss([{ auto: 0 }, ...(originalVss ?? [])]);
   }, [originalVss]);
 
   return (

@@ -21,7 +21,7 @@ export const VsKeyboardHeader = ({
         "shadow-lg",
     )}>
       <span className="text-xl font-bold text-white">
-        시간: {vs.time.slice(0, 2)}:{vs.time.slice(2)}
+        시간: {vs.time?.slice(0, 2)}:{vs.time?.slice(2)}
       </span>
       <div className="flex items-center">
         <span className="mr-2 text-lg text-white">

@@ -1,12 +1,12 @@
 import { Delete } from "lucide-react";
-interface KeyboardProps {
+interface NumberKeyboardProps {
   onClick: (value: string) => void;
   onDelete: () => void;
   onNext: () => void;
   ref?: React.RefObject<HTMLDivElement | null>;
 }
 
-export const Keyboard: React.FC<KeyboardProps> = ({
+export const NumberKeyboard: React.FC<NumberKeyboardProps> = ({
   onClick,
   onDelete,
   onNext,
@@ -38,7 +38,7 @@ export const Keyboard: React.FC<KeyboardProps> = ({
         ].map((value) => (
           <button
             key={value}
-            className="rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 p-4 text-xl font-semibold text-white shadow-md transition-all duration-200 hover:from-blue-600 hover:to-indigo-700"
+            className="rounded-lg shadow bg-gradient-to-r from-white to-slate-100 p-4 text-xl font-semibold text-slate-800 transition-all duration-200 hover:from-slate-300 hover:to-slate-400"
             onClick={() => onClick(value)}
           >
             {value}

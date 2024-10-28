@@ -14,3 +14,5 @@ export * from './get-insulins';
 export * from './get-labs';
 export * from './get-consultations.dto';
 export * from './get-vss-of-day.dto';
+export * from './save-vss-of-day.dto';
+export * from './delete-vs.dto';

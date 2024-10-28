@@ -10,6 +10,7 @@ interface Args<TResult> {
   clearKey?: boolean;
   onSuccess?: (data: TResult) => void;
   onError?: (error: SocketErrorResponse) => void;
+  onPending?: (isPending: boolean) => void;
 }
 
 export function useEmitWithAck<TPath extends PathTypeKey>(path: TPath, args?: Args<ExtractResult<PathTypeMap[TPath]>>) {
@@ -31,6 +32,7 @@ export function useEmitWithAck<TPath extends PathTypeKey>(path: TPath, args?: Ar
     }
 
     setIsPending(true);
+    args?.onPending?.(true);
     try {
       const { key, ...dtoWithoutKey } = dto;
       const response: SocketResponse<any> = await socket?.emitWithAck(path as string, {
@@ -64,6 +66,7 @@ export function useEmitWithAck<TPath extends PathTypeKey>(path: TPath, args?: Ar
       setError(error);
     } finally {
       setIsPending(false);
+      args?.onPending?.(false);
     }
   }
 
