@@ -4,13 +4,18 @@ import { cn } from "@/shared/utils";
 import { Button } from "@/widgets/ui";
 import { Row } from "@tanstack/react-table";
 import { useState } from "react";
-import { getCommonPinningStyles } from "../utils/get-common-pinning-styles";
 import { EditInput } from "./EditInput";
 import { useEmitWithAck } from "@/shared/hooks/socket-io";
-import { useVsContext } from "../hooks/use-vs-context";
 import toast from "react-hot-toast";
+import { getCommonPinningStyles } from "@/pages/test/utils/get-common-pinning-styles";
+import { useVsWriterContext } from "../hooks";
 
-export const VsInputTableRow = ({ row }: { row: Row<Vs> }) => {
+interface VsInputTableRowProps {
+  row: Row<Vs>;
+  onRowDelete: () => void;
+}
+
+export const VsInputTableRow = ({ row, onRowDelete }: VsInputTableRowProps) => {
   const [focused, setFocused] = useState(false);
 
   return (
@@ -26,7 +31,7 @@ export const VsInputTableRow = ({ row }: { row: Row<Vs> }) => {
           >
             <div className="flex h-10 items-center justify-center">
               {column.id === "[Delete]" ? (
-                <DeleteButton row={row} />
+                <DeleteButton row={row} onRowDelete={onRowDelete} />
               ) : (
                 <EditInput row={row} column={column} onFocus={setFocused} />
               )}
@@ -38,15 +43,22 @@ export const VsInputTableRow = ({ row }: { row: Row<Vs> }) => {
   );
 };
 
-const DeleteButton = ({ row }: { row: Row<Vs> }) => {
+const DeleteButton = ({
+  row,
+  onRowDelete,
+}: {
+  row: Row<Vs>;
+  onRowDelete: () => void;
+}) => {
   const resetVsByRow = useVsInputStore((state) => state.resetVsByRow);
   const removeVsByRow = useVsInputStore((state) => state.removeVsByRow);
-  const { isPending, setIsPending } = useVsContext();
+  const { isPending, setIsPending } = useVsWriterContext();
   const { emit } = useEmitWithAck("deleteVs", {
     onPending: setIsPending,
     onSuccess: () => {
       toast.success("삭제되었습니다.");
       removeVsByRow(row.index);
+      onRowDelete();
     },
     onError: (error) => {
       toast.error(error.message);

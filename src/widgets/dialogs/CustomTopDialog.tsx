@@ -18,7 +18,7 @@ export const CustomTopDialog = ({
       <div
         className={cn(
           "fixed left-0 top-header z-[20] w-screen bg-white/95 p-4 shadow-lg transition-all",
-          open ? "opacity-100" : "pointer-events-none left-[-100%] opacity-0",
+          open ? "opacity-100" : "pointer-events-none opacity-0",
         )}
         onClick={(e) => e.stopPropagation()}
       >

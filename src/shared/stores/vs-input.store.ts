@@ -15,13 +15,13 @@ type Actions = {
 }
 
 const initialState: State = {
-  vss: []
+  vss: [{ auto: 0 }]
 }
 
 const stateCreator: StateCreator<State & Actions> = (set) => ({
   ...initialState,
   setVss: (vss) => set(() => ({ vss })),
-  clearVss: () => set(() => ({ vss: [{ auto: 0 }] })),
+  clearVss: () => set(initialState),
   resetVsByRow: (rowIndex: number) =>
     set((state) => ({
       vss: state.vss.map((v, i) => i === rowIndex ? { auto: 0 } : v),

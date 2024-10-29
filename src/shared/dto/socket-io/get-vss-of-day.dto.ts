@@ -25,12 +25,7 @@ export interface Vs {
   aspiration?: string;
   drainage?: string;
   vomitus?: string;
-  username?: string;
   glucose?: string;
   spo2?: string;
-  etc1?: string;
-  etc2?: string;
-  etc3?: string;
   etc4?: string;
-  etc5?: string;
 }

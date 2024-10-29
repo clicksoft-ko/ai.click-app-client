@@ -1,68 +1,35 @@
 import { CustomTopDialog } from "@/widgets/dialogs";
 import { Button, DatePicker } from "@/widgets/ui";
+import { useEffect } from "react";
+import { useVsInputDialog } from "../hooks";
 import { VsInputTable } from "./VsInputTable";
-import { useEmitWithAck } from "@/shared/hooks/socket-io";
-import dayjs from "dayjs";
-import { useEffect, useState } from "react";
-import { useVsInputStore } from "@/shared/stores";
-import { toast } from "react-hot-toast";
-import { useVsContext } from "../hooks/use-vs-context";
 
 interface VsInputDialogProps {
   open: boolean;
   setOpen: (open: boolean) => void;
+  onSave: () => void;
+  onRowDelete: () => void;
 }
 
-export const VsInputDialog = ({ open, setOpen }: VsInputDialogProps) => {
-  const vss = useVsInputStore((state) => state.vss);
-  const clearVss = useVsInputStore((state) => state.clearVss);
-  const { isPending, setIsPending } = useVsContext();
-
-  const {
-    emit: getVssOfDayEmit,
-    // error: getVssOfDayError,
-    data,
-  } = useEmitWithAck("getVssOfDay", {
-    onError: (error) => {
-      toast.error(error.message);
-      clearVss();
-    },
-    onPending: setIsPending,
-  });
-
-  const { emit: saveVssOfDayEmit } = useEmitWithAck("saveVssOfDay", {
-    onSuccess: () => {
-      toast.success("저장되었습니다.");
-      emitVss();
-    },
-    onError: (error) => {
-      toast.error(error.message);
-      clearVss();
-    },
-    onPending: setIsPending,
-  });
-
-  const [date, setDate] = useState<Date>(new Date());
-
-  const emitVss = () => {
-    getVssOfDayEmit({
-      key: "20240808-a288be52",
-      ymd: dayjs(date).format("YYYYMMDD"),
-      chartNo: "00017128",
-    });
-  };
+export const VsInputDialog = ({
+  open,
+  setOpen,
+  onSave,
+  onRowDelete,
+}: VsInputDialogProps) => {
+  const { date, setDate, isPending, data, emitVss, handleSave } =
+    useVsInputDialog({ onSave });
 
   useEffect(() => {
-    if (open) emitVss();
-  }, [open, date]);
+    if (open) {
+      setDate(date);
+      emitVss({ date });
+    }
+  }, [open]);
 
-  function handleSave(): void {
-    saveVssOfDayEmit({
-      key: "20240808-a288be52",
-      chartNo: "00017128",
-      ymd: dayjs(date).format("YYYYMMDD"),
-      vss,
-    });
+  function handleDateChange(date: Date): void {
+    emitVss({ date });
+    setDate(date);
   }
 
   return (
@@ -96,11 +63,11 @@ export const VsInputDialog = ({ open, setOpen }: VsInputDialogProps) => {
         <label className="flex w-fit items-center gap-2">
           <span>일자</span>
           <span className="w-1">:</span>
-          <DatePicker value={date} onChange={setDate} />
+          <DatePicker value={date} onChange={handleDateChange} />
         </label>
       </div>
       <div className="overflow-auto">
-        <VsInputTable originalVss={data} />
+        <VsInputTable originalVss={data} onRowDelete={onRowDelete} />
         <div className="h-2" />
       </div>
 

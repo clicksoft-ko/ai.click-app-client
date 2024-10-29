@@ -6,6 +6,7 @@ interface Props extends SearchDataHeaderProps, ChildrenClassNameProps {
   childrenClassName?: string;
   noBorder?: boolean;
   noShadow?: boolean;
+  trailing?: React.ReactNode;
 }
 
 export function SearchDataBox({
@@ -15,6 +16,7 @@ export function SearchDataBox({
   noBorder,
   noShadow,
   childrenClassName,
+  trailing,
 }: Props) {
   return (
     <div
@@ -25,7 +27,7 @@ export function SearchDataBox({
         className,
       )}
     >
-      <SearchDataHeader contents={contents} />
+      <SearchDataHeader contents={contents} trailing={trailing} />
       <div className={cn("whitespace-pre-wrap p-2", childrenClassName)}>
         {children}
       </div>

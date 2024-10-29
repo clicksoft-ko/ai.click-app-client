@@ -15,7 +15,7 @@ export const useGeoLocation = (props?: UseGeoLocationProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [location, setLocation] = useState<GeoLocation>();
   // 위치 엑세스 허용 여부
-  const [isGeoAccess, setIsGeoAccess] = useState(false);
+  const [isGeoAccess, setIsGeoAccess] = useState(true);
 
   const updateLocation = useCallback(() => {
     if (!use) return;
