@@ -17,12 +17,7 @@ export const columnSettings: Partial<Record<keyof Vs, { size: number }>> = {
   aspiration: { size: 90 },
   drainage: { size: 90 },
   vomitus: { size: 90 },
-  username: { size: 90 },
   glucose: { size: 90 },
   spo2: { size: 90 },
-  etc1: { size: 90 },
-  etc2: { size: 90 },
-  etc3: { size: 90 },
-  etc4: { size: 90 },
-  etc5: { size: 90 },
+  etc4: { size: 200 },
 };

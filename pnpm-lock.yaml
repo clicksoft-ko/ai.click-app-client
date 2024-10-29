@@ -41,8 +41,8 @@ importers:
         specifier: ^5.51.15
         version: 5.51.15(react@19.0.0-rc-fb9a90fa48-20240614)
       '@tanstack/react-table':
-        specifier: 9.0.0-alpha.10
-        version: 9.0.0-alpha.10(react-dom@19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614)
+        specifier: ^8.20.5
+        version: 8.20.5(react-dom@19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614)
       '@types/react':
         specifier: npm:types-react@alpha
         version: types-react@19.0.0-alpha.5
@@ -959,15 +959,15 @@ packages:
     peerDependencies:
       react: ^18.0.0
 
-  '@tanstack/react-table@9.0.0-alpha.10':
-    resolution: {integrity: sha512-SLxsaKFVR9g7jcMYahFhyIpfFa1CUSLXXdmUUohKmc23sBnEV04U5I5c/4RImSsbbGi56XhXJrcnCOVK1Dw4Jg==}
+  '@tanstack/react-table@8.20.5':
+    resolution: {integrity: sha512-WEHopKw3znbUZ61s9i0+i9g8drmDo6asTWbrQh8Us63DAk/M0FkmIqERew6P71HI75ksZ2Pxyuf4vvKh9rAkiA==}
     engines: {node: '>=12'}
     peerDependencies:
       react: '>=16.8'
       react-dom: '>=16.8'
 
-  '@tanstack/table-core@9.0.0-alpha.10':
-    resolution: {integrity: sha512-f2kEGGL+d+I7evkhU926cID2MyH7nPI8acAPcwpaAR1DrgTNStAMp3NS+tgMDyrYtc8zd+RyTxC8m+NBhHhFmA==}
+  '@tanstack/table-core@8.20.5':
+    resolution: {integrity: sha512-P9dF7XbibHph2PFRz8gfBKEXEY/HJPOhym8CHmjF8y3q5mWpKx9xtZapXQUWCgkqvsK0R46Azuz+VaxD4Xl+Tg==}
     engines: {node: '>=12'}
 
   '@types/d3-array@3.2.1':
@@ -2988,13 +2988,13 @@ snapshots:
       '@tanstack/query-core': 5.51.15
       react: 19.0.0-rc-fb9a90fa48-20240614
 
-  '@tanstack/react-table@9.0.0-alpha.10(react-dom@19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614)':
+  '@tanstack/react-table@8.20.5(react-dom@19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614))(react@19.0.0-rc-fb9a90fa48-20240614)':
     dependencies:
-      '@tanstack/table-core': 9.0.0-alpha.10
+      '@tanstack/table-core': 8.20.5
       react: 19.0.0-rc-fb9a90fa48-20240614
       react-dom: 19.0.0-rc-fb9a90fa48-20240614(react@19.0.0-rc-fb9a90fa48-20240614)
 
-  '@tanstack/table-core@9.0.0-alpha.10': {}
+  '@tanstack/table-core@8.20.5': {}
 
   '@types/d3-array@3.2.1': {}
 

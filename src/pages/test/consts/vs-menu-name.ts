@@ -18,12 +18,6 @@ export const vsMenuName: Partial<Record<keyof Vs, string>> = {
   aspiration: "흡인",
   drainage: "배액",
   vomitus: "구토",
-  username: "환자명",
   glucose: "혈당",
   spo2: "SPO2",
-  etc1: "기타1",
-  etc2: "기타2",
-  etc3: "기타3",
-  etc4: "기타4",
-  etc5: "기타5",
 };
