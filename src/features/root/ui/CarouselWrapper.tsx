@@ -48,9 +48,9 @@ export const CarouselWrapper = ({ slides, defaultTab }: Props) => {
         ref={carouselRef}
         className="h-full"
         responsive={responsive}
-        // arrows={false}
         draggable={false}
         swipeable={canSwipe}
+        minimumTouchDrag={300} // 스와이프 거리를 늘림
         customLeftArrow={
           <IoIosArrowBack className={cn(commonArrowStyle, "left-4 pr-0.5")} />
         }
