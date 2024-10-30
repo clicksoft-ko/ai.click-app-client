@@ -9,8 +9,11 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/widgets/ui";
 import { useState } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { Links } from "./Links";
+import { useNavigate } from "react-router-dom";
 
 export const MainHeader = () => {
+  const navigate = useNavigate();
+
   return (
     <header className="flex h-header w-full items-center justify-between bg-gray-100 px-2">
       <nav className="flex items-center gap-2">
@@ -22,6 +25,9 @@ export const MainHeader = () => {
             )}
             src={imgPaths.logo.small}
             alt="user"
+            onClick={() => {
+              navigate("/");
+            }}
           />
           <Links />
         </div>
