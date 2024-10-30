@@ -29,6 +29,7 @@ export const EditInput = ({ row, column, onFocus }: EditInputProps) => {
   const value = row.original[vsKey];
   const isTimeColumn = vsKey === "time";
   const isNurseColumn = vsKey === "nurse";
+  const { viewMenus } = useVsWriteMenus();
   const { user } = useAuth();
 
   useEffect(() => {
@@ -54,7 +55,6 @@ export const EditInput = ({ row, column, onFocus }: EditInputProps) => {
 
   const handleNextColumnFocus = (row: Row<Vs>, column: Column<Vs>) => {
     const isTimeColumn = column.id === "time";
-    const { viewMenus } = useVsWriteMenus();
     const index = viewMenus.findIndex((menu) => menu === column.id);
     const nextColumn = isTimeColumn
       ? viewMenus?.[0]
@@ -92,9 +92,6 @@ export const EditInput = ({ row, column, onFocus }: EditInputProps) => {
         type="text"
         readOnly
         value={(isTimeColumn ? formatTime(value as string) : value) ?? ""}
-        // onChange={(e) => {
-        //   setVsByRow(row.index, vsKey, e.target.value);
-        // }}
       />
 
       <VsKeyboardWrapper ref={keyboardRef} showKeyboard={showKeyboard}>
