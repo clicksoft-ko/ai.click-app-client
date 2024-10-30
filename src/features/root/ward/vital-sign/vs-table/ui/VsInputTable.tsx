@@ -2,12 +2,12 @@ import { Vs } from "@/shared/dto/socket-io";
 import { useVsInputStore } from "@/shared/stores";
 import { flexRender } from "@tanstack/react-table";
 import { useEffect } from "react";
+import { useVsWriteMenus } from "../../hooks";
+import { useColumns } from "../hooks";
 import { useTable } from "../hooks/use-table";
+import { getCommonPinningStyles } from "../utils";
 import styles from "./VsInputTable.module.css";
 import { VsInputTableRow } from "./VsInputTableRow";
-import { useColumns } from "../hooks";
-import { viewMenus } from "../consts/view-menus";
-import { getCommonPinningStyles } from "@/pages/test/utils/get-common-pinning-styles";
 
 interface VsInputTableProps {
   originalVss: Vs[] | undefined;
@@ -18,6 +18,7 @@ export const VsInputTable = ({
   originalVss,
   onRowDelete,
 }: VsInputTableProps) => {
+  const { viewMenus } = useVsWriteMenus();
   const vss = useVsInputStore((state) => state.vss);
   const setVss = useVsInputStore((state) => state.setVss);
   const { columns } = useColumns({ viewMenus });

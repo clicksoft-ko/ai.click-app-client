@@ -7,8 +7,8 @@ import { useState } from "react";
 import { EditInput } from "./EditInput";
 import { useEmitWithAck } from "@/shared/hooks/socket-io";
 import toast from "react-hot-toast";
-import { getCommonPinningStyles } from "@/pages/test/utils/get-common-pinning-styles";
 import { useVsWriterContext } from "../hooks";
+import { getCommonPinningStyles } from "../utils";
 
 interface VsInputTableRowProps {
   row: Row<Vs>;

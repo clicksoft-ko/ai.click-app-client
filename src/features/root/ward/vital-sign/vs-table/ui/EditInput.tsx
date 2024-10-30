@@ -1,16 +1,16 @@
+import { Vs } from "@/shared/dto/socket-io";
 import { useAuth } from "@/shared/hooks/auth";
 import { useOutsideClick } from "@/shared/hooks/use-outside-click";
 import { useVsInputStore } from "@/shared/stores";
 import { cn } from "@/shared/utils";
+import { formatTime } from "@/shared/utils/formats";
+import { NumberKeyboard, TimeKeyboard } from "@/widgets/keyboards";
 import { Column, Row } from "@tanstack/react-table";
 import dayjs from "dayjs";
 import { useEffect, useRef, useState } from "react";
-import { Vs } from "@/shared/dto/socket-io";
-import { VsKeyboardWrapper } from "./VsKeyboardWrapper";
+import { useVsWriteMenus } from "../../hooks";
 import { VsKeyboardHeader } from "./VsKeyboardHeader";
-import { formatTime } from "@/shared/utils/formats";
-import { viewMenus } from "../consts/view-menus";
-import { NumberKeyboard, TimeKeyboard } from "@/widgets/keyboards";
+import { VsKeyboardWrapper } from "./VsKeyboardWrapper";
 
 interface EditInputProps {
   row: Row<Vs>;
@@ -54,6 +54,7 @@ export const EditInput = ({ row, column, onFocus }: EditInputProps) => {
 
   const handleNextColumnFocus = (row: Row<Vs>, column: Column<Vs>) => {
     const isTimeColumn = column.id === "time";
+    const { viewMenus } = useVsWriteMenus();
     const index = viewMenus.findIndex((menu) => menu === column.id);
     const nextColumn = isTimeColumn
       ? viewMenus?.[0]
@@ -73,7 +74,6 @@ export const EditInput = ({ row, column, onFocus }: EditInputProps) => {
     );
     nextInput?.focus();
   };
-
 
   return (
     <>

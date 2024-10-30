@@ -3,7 +3,8 @@ import { Button, DatePicker } from "@/widgets/ui";
 import { useEffect } from "react";
 import { useVsInputDialog } from "../hooks";
 import { VsInputTable } from "./VsInputTable";
-import { VsInputSettings } from "./VsInputSettings";
+import { VsInputSettingsDialog } from "../../vs-input-settings/ui";
+import { Settings } from "lucide-react";
 
 interface VsInputDialogProps {
   open: boolean;
@@ -18,8 +19,16 @@ export const VsInputDialog = ({
   onSave,
   onRowDelete,
 }: VsInputDialogProps) => {
-  const { date, setDate, isPending, data, emitVss, handleSave } =
-    useVsInputDialog({ onSave });
+  const {
+    date,
+    setDate,
+    isPending,
+    data,
+    emitVss,
+    handleSave,
+    settingsOpen,
+    setSettingsOpen,
+  } = useVsInputDialog({ onSave });
 
   useEffect(() => {
     if (open) {
@@ -49,6 +58,13 @@ export const VsInputDialog = ({
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-bold">{"바이탈 사인 입력 화면"}</h2>
           <div className="flex gap-2">
+            <Button
+              className="w-12 p-0 text-gray-500"
+              variant="ghost"
+              onClick={() => setSettingsOpen(true)}
+            >
+              <Settings />
+            </Button>
             <Button variant="default" onClick={handleSave}>
               저장
             </Button>
@@ -75,7 +91,9 @@ export const VsInputDialog = ({
 
         {isPending && <Loading />}
       </CustomTopDialog>
-      {/* <VsInputSettings open={true} setOpen={() => {}} /> */}
+      {settingsOpen && (
+        <VsInputSettingsDialog open={settingsOpen} setOpen={setSettingsOpen} />
+      )}
     </>
   );
 };

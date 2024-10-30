@@ -1,7 +1,6 @@
 import { Vs } from "@/shared/dto/socket-io";
 
 export const vsMenuName: Partial<Record<keyof Vs, string>> = {
-  time: "시간",
   hulap1: "혈압(이완)",
   hulap2: "혈압(수축)",
   maekbak: "맥박",

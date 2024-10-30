@@ -35,7 +35,7 @@ export const useColumns = ({ viewMenus }: UseColumnsProps) => {
         footer: (info) => info.column.id,
       }),
     );
-  }, []);
+  }, [viewMenus]);
 
   return { columns };
 };

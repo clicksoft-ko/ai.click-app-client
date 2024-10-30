@@ -3,6 +3,7 @@ import { usePatientStore, useVsInputStore } from "@/shared/stores";
 import dayjs from "dayjs";
 import { toast } from "react-hot-toast";
 import { useVsWriterContext } from ".";
+import { useState } from "react";
 
 interface UseVsInputDialogProps {
   onSave: () => void;
@@ -12,6 +13,7 @@ export const useVsInputDialog = ({ onSave }: UseVsInputDialogProps) => {
   const clearVss = useVsInputStore((state) => state.clearVss);
   const { isPending, setIsPending, date, setDate } = useVsWriterContext();
   const patient = usePatientStore((state) => state.patient);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   const {
     emit: getVssOfDayEmit,
@@ -64,5 +66,7 @@ export const useVsInputDialog = ({ onSave }: UseVsInputDialogProps) => {
     data,
     emitVss,
     handleSave,
+    settingsOpen,
+    setSettingsOpen,
   };
 }; 

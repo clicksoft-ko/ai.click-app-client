@@ -7,4 +7,5 @@ export const apiPaths = {
     roomKey: (hsUserId: string) => `/auth/roomKey/${hsUserId}`
   },
   user: "/user",
+  userSettings: (userId: string) => `/user-settings/${userId}`,
 }
