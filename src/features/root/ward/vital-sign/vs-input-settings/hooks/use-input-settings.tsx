@@ -43,7 +43,7 @@ export const useInputSettings = () => {
       text: vsMenuName[menu.key as keyof Vs]!,
     }));
     setMenuNameList(menuItems);
-  }, [vsWriteMenus]);
+  }, []);
 
   return {
     handleSave,

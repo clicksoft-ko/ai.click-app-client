@@ -3,6 +3,7 @@ import { apiPaths } from "@/shared/paths";
 import { fetchVsInputSettings } from "../api";
 import { useAuth } from "@/shared/hooks/auth";
 import { Vs } from "@/shared/dto/socket-io";
+import { useMemo } from "react";
 
 export const useVsWriteMenus = () => {
   const queryClient = useQueryClient();
@@ -13,7 +14,7 @@ export const useVsWriteMenus = () => {
     queryFn: () => fetchVsInputSettings(user?.id ?? ""),
     enabled: !!user?.id,
   });
-  const vsWriteMenus = data?.vsWriteMenus ?? [];
+  const vsWriteMenus = useMemo(() => data?.vsWriteMenus ?? [], [data]);
   const viewMenus = vsWriteMenus.map((menu) => menu.key as keyof Vs);
   function invalidate(): void {
     queryClient.invalidateQueries({
