@@ -37,6 +37,18 @@ export const VsInputSettingsDialog = ({
       onClick={() => setOpen(false)}
     >
       <div className="max-h-[30rem] overflow-hidden rounded-lg bg-white">
+        <SortableList
+          items={menuNames}
+          className="grid w-[30rem] grid-cols-4 gap-2 rounded-lg bg-white p-4"
+          onChange={({ items }) => setMenuNameList(items)}
+          renderItem={(item, index) => (
+            <SortableList.Item id={item.id}>
+              <SortableList.DragHandleWrapper>
+                <NumberedMenuNameItem item={item} index={index} />
+              </SortableList.DragHandleWrapper>
+            </SortableList.Item>
+          )}
+        />
         <div className="flex h-[30rem] overflow-y-auto">
           <ContentWrapper
             title="바이탈사인 저장 설정"

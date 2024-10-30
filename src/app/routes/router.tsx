@@ -27,6 +27,10 @@ const router: any = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
+        path: paths.test,
+        element: <TestPage />,
+      },
+      {
         element: (
           <ProtectedRoute
             element={<ProtectGeoLocation element={<RootLayout />} />}
@@ -44,10 +48,6 @@ const router: any = createBrowserRouter([
           {
             path: paths.ward,
             element: <WardPage />,
-          },
-          {
-            path: paths.test,
-            element: <TestPage />,
           },
         ],
       },

@@ -1,9 +1,10 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import {
   DndContext,
   KeyboardSensor,
   PointerSensor,
+  TouchSensor,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
@@ -17,6 +18,7 @@ import {
 import { DragHandleWrapper, SortableItem } from "./SortableComponents";
 import { SortableOverlay } from "./SortableOverlay";
 import { ClassNameProps } from "@/shared/interfaces/props";
+import { useIsMobile } from "@/shared/hooks";
 
 interface BaseItem {
   id: UniqueIdentifier;
@@ -34,6 +36,7 @@ export function SortableList<T extends BaseItem>({
   onChange,
   renderItem,
 }: Props<T> & ClassNameProps) {
+  const { isMobile } = useIsMobile();
   const [active, setActive] = useState<Active | null>(null);
   const activeObject = useMemo(() => {
     const activeIndex = items.findIndex((item) => item.id === active?.id);
@@ -43,7 +46,7 @@ export function SortableList<T extends BaseItem>({
     return { activeIndex, activeItem };
   }, [active, items]);
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    isMobile ? useSensor(TouchSensor) : useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     }),
