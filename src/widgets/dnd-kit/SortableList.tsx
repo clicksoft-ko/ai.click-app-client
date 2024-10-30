@@ -1,5 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
-import type { ReactNode } from "react";
+import type { Active, UniqueIdentifier } from "@dnd-kit/core";
 import {
   DndContext,
   KeyboardSensor,
@@ -8,17 +7,18 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import type { Active, UniqueIdentifier } from "@dnd-kit/core";
 import {
   SortableContext,
   arrayMove,
   sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
+import type { ReactNode } from "react";
+import React, { useMemo, useState } from "react";
 
+import { useIsMobile } from "@/shared/hooks";
+import { ClassNameProps } from "@/shared/interfaces/props";
 import { DragHandleWrapper, SortableItem } from "./SortableComponents";
 import { SortableOverlay } from "./SortableOverlay";
-import { ClassNameProps } from "@/shared/interfaces/props";
-import { useIsMobile } from "@/shared/hooks";
 
 interface BaseItem {
   id: UniqueIdentifier;
