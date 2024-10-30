@@ -7,6 +7,7 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { scrollClearCarousels } from "../lib";
+import { useVsWriterContext } from "../ward/vital-sign/vs-table/hooks";
 
 interface Props {
   slides: [TabType, JSX.Element][];
@@ -85,6 +86,7 @@ const CarouselBox = ({
 }) => {
   const swipeRef = useRef<HTMLDivElement>(null);
   const hScrollExistsRef = useRef(false);
+  const { open: isVsWriterOpen } = useVsWriterContext();
 
   return (
     <div
@@ -93,7 +95,7 @@ const CarouselBox = ({
         if (current) {
           const isHScrollExists = current.clientWidth < current.scrollWidth;
           hScrollExistsRef.current = isHScrollExists;
-          onCanSwipe(!isHScrollExists);
+          onCanSwipe(!isHScrollExists && !isVsWriterOpen);
         }
       }}
       ref={swipeRef}

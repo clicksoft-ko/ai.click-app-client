@@ -12,17 +12,16 @@ export const WardPage = () => {
   const slides: [TabType, JSX.Element][] = useMemo(
     () => [
       [WardTab.간호, <NursingRecordBody />],
-      [
-        WardTab.Vital,
-        <VsWriterContextProvider>
-          <VitalSignBody />
-        </VsWriterContextProvider>,
-      ],
+      [WardTab.Vital, <VitalSignBody />],
       [WardTab.IO, <IOSheetBody />],
       [WardTab.RI, <InsulinBody />],
     ],
     [],
   );
 
-  return <CarouselWrapper slides={slides} defaultTab={WardTab.간호} />;
+  return (
+    <VsWriterContextProvider>
+      <CarouselWrapper slides={slides} defaultTab={WardTab.간호} />
+    </VsWriterContextProvider>
+  );
 };
