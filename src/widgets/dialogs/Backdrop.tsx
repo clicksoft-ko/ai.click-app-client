@@ -8,11 +8,14 @@ interface BackdropProps extends ClassNameProps {
   onClick?: () => void;
   children: ReactNode;
 }
-
 export const Backdrop = ({ open, onClick, children, className }: BackdropProps) => {
   return ReactDOM.createPortal(
     <div
-      onClick={onClick}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          onClick?.();
+        }
+      }}
       className={cn(
         "fixed left-0 top-0 z-[10] h-screen w-screen bg-black/30 transition-opacity",
         open ? "opacity-100" : "pointer-events-none opacity-0",
