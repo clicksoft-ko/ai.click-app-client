@@ -81,7 +81,7 @@ export const VsInputDialog = ({
           <label className="flex w-fit items-center gap-2">
             <span>일자</span>
             <span className="w-1">:</span>
-            <DatePicker value={date} onChange={handleDateChange} />
+            <DatePicker value={date} onChange={handleDateChange} disabled={isPending} />
           </label>
         </div>
         <div className="overflow-auto">
