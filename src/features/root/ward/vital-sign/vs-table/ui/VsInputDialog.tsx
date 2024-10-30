@@ -3,6 +3,7 @@ import { Button, DatePicker } from "@/widgets/ui";
 import { useEffect } from "react";
 import { useVsInputDialog } from "../hooks";
 import { VsInputTable } from "./VsInputTable";
+import { VsInputSettings } from "./VsInputSettings";
 
 interface VsInputDialogProps {
   open: boolean;
@@ -33,46 +34,49 @@ export const VsInputDialog = ({
   }
 
   return (
-    <CustomTopDialog
-      className="w-fit max-w-[500px] overflow-auto"
-      open={open}
-      setOpen={setOpen}
-    >
-      {isPending && (
-        <div className="absolute inset-0 flex items-center justify-center">
-          로딩중
-        </div>
-      )}
+    <>
+      <CustomTopDialog
+        className="w-fit max-w-[500px] overflow-auto"
+        open={open}
+        setOpen={setOpen}
+      >
+        {isPending && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            로딩중
+          </div>
+        )}
 
-      <div className="flex items-center justify-between">
-        <h2 className="text-lg font-bold">{"바이탈 사인 입력 화면"}</h2>
-        <div className="flex gap-2">
-          <Button variant="default" onClick={handleSave}>
-            저장
-          </Button>
-          <Button
-            className={isPending ? "absolute z-[51]" : ""}
-            variant="destructive"
-            onClick={() => setOpen(false)}
-          >
-            닫기
-          </Button>
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-bold">{"바이탈 사인 입력 화면"}</h2>
+          <div className="flex gap-2">
+            <Button variant="default" onClick={handleSave}>
+              저장
+            </Button>
+            <Button
+              className={isPending ? "absolute z-[51]" : ""}
+              variant="destructive"
+              onClick={() => setOpen(false)}
+            >
+              닫기
+            </Button>
+          </div>
         </div>
-      </div>
-      <div>
-        <label className="flex w-fit items-center gap-2">
-          <span>일자</span>
-          <span className="w-1">:</span>
-          <DatePicker value={date} onChange={handleDateChange} />
-        </label>
-      </div>
-      <div className="overflow-auto">
-        <VsInputTable originalVss={data} onRowDelete={onRowDelete} />
-        <div className="h-2" />
-      </div>
+        <div>
+          <label className="flex w-fit items-center gap-2">
+            <span>일자</span>
+            <span className="w-1">:</span>
+            <DatePicker value={date} onChange={handleDateChange} />
+          </label>
+        </div>
+        <div className="overflow-auto">
+          <VsInputTable originalVss={data} onRowDelete={onRowDelete} />
+          <div className="h-2" />
+        </div>
 
-      {isPending && <Loading />}
-    </CustomTopDialog>
+        {isPending && <Loading />}
+      </CustomTopDialog>
+      {/* <VsInputSettings open={true} setOpen={() => {}} /> */}
+    </>
   );
 };
 

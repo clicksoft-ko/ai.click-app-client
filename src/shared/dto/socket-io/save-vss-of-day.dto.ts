@@ -6,4 +6,9 @@ export interface SaveVssOfDayDto {
   vss: Vs[];
 }
 
-export type SaveVssOfDayResultDto = Vs[];
+export type SaveVssOfDayResultDto = {
+  success: boolean;
+  saveCount: number;
+  updateCount: number;
+  message?: string;
+};

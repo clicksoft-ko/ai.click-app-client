@@ -25,10 +25,15 @@ export const useVsInputDialog = ({ onSave }: UseVsInputDialogProps) => {
   });
 
   const { emit: saveVssOfDayEmit } = useEmitWithAck("saveVssOfDay", {
-    onSuccess: () => {
-      toast.success("저장되었습니다.");
-      emitVss({ date });
-      onSave?.();
+    onSuccess: ({ success, message }) => {
+      if (success) {
+        toast.success("저장되었습니다.");
+        emitVss({ date });
+        onSave?.();
+      }
+      else {
+        toast(message ?? "저장에 실패하였습니다.", { icon: "🚨", });
+      }
     },
     onError: (error) => {
       toast.error(error.message);
