@@ -31,9 +31,13 @@ export const VsInputSettingsDialog = ({
   }));
 
   return (
-    <Backdrop open={open} className="flex items-center justify-center">
+    <Backdrop
+      open={open}
+      className="flex items-center justify-center"
+      onClick={() => setOpen(false)}
+    >
       <div className="max-h-[30rem] overflow-hidden rounded-lg bg-white">
-        <div className="flex h-[30rem] overflow-hidden">
+        <div className="flex h-[30rem] overflow-y-auto">
           <ContentWrapper
             title="바이탈사인 저장 설정"
             trailing={
