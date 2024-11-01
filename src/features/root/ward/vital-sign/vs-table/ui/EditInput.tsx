@@ -11,12 +11,23 @@ import { useEffect, useRef, useState } from "react";
 import { useVsWriteMenus } from "../../hooks";
 import { VsKeyboardHeader } from "./VsKeyboardHeader";
 import { VsKeyboardWrapper } from "./VsKeyboardWrapper";
+import { columnSettings } from "../consts";
 
 interface EditInputProps {
   row: Row<Vs>;
   column: Column<Vs>;
   onFocus: (focused: boolean) => void;
 }
+
+const useColumnType = (columnId: string) => {
+  const { type } = columnSettings[columnId as keyof Vs] ?? {};
+  return {
+    isTimeColumn: type === "time",
+    isNurseColumn: type === "nurse",
+    isTextColumn: type === "text",
+    isNumberColumn: type === "number",
+  };
+};
 
 export const EditInput = ({ row, column, onFocus }: EditInputProps) => {
   const setVsByRow = useVsInputStore((state) => state.setVsByRow);
@@ -27,13 +38,12 @@ export const EditInput = ({ row, column, onFocus }: EditInputProps) => {
   const keyboardRef = useRef<HTMLDivElement>(null);
   const vsKey = column.id as keyof Vs;
   const value = row.original[vsKey];
-  const isTimeColumn = vsKey === "time";
-  const isNurseColumn = vsKey === "nurse";
+  const { isTimeColumn, isNurseColumn, isTextColumn } = useColumnType(vsKey);
   const { viewMenus } = useVsWriteMenus();
   const { user } = useAuth();
 
   useEffect(() => {
-    if (focused && !isNurseColumn) {
+    if (focused && !isNurseColumn && !isTextColumn) {
       inputRef.current?.select();
       setShowKeyboard(true);
     }
@@ -54,7 +64,6 @@ export const EditInput = ({ row, column, onFocus }: EditInputProps) => {
   );
 
   const handleNextColumnFocus = (row: Row<Vs>, column: Column<Vs>) => {
-    const isTimeColumn = column.id === "time";
     const index = viewMenus.findIndex((menu) => menu === column.id);
     const nextColumn = isTimeColumn
       ? viewMenus?.[0]
@@ -69,6 +78,7 @@ export const EditInput = ({ row, column, onFocus }: EditInputProps) => {
     }
 
     setShowKeyboard(false);
+
     const nextInput = document.getElementById(
       getInputId(row.index, nextColumn),
     );
@@ -90,7 +100,15 @@ export const EditInput = ({ row, column, onFocus }: EditInputProps) => {
           (focused || showKeyboard) && "border border-blue-500 bg-white",
         )}
         type="text"
-        readOnly
+        readOnly={!isTextColumn}
+        onChange={(e) => {
+          setVsByRow(row.index, vsKey, e.target.value);
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleNextColumnFocus(row, column);
+          }
+        }}
         value={(isTimeColumn ? formatTime(value as string) : value) ?? ""}
       />
 
@@ -100,25 +118,54 @@ export const EditInput = ({ row, column, onFocus }: EditInputProps) => {
           currentValue={vsKey}
           isTimeColumn={isTimeColumn}
         />
-        {isTimeColumn ? (
-          <TimeKeyboard
-            showKeyboard={showKeyboard}
-            timeValue={row.original.time ?? ""}
-            onValueChange={(time) => {
-              setVsByRow(row.index, vsKey, time);
-            }}
-            onNext={() => handleNextColumnFocus(row, column)}
-          />
-        ) : (
-          <VsInputKeyboard
-            showKeyboard={showKeyboard}
-            onValueChange={(value) => {
-              setVsByRow(row.index, vsKey, value);
-            }}
-            onNext={() => handleNextColumnFocus(row, column)}
-          />
-        )}
+        <VsKeyboards
+          vsKey={vsKey}
+          showKeyboard={showKeyboard}
+          timeValue={row.original.time ?? ""}
+          onValueChange={(value) => {
+            setVsByRow(row.index, vsKey, value);
+          }}
+          onNext={() => handleNextColumnFocus(row, column)}
+        />
       </VsKeyboardWrapper>
+    </>
+  );
+};
+
+interface VsKeyboardsProps {
+  vsKey: keyof Vs;
+  showKeyboard: boolean;
+  timeValue: string;
+  onValueChange: (value: string) => void;
+  onNext: () => void;
+}
+
+const VsKeyboards = ({
+  vsKey,
+  showKeyboard,
+  timeValue,
+  onValueChange,
+  onNext,
+}: VsKeyboardsProps) => {
+  const { isTimeColumn, isNurseColumn, isTextColumn, isNumberColumn } =
+    useColumnType(vsKey);
+  return (
+    <>
+      {isTimeColumn && (
+        <TimeKeyboard
+          showKeyboard={showKeyboard}
+          timeValue={timeValue}
+          onValueChange={onValueChange}
+          onNext={onNext}
+        />
+      )}
+      {isNumberColumn && (
+        <VsInputKeyboard
+          showKeyboard={showKeyboard}
+          onValueChange={onValueChange}
+          onNext={onNext}
+        />
+      )}
     </>
   );
 };

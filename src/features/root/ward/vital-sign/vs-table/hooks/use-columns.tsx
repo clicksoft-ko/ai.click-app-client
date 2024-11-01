@@ -18,8 +18,12 @@ export const useColumns = ({ viewMenus }: UseColumnsProps) => {
       size?: number;
     }> = [
       { accessor: "[Delete]" as any, header: "", size: 40 },
-      { accessor: "time", header: "시간", size: 80 },
-      { accessor: "nurse", header: "담당간호사", size: 90 },
+      { accessor: "time", header: "시간", size: columnSettings.time!.size },
+      {
+        accessor: "nurse",
+        header: "담당간호사",
+        size: columnSettings.nurse!.size,
+      },
       ...viewMenus.map((menu) => ({
         accessor: menu,
         header: vsMenuName[menu]!,
