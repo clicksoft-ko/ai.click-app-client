@@ -147,8 +147,7 @@ const VsKeyboards = ({
   onValueChange,
   onNext,
 }: VsKeyboardsProps) => {
-  const { isTimeColumn, isNurseColumn, isTextColumn, isNumberColumn } =
-    useColumnType(vsKey);
+  const { isTimeColumn, isNumberColumn } = useColumnType(vsKey);
   return (
     <>
       {isTimeColumn && (
