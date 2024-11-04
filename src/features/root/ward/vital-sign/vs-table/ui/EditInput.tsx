@@ -38,7 +38,8 @@ export const EditInput = ({ row, column, onFocus }: EditInputProps) => {
   const keyboardRef = useRef<HTMLDivElement>(null);
   const vsKey = column.id as keyof Vs;
   const value = row.original[vsKey];
-  const { isTimeColumn, isNurseColumn, isTextColumn } = useColumnType(vsKey);
+  const { isTimeColumn, isNurseColumn, isTextColumn, isNumberColumn } =
+    useColumnType(vsKey);
   const { viewMenus } = useVsWriteMenus();
   const { user } = useAuth();
 
@@ -51,8 +52,17 @@ export const EditInput = ({ row, column, onFocus }: EditInputProps) => {
       setVsByRow(row.index, "nurse", user?.name ?? "");
       setVsByRow(row.index, "time", dayjs().format("HHmm"));
     }
+
     onFocus(focused);
   }, [focused]);
+
+  useEffect(() => {
+    if (!showKeyboard) {
+      if (isNumberColumn && value) {
+        setVsByRow(row.index, vsKey, Number(value).toString());
+      }
+    }
+  }, [showKeyboard]);
 
   useOutsideClick(
     [inputRef, keyboardRef],
@@ -94,7 +104,9 @@ export const EditInput = ({ row, column, onFocus }: EditInputProps) => {
           inputRef.current?.select();
           setFocused(true);
         }}
-        onBlur={() => setFocused(false)}
+        onBlur={() => {
+          setFocused(false);
+        }}
         className={cn(
           "flex h-full w-full bg-transparent text-center",
           (focused || showKeyboard) && "border border-blue-500 bg-white",
@@ -160,6 +172,7 @@ const VsKeyboards = ({
       )}
       {isNumberColumn && (
         <VsInputKeyboard
+          vsKey={vsKey}
           showKeyboard={showKeyboard}
           onValueChange={onValueChange}
           onNext={onNext}
@@ -169,21 +182,30 @@ const VsKeyboards = ({
   );
 };
 
-const VsInputKeyboard = ({
-  showKeyboard,
-  onValueChange,
-  onNext,
-}: {
+interface UseNumberKeyboardProps {
+  maxNumber: number;
+  minNumber: number;
+  digits: number;
   showKeyboard: boolean;
   onValueChange: (value: string) => void;
-  onNext: () => void;
-}) => {
+}
+
+const useNumberKeyboard = ({
+  maxNumber,
+  minNumber,
+  digits,
+  showKeyboard,
+  onValueChange,
+}: UseNumberKeyboardProps) => {
   const [value, setValue] = useState("");
   const firstRef = useRef(true);
 
   useEffect(() => {
     if (showKeyboard && !firstRef.current) {
-      onValueChange(value);
+      const numValue = parseFloat(value);
+      if (!isNaN(numValue) && numValue >= minNumber && numValue <= maxNumber) {
+        onValueChange(value);
+      }
     } else {
       setValue("");
     }
@@ -193,9 +215,49 @@ const VsInputKeyboard = ({
     firstRef.current = !showKeyboard;
   }, [showKeyboard]);
 
+  const handleNumberInput = (input: string) => {
+    setValue((prev) => {
+      const newValue = prev + input;
+      const newValues = newValue.split(".");
+      const decimal = newValues[1];
+
+      if (decimal?.length > digits || newValues.length > 2) return prev;
+
+      const numValue = parseFloat(newValue);
+      if (isNaN(numValue) || numValue > maxNumber || numValue < minNumber) {
+        return prev;
+      }
+      return newValue;
+    });
+  };
+
+  return { value, setValue, handleNumberInput };
+};
+
+const VsInputKeyboard = ({
+  vsKey,
+  showKeyboard,
+  onValueChange,
+  onNext,
+}: {
+  vsKey: keyof Vs;
+  showKeyboard: boolean;
+  onValueChange: (value: string) => void;
+  onNext: () => void;
+}) => {
+  const columnSetting = columnSettings[vsKey as keyof Vs];
+  if (columnSetting?.type !== "number") return null;
+  const { value, setValue, handleNumberInput } = useNumberKeyboard({
+    maxNumber: columnSetting.max,
+    minNumber: columnSetting.min,
+    digits: columnSetting.digits,
+    showKeyboard,
+    onValueChange,
+  });
+
   return (
     <NumberKeyboard
-      onClick={(value) => setValue((prev) => prev + value)}
+      onClick={handleNumberInput}
       onDelete={() => {
         const newValue = value.slice(0, -1);
         setValue(newValue);

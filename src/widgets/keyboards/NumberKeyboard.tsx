@@ -18,27 +18,24 @@ export const NumberKeyboard: React.FC<NumberKeyboardProps> = ({
       className="grid gap-2 bg-gradient-to-b from-slate-100 to-slate-200 p-4"
     >
       {/* 첫 번째 그리드: 숫자 키패드 */}
-      <div className="grid grid-cols-4 gap-2">
+      <div className="grid grid-cols-6 gap-2">
         {/* 숫자 및 연산 버튼 */}
         {[
           "7",
           "8",
           "9",
-          "/",
           "4",
           "5",
           "6",
-          "-",
           "1",
           "2",
           "3",
-          "+",
           "0",
           ".",
         ].map((value) => (
           <button
             key={value}
-            className="rounded-lg shadow bg-gradient-to-r from-white to-slate-100 p-4 text-xl font-semibold text-slate-800 transition-all duration-200 hover:from-slate-300 hover:to-slate-400"
+            className="rounded-lg shadow bg-gradient-to-r col-span-2 from-white to-slate-100 p-4 text-xl font-semibold text-slate-800 transition-all duration-200 hover:from-slate-300 hover:to-slate-400"
             onClick={() => onClick(value)}
           >
             {value}
