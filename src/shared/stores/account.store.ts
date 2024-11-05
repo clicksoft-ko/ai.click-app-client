@@ -12,7 +12,7 @@ type Actions = {
 };
 
 const initialState: AccountState = {
-  account: undefined,  
+  account: undefined,
 };
 
 const stateCreator: StateCreator<AccountState & Actions> = (set) => ({
@@ -26,7 +26,7 @@ const persistOptions = persist<AccountState & Actions>(
   stateCreator,
   {
     name: "AccountStore",
-    storage: createJSONStorage(() => sessionStorage),
+    storage: createJSONStorage(() => localStorage),
   }
 );
 
