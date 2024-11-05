@@ -1,7 +1,6 @@
-import { useAuth } from "@/shared/hooks/auth";
+import { useAuth, useSignOut } from "@/shared/hooks/auth";
 import { imgPaths } from "@/shared/paths";
 import { cn } from "@/shared/utils";
-import { signOut } from "@/shared/utils/auth";
 import { Button, Popover, PopoverContent, PopoverTrigger } from "@/widgets/ui";
 import { useState } from "react";
 
@@ -10,6 +9,7 @@ interface UserAvatarProps {}
 export function UserAvatar({}: UserAvatarProps) {
   const [open, setOpen] = useState(false);
   const { user } = useAuth();
+  const { signOut } = useSignOut();
 
   return (
     <>

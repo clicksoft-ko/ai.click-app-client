@@ -5,3 +5,4 @@ export * from './use-dvh';
 export * from './use-geo-location';
 export * from './use-outside-click';
 export * from './use-is-mobile';
+export * from './use-saup-info';

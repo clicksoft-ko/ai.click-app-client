@@ -13,7 +13,10 @@ type SearchState = {
   searchString?: {
     [key: string]: string;
   }
+  selectedSaup: string;
+
 }
+
 
 type Actions = {
   setTab: (tab: TabType) => void;
@@ -21,6 +24,7 @@ type Actions = {
   setDateRange: (dateRange: DateRange) => void;
   setIsPending: (isPending: boolean) => void;
   setSearchString: (tab: TabType, text: string) => void;
+  setSelectedSaup: (saup: string) => void;
 }
 
 const initialState: SearchState = {
@@ -29,6 +33,7 @@ const initialState: SearchState = {
   dateRange: new DateRange(),
   isPending: false,
   searchString: undefined,
+  selectedSaup: "01",
 }
 
 const stateCreator: StateCreator<SearchState & Actions> = (set) => ({
@@ -43,6 +48,7 @@ const stateCreator: StateCreator<SearchState & Actions> = (set) => ({
       [tab]: text,
     }
   })),
+  setSelectedSaup: (saup) => set(() => ({ selectedSaup: saup })),
 });
 
 export const useSearchStore = create(devtools(stateCreator));

@@ -3,6 +3,8 @@ import { PrescriptionBox } from ".";
 import { usePrescription } from "../hooks";
 
 import { useComponents } from "@/features/root/hooks";
+import { FloatSaupButton } from "@/widgets/buttons";
+
 
 interface Props {}
 export function PrescriptionBody({}: Props) {
@@ -13,11 +15,14 @@ export function PrescriptionBody({}: Props) {
   });
 
   return (
-    <InfiniteBodyWrapper
-      className={(components?.length ?? 0) > 0 ? "w-fit md:w-full" : ""}
-      {...result}
-    >
-      {components}
-    </InfiniteBodyWrapper>
+    <>
+      <InfiniteBodyWrapper
+        className={(components?.length ?? 0) > 0 ? "w-fit md:w-full" : ""}
+        {...result}
+      >
+        {components}
+      </InfiniteBodyWrapper>
+      <FloatSaupButton />
+    </>
   );
 }

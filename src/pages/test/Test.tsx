@@ -1,6 +1,9 @@
 import { VsMenuNameItem } from "@/features/root/ward/vital-sign/vs-input-settings/types";
+import { FloatButton } from "@/widgets/buttons";
 import { SortableList } from "@/widgets/dnd-kit";
+import { Switch } from "@/widgets/ui";
 import { useState } from "react";
+import { GoGraph } from "react-icons/go";
 
 export const TestPage = () => {
   const [menuNames, setMenuNameList] = useState<VsMenuNameItem[]>([
@@ -9,21 +12,13 @@ export const TestPage = () => {
   ]);
 
   return (
-    <div>
-      <SortableList
-        items={menuNames}
-        className="grid grid-cols-4"
-        onChange={({ items }) => setMenuNameList(items)}
-        renderItem={(item) => (
-          <SortableList.Item id={item.id}>
-            <div>
-              <SortableList.DragHandleWrapper>
-                <div>dasda</div>
-              </SortableList.DragHandleWrapper>
-              dasdsajkdsakl asdaksda
-            </div>
-          </SortableList.Item>
-        )}
+    <div className="flex items-center gap-1">
+      <label htmlFor="switch">한방</label>
+      <Switch id="switch"></Switch>
+      <FloatButton
+        className="text-sm font-normal text-white"
+        onClick={() => {}}
+        icon={"한방"}
       />
     </div>
   );
