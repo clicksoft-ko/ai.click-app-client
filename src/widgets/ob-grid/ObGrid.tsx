@@ -3,7 +3,7 @@ import { cn } from "@/shared/utils";
 import styles from "./ob-grid.module.scss";
 
 interface Props extends ChildrenClassNameProps {
-  gridType?: "insulin" | "textList" | "rx-order" | "rx-diagnosis";
+  gridType?: "insulin" | "textList" | "rx-order" | "rx-diagnosis" | "rx-hanbang-order";
 }
 
 export function ObGrid({ children, className, gridType }: Props) {

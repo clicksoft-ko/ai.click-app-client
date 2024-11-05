@@ -33,7 +33,9 @@ export function useInfiniteEmit<TPath extends PathTypeKey>({
   const { isConnected } = useSocketIO();
   const queryClient = useQueryClient();
   const setIsPending = useSearchStore((state) => state.setIsPending);
-  const { emit, error, isPending } = useEmitWithAck(path);
+  const { emit, error, isPending } = useEmitWithAck(path, {
+    onPending: setIsPending,
+  });
 
   const { data, fetchNextPage, refetch } = useInfiniteQuery({
     initialPageParam: 1,
@@ -52,11 +54,7 @@ export function useInfiniteEmit<TPath extends PathTypeKey>({
       fetchNextPage();
     },
   });
-
-  useEffect(() => {
-    setIsPending(isPending);
-  }, [isPending]);
-
+ 
   // 탭 이동 시 쿼리 초기화 (currentTab이 아닐 시 enabled는 false)
   useEffect(() => {
     return () => {

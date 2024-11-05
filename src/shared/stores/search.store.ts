@@ -14,7 +14,6 @@ type SearchState = {
     [key: string]: string;
   }
   selectedSaup: string;
-
 }
 
 

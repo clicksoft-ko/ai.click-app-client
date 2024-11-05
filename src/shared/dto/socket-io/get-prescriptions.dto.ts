@@ -6,7 +6,7 @@ export interface GetPrescriptionsDto {
   startYmd: string;
   endYmd: string;
 
-  // searchString: string;
+  saup: string;
   page: number;
   count: number;
 }
@@ -15,6 +15,7 @@ export type GetPrescriptionsResultDto = Prescription[]
 
 export class Prescription {
   id!: string;
+  isHanbang!: boolean;
   headers!: ContentInfo[];
   diagnosises?: Diagnosis[]
   orders?: RxOrder[];
@@ -43,6 +44,12 @@ export class RxOrder {
   day!: number;
   /** 용법 */
   yongbup!: string;
+
+  /** 한방 */
+  chim?: string;
+  hyul1?: string;
+  hyul2?: string;
+  hyul3?: string;
 
   orderType?: OrderType;
 }

@@ -6,16 +6,23 @@ import { Fragment } from "react";
 
 interface Props {
   orders: RxOrder[] | undefined;
+  isHanbang: boolean;
 }
-// const OrderType: any = {};
-export function OrderBox({ orders }: Props) {
+
+export default function OrderBox({ orders, isHanbang }: Props) {
   if (!orders || orders.length === 0) return <></>;
 
   return (
     <TitleGroup title="처방내역">
-      <ObGrid gridType="rx-order">
+      <ObGrid gridType={isHanbang ? "rx-hanbang-order" : "rx-order"}>
         <ObGridHead>코드</ObGridHead>
         <ObGridHead>명칭</ObGridHead>
+
+        <ObGridHead className={isHanbang ? "" : "hidden"}>침</ObGridHead>
+        <ObGridHead className={isHanbang ? "" : "hidden"}>혈1</ObGridHead>
+        <ObGridHead className={isHanbang ? "" : "hidden"}>혈2</ObGridHead>
+        <ObGridHead className={isHanbang ? "" : "hidden"}>혈3</ObGridHead>
+
         <ObGridHead>일투</ObGridHead>
         <ObGridHead>횟수</ObGridHead>
         <ObGridHead>총투</ObGridHead>
@@ -35,6 +42,38 @@ export function OrderBox({ orders }: Props) {
               </ObGridBody>
               <ObGridBody className={cn(bgStyles, textStyles, "text-left")}>
                 {order.name}
+              </ObGridBody>
+              <ObGridBody
+                className={cn(
+                  bgStyles,
+                  isHanbang ? "whitespace-nowrap text-left" : "hidden",
+                )}
+              >
+                {order.chim}
+              </ObGridBody>
+              <ObGridBody
+                className={cn(
+                  bgStyles,
+                  isHanbang ? "whitespace-nowrap text-left" : "hidden",
+                )}
+              >
+                {order.hyul1}
+              </ObGridBody>
+              <ObGridBody
+                className={cn(
+                  bgStyles,
+                  isHanbang ? "whitespace-nowrap text-left" : "hidden",
+                )}
+              >
+                {order.hyul2}
+              </ObGridBody>
+              <ObGridBody
+                className={cn(
+                  bgStyles,
+                  isHanbang ? "whitespace-nowrap text-left" : "hidden",
+                )}
+              >
+                {order.hyul3}
               </ObGridBody>
               <ObGridBody className={cn(bgStyles, "text-right")}>
                 {isInstructions ? "" : order.dailyDose}

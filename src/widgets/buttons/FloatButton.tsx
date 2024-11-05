@@ -1,7 +1,7 @@
-import { ClassNameProps } from "@/shared/interfaces/props";
 import { cn } from "@/shared/utils";
+import { ButtonHTMLAttributes } from "react";
 
-interface FloatButtonProps extends ClassNameProps {
+interface FloatButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   icon: React.ReactNode;
   onClick: () => void;
   style?: React.CSSProperties;
@@ -11,6 +11,7 @@ export const FloatButton = ({
   style,
   icon,
   className,
+  ...props
 }: FloatButtonProps) => {
   return (
     <button
@@ -25,6 +26,7 @@ export const FloatButton = ({
         right: `1rem`,
         ...style,
       }}
+      {...props}
     >
       {icon}
     </button>

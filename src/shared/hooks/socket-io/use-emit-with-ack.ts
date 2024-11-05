@@ -33,6 +33,7 @@ export function useEmitWithAck<TPath extends PathTypeKey>(path: TPath, args?: Ar
 
     setIsPending(true);
     args?.onPending?.(true);
+    
     try {
       const { key, ...dtoWithoutKey } = dto;
       const response: SocketResponse<any> = await socket?.emitWithAck(path as string, {

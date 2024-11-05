@@ -9,6 +9,7 @@ export const usePrescription = () => {
   const tab = useSearchStore((state) => state.tab);
   const { patient } = usePatientStore();
   const enabled = tab === MedicalTab.처방 && !!patient;
+  const selectedSaup = useSearchStore((state) => state.selectedSaup);
 
   const result = useInfiniteEmit({
     path: "getPrescriptions",
@@ -20,6 +21,7 @@ export const usePrescription = () => {
         startYmd: dateRange.startYmd,
         endYmd: dateRange.endYmd,
         weib,
+        saup: selectedSaup,
       };
     },
     queryKey: [patient?.chartNo, weib],

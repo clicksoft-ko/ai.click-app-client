@@ -7,9 +7,24 @@
 }
 
 .rx-order {
-  grid-template-columns: minmax(5rem, auto) minmax(15rem, 1fr) minmax(4rem, 4rem) minmax(2rem, 2.5rem) minmax(2rem, 2.5rem) minmax(4rem, 12rem);
+  grid-template-columns:
+    minmax(5rem, auto) minmax(15rem, 1fr) minmax(4rem, 4rem)
+    minmax(2rem, 2.5rem) minmax(2rem, 2.5rem) minmax(4rem, 12rem);
+}
+
+.rx-hanbang-order {
+  grid-template-columns: minmax(5rem, auto) //코드
+    minmax(15rem, 1fr) //명칭
+    minmax(2rem, 2rem) //침
+    minmax(3.5rem, 3.5rem) //혈1
+    minmax(3.5rem, 3.5rem) //혈2
+    minmax(3.5rem, 3.5rem) //혈3
+    minmax(4rem, 4rem) //일투
+    minmax(2rem, 2.5rem) //횟수
+    minmax(2rem, 2.5rem) //총투
+    minmax(4rem, 12rem); //용법
 }
 
 .rx-diagnosis {
-  grid-template-columns: minmax(5rem, auto) minmax(15rem, 1fr)
+  grid-template-columns: minmax(5rem, auto) minmax(15rem, 1fr);
 }

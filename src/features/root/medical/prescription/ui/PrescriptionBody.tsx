@@ -5,7 +5,6 @@ import { usePrescription } from "../hooks";
 import { useComponents } from "@/features/root/hooks";
 import { FloatSaupButton } from "@/widgets/buttons";
 
-
 interface Props {}
 export function PrescriptionBody({}: Props) {
   const { data, ...result } = usePrescription();

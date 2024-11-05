@@ -1,27 +1,10 @@
-import { PathTypeKey } from "@/shared/hooks/types";
+import { useCurrentQueryKey } from "@/features/common/hooks";
 import { TabType } from "@/shared/stores";
 import { cn } from "@/shared/utils";
 import { Button, DateRangePicker, Input } from "@/widgets/ui";
 import { CustomRadio, RadioGroup } from "@/widgets/ui/radio";
-import { useQueryClient } from "@tanstack/react-query";
-import { MedicalTab, WardTab } from "../enums";
 import { useSearchTab } from "../hooks";
 import { scrollClearCarousels } from "../lib";
-
-const queryObj: {
-  [key: string]: PathTypeKey;
-} = {
-  [MedicalTab.처방]: "getPrescriptions",
-  [MedicalTab.초진]: "getFirstCharts",
-  [MedicalTab.경과]: "getProgressNotes",
-  [MedicalTab.검사]: "getLabs",
-  [MedicalTab.협진]: "getConsultations",
-
-  [WardTab.간호]: "getNursingRecords",
-  [WardTab.Vital]: "getVitalSigns",
-  [WardTab.IO]: "getIOSheets",
-  [WardTab.RI]: "getInsulins",
-};
 
 interface Props {
   tabTypes: TabType[];
@@ -39,7 +22,7 @@ export const SearchTabControl = ({ tabTypes }: Props) => {
     setDateRange,
   } = useSearchTab();
 
-  const queryClient = useQueryClient();
+  const { invalidateQuery } = useCurrentQueryKey();
 
   function onSearchStringChange(e: React.ChangeEvent<HTMLInputElement>): void {
     if (tab) setSearchString(tab, e.target.value);
@@ -47,12 +30,7 @@ export const SearchTabControl = ({ tabTypes }: Props) => {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault();
-
-    if (tab) {
-      const key = queryObj[tab];
-      queryClient.invalidateQueries({ queryKey: [key] });
-    }
-
+    invalidateQuery();
     scrollClearCarousels();
   }
 

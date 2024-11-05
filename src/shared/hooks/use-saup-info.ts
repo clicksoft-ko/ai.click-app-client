@@ -13,7 +13,7 @@ export const useSaupInfo = () => {
   }, [account?.hanbangSaups]);
 
   return {
-    saup: hanbangSaup?.saup,
+    saup: hanbangSaup?.saup ?? "01",
     isHanbang: hanbangSaup?.isHanbang,
     isSingleSaup,
   };

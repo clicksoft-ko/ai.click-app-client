@@ -1,6 +1,9 @@
 import { Prescription } from "@/shared/dto/socket-io";
 import { SearchDataBox } from "@/widgets/search-data";
-import { DiagnosisBox, MedicalNotesBox, OrderBox } from ".";
+import { DiagnosisBox, MedicalNotesBox } from ".";
+import { lazy, Suspense } from "react";
+
+const OrderBox = lazy(() => import("./OrderBox"));
 
 interface Props {
   prescription: Prescription;
@@ -15,7 +18,12 @@ export function PrescriptionBox({ prescription }: Props) {
     >
       <div className="flex h-fit flex-col gap-4">
         <DiagnosisBox diagnosises={prescription.diagnosises} />
-        <OrderBox orders={prescription.orders} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <OrderBox
+            orders={prescription.orders}
+            isHanbang={prescription.isHanbang}
+          />
+        </Suspense>
         <MedicalNotesBox medicalNotes={prescription.medicalNotes} />
       </div>
     </SearchDataBox>
