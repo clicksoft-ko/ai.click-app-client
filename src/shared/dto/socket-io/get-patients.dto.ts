@@ -1,3 +1,4 @@
+import { PatientSort } from "@/shared/types";
 import { convertBirthToAge } from "@/shared/utils/converts";
 import { formatYmdToShort } from "@/shared/utils/formats";
 
@@ -32,6 +33,7 @@ export interface GetPatientsDto {
   searchString: string;
   page: number;
   count: number;
+  sort: PatientSort;
 }
 
 export type GetPatientsResultDto = Patient[];

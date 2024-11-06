@@ -1,6 +1,7 @@
 import { Weib } from "@/shared/dto/socket-io";
 import { useInfiniteEmit } from "@/shared/hooks/socket-io";
 import { PathTypeKey } from "@/shared/hooks/types";
+import { useSearchStore } from "@/shared/stores";
 import dayjs from "dayjs";
 
 interface Args {
@@ -10,6 +11,8 @@ interface Args {
 }
 
 export const useInfiniteSelectPat = ({ searchString, weib, enabled }: Args) => {
+  const patientSort = useSearchStore((state) => state.patientSort);
+
   return useInfiniteEmit({
     path: "getPatients",
     dtoFn({ page, count }) {
@@ -19,9 +22,10 @@ export const useInfiniteSelectPat = ({ searchString, weib, enabled }: Args) => {
         searchString,
         weib,
         ymd: dayjs().format("YYYYMMDD"),
+        sort: patientSort,
       };
     },
-    queryKey: ["getPatients" as PathTypeKey, searchString, weib],
+    queryKey: ["getPatients" as PathTypeKey, searchString, weib, patientSort],
     enabled,
   });
 };

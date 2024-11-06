@@ -14,3 +14,4 @@ export * from './badge';
 export * from "./scroll-area";
 export * from "./DatePicker";
 export * from "./switch";
+export * from './select';

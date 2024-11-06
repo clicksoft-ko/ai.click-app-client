@@ -26,6 +26,7 @@ export const SelectPatSheet = ({ open, setOpen }: Props) => {
   const [weib, setWeib] = useState(Weib.입원);
   const [searchString, setSearchString] = useState("");
   const setGlobalWeib = useSearchStore((state) => state.setWeib);
+  const setPatientSort = useSearchStore((state) => state.setPatientSort);
   const { targetRef, scrollToTop } = useScrollHandler<HTMLDivElement>();
   const { data, refetch, ...result } = useInfiniteSelectPat({
     enabled: open,
@@ -64,6 +65,7 @@ export const SelectPatSheet = ({ open, setOpen }: Props) => {
                 queryKey: ["getPatients" as PathTypeKey],
               });
               setWeib(weib);
+              setPatientSort(weib === Weib.입원 ? "ward" : "chart");
             }}
           />
         </SheetHeader>
