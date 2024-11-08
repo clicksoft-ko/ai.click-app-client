@@ -94,7 +94,7 @@ export const VsInputDialog = ({
           <div className="h-2" />
         </div>
 
-        {isPending && <Loading />}
+        {isPending && <Loading pointerEventsNone={false} />}
       </CustomTopDialog>
       {settingsOpen && (
         <VsInputSettingsDialog open={settingsOpen} setOpen={setSettingsOpen} />

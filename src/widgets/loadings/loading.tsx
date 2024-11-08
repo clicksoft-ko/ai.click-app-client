@@ -2,13 +2,18 @@ import { cn } from "@/shared/utils";
 
 interface LoadingProps {
   className?: string;
+  pointerEventsNone?: boolean;
 }
 
-export const Loading = ({ className }: LoadingProps) => {
+export const Loading = ({
+  className,
+  pointerEventsNone = true,
+}: LoadingProps) => {
   return (
     <div
       className={cn(
         "absolute inset-0 z-50 flex items-center justify-center bg-white/80",
+        pointerEventsNone && "pointer-events-none",
         className,
       )}
     >
