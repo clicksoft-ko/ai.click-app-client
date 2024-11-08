@@ -16,3 +16,5 @@ export * from './get-consultations.dto';
 export * from './get-vss-of-day.dto';
 export * from './save-vss-of-day.dto';
 export * from './delete-vs.dto';
+export * from './get-wards.dto';
+export * from './get-patient.dto';

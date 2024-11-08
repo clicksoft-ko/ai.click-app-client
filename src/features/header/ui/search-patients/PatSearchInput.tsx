@@ -1,6 +1,8 @@
 import { Weib } from "@/shared/dto/socket-io";
+import { ClassNameProps } from "@/shared/interfaces/props";
 import { useSearchStore } from "@/shared/stores";
 import { PatientSort } from "@/shared/types";
+import { cn } from "@/shared/utils";
 import {
   Input,
   Select,
@@ -16,14 +18,19 @@ import {
 import { Search } from "lucide-react";
 import { useState } from "react";
 
-interface Props {
+interface Props extends ClassNameProps {
   weib: Weib;
   onChange: (value: string) => void;
   onWeibChagne: (weib: Weib) => void;
 }
 
 let timeout: any = null;
-export function PatSearchInput({ weib, onChange, onWeibChagne }: Props) {
+export function PatSearchInput({
+  weib,
+  className,
+  onChange,
+  onWeibChagne,
+}: Props) {
   const [text, setText] = useState("");
   const patientSort = useSearchStore((state) => state.patientSort);
   const setPatientSort = useSearchStore((state) => state.setPatientSort);
@@ -38,7 +45,7 @@ export function PatSearchInput({ weib, onChange, onWeibChagne }: Props) {
   }
 
   return (
-    <div className="flex gap-2">
+    <div className={cn("flex gap-2", className)}>
       <Select
         value={patientSort}
         onValueChange={(v) => setPatientSort(v as PatientSort)}

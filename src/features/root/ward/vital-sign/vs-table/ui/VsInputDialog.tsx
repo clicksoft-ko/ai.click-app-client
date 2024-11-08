@@ -5,6 +5,7 @@ import { useVsInputDialog } from "../hooks";
 import { VsInputTable } from "./VsInputTable";
 import { VsInputSettingsDialog } from "../../vs-input-settings/ui";
 import { Settings } from "lucide-react";
+import { Loading } from "@/widgets/loadings";
 
 interface VsInputDialogProps {
   open: boolean;
@@ -81,7 +82,11 @@ export const VsInputDialog = ({
           <label className="flex w-fit items-center gap-2">
             <span>일자</span>
             <span className="w-1">:</span>
-            <DatePicker value={date} onChange={handleDateChange} disabled={isPending} />
+            <DatePicker
+              value={date}
+              onChange={handleDateChange}
+              disabled={isPending}
+            />
           </label>
         </div>
         <div className="overflow-auto">
@@ -95,18 +100,5 @@ export const VsInputDialog = ({
         <VsInputSettingsDialog open={settingsOpen} setOpen={setSettingsOpen} />
       )}
     </>
-  );
-};
-
-const Loading = () => {
-  return (
-    <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/80">
-      <div className="flex flex-col items-center gap-2">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
-        <span className="text-lg font-medium text-gray-700 [text-shadow:_-2px_-2px_0_#fff,_2px_-2px_0_#fff,_-2px_2px_0_#fff,_2px_2px_0_#fff]">
-          잠시만 기다려주세요...
-        </span>
-      </div>
-    </div>
   );
 };

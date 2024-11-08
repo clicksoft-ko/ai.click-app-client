@@ -54,7 +54,7 @@ export function useInfiniteEmit<TPath extends PathTypeKey>({
       fetchNextPage();
     },
   });
- 
+
   // 탭 이동 시 쿼리 초기화 (currentTab이 아닐 시 enabled는 false)
   useEffect(() => {
     return () => {

@@ -1,23 +1,26 @@
+import { usePatientStore } from "@/shared/stores";
 import { cn } from "@/shared/utils";
 import { GenderIcon } from "@/widgets/ui";
-import { useState } from "react";
 import { MdPersonSearch } from "react-icons/md";
+import { SelectPatientProvider, useSelectPatient } from "../contexts";
 import { SelectPatSheet } from "./SelectPatSheet";
-import { usePatientStore } from "@/shared/stores";
 
-interface SelectPatButtonProps {}
+export function SelectPatButton() {
+  return (
+    <SelectPatientProvider>
+      <SelectPatButton_ />
+    </SelectPatientProvider>
+  );
+}
 
-export function SelectPatButton({}: SelectPatButtonProps) {
+function SelectPatButton_() {
   const { patient } = usePatientStore();
-  const [open, setOpen] = useState(false);
-  function handleClick() {
-    setOpen(true);
-  }
+  const { setOpen } = useSelectPatient();
 
   return (
     <>
-      <SelectPatSheet open={open} setOpen={setOpen} />
-      <button className="flex items-center" onClick={handleClick}>
+      <SelectPatSheet />
+      <button className="flex items-center" onClick={() => setOpen(true)}>
         <div
           className={cn(
             "flex h-11 min-w-11 items-center justify-center rounded border border-primary/50 bg-white px-2 text-primary",
