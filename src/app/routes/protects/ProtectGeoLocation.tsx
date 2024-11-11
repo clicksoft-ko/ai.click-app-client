@@ -17,9 +17,7 @@ export const ProtectGeoLocation = ({ element }: { element: JSX.Element }) => {
 
   const { data, error, isPending } = useQuery({
     queryFn: () => fetchGeoRange(location!.lat, location!.lng),
-    queryKey: [apiPaths.auth.geoRange(0, 0)],
-    staleTime: 1000 * 60, // 캐시 1분
-    gcTime: 1000 * 60 * 2, // 메모리 유지 2분
+    queryKey: [apiPaths.auth.geoRange(0, 0)],    
     enabled: isAuthenticated && !isLoading && !!location && isGeoAccess,
   });
 
