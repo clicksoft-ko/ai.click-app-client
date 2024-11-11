@@ -24,7 +24,7 @@ export const ProtectGeoLocation = ({ element }: { element: JSX.Element }) => {
   });
 
   if (pathname === paths.test) return element;
-  
+
   if (!isLoading && !isGeoAccess)
     return (
       <GeoAccessMessage
@@ -39,6 +39,7 @@ export const ProtectGeoLocation = ({ element }: { element: JSX.Element }) => {
         message="로딩 중..."
         description="로딩 중입니다."
         showReloadButton={false}
+        showSignout={true}
       />
     );
   if (isLoading || !user) return element;
