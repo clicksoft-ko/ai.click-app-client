@@ -1,7 +1,8 @@
 import { useSignOut } from "@/shared/hooks/auth";
+import { ChildrenProps } from "@/shared/interfaces/props";
 import { Button } from "@/widgets/ui";
 
-interface GeoAccessMessageProps {
+interface GeoAccessMessageProps extends ChildrenProps {
   message: string;
   description?: string;
   showSignout?: boolean;
@@ -13,6 +14,7 @@ export const GeoAccessMessage = ({
   description,
   showReloadButton = true,
   showSignout = false,
+  children,
 }: GeoAccessMessageProps) => {
   const { signOut } = useSignOut();
 
@@ -38,6 +40,7 @@ export const GeoAccessMessage = ({
             </Button>
           )}
         </div>
+        {children}
       </div>
     </div>
   );

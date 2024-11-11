@@ -46,7 +46,9 @@ export const ProtectGeoLocation = ({ element }: { element: JSX.Element }) => {
         description="로딩 중입니다."
         showReloadButton={false}
         showSignout={true}
-      />
+      >
+        {`isAuthenticated: ${isAuthenticated}, isLoading: ${isLoading}, isGeoAccess: ${isGeoAccess}, location: ${location}`}
+      </GeoAccessMessage>
     );
   if (isLoading || !user) return element;
   if (data?.message)
