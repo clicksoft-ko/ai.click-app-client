@@ -17,7 +17,7 @@ export const ProtectGeoLocation = ({ element }: { element: JSX.Element }) => {
 
   const { data, error, isPending } = useQuery({
     queryFn: () => fetchGeoRange(location!.lat, location!.lng),
-    queryKey: [apiPaths.auth.geoRange(0, 0)],    
+    queryKey: [apiPaths.auth.geoRange(0, 0)],
     enabled: isAuthenticated && !isLoading && !!location && isGeoAccess,
   });
 
@@ -31,6 +31,14 @@ export const ProtectGeoLocation = ({ element }: { element: JSX.Element }) => {
         showSignout={true}
       />
     );
+  if (error)
+    return (
+      <GeoAccessMessage
+        message="에러가 발생했습니다."
+        description={parseErrorMessage(error)}
+        showSignout={true}
+      />
+    );
   if (isPending)
     return (
       <GeoAccessMessage
@@ -41,14 +49,6 @@ export const ProtectGeoLocation = ({ element }: { element: JSX.Element }) => {
       />
     );
   if (isLoading || !user) return element;
-  if (error)
-    return (
-      <GeoAccessMessage
-        message="에러가 발생했습니다."
-        description={parseErrorMessage(error)}
-        showSignout={true}
-      />
-    );
   if (data?.message)
     return (
       <GeoAccessMessage
