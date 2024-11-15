@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Canvas } from "src/components/Canvas/Canvas";
+import { Canvas } from "@/widgets/Canvas/Canvas";
 
 export const TestPage = () => {
   const [tool, setTool] = useState<"pen" | "eraser">("pen");
@@ -61,13 +61,15 @@ export const TestPage = () => {
           onChange={(e) => setLineWidth(Number(e.target.value))}
         />
       </div>
-      <Canvas
-        tool={tool}
-        color={color}
-        lineWidth={lineWidth}
-        onSave={handleSave}
-        onLoad={handleLoad}
-      />
+      <div className="p-2">
+        <Canvas
+          tool={tool}
+          color={color}
+          lineWidth={lineWidth}
+          onSave={handleSave}
+          onLoad={handleLoad}
+        />
+      </div>
     </div>
   );
 };
