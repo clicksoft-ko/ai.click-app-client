@@ -21,7 +21,6 @@ export const Canvas = ({
   const [history, setHistory] = useState<string[]>([]);
   const [currentStep, setCurrentStep] = useState(-1);
   const [canvasSize, setCanvasSize] = useState(initialCanvasSize);
-  const lastPoint = useRef<{x: number, y: number} | null>(null);
 
   const saveToHistory = () => {
     const canvas = canvasRef.current;
@@ -108,24 +107,6 @@ export const Canvas = ({
     return { x, y };
   };
 
-  const drawLine = (ctx: CanvasRenderingContext2D, start: {x: number, y: number}, end: {x: number, y: number}) => {
-    const dx = end.x - start.x;
-    const dy = end.y - start.y;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-    
-    // 부드러운 선을 위해 중간점들을 보간
-    const steps = Math.max(dist * 2, 1);
-    for(let i = 0; i < steps; i++) {
-      const t = i / steps;
-      const x = start.x + dx * t;
-      const y = start.y + dy * t;
-      ctx.lineTo(x, y);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(x, y);
-    }
-  };
-
   const startDrawing = (e: React.MouseEvent | React.TouchEvent) => {
     if (!("touches" in e)) {
       e.preventDefault();
@@ -142,32 +123,40 @@ export const Canvas = ({
       }
     }
 
-    const coords = getCoordinates(e);
-    lastPoint.current = coords;
+    const { x, y } = getCoordinates(e);
     ctx.beginPath();
-    ctx.moveTo(coords.x, coords.y);
+    ctx.moveTo(x, y);
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
 
     if (tool === "pen") {
       ctx.strokeStyle = color;
       ctx.lineWidth = lineWidth;
-      ctx.globalAlpha = 1;
-      ctx.shadowColor = "transparent"; 
-      ctx.shadowBlur = 0;  
-      ctx.imageSmoothingEnabled = true;
-      ctx.imageSmoothingQuality = "high"; 
-    } else if (tool === "brush") {
-      ctx.strokeStyle = color;
-      ctx.lineWidth = lineWidth;
-      ctx.globalAlpha = 0.1;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
       ctx.shadowColor = color;
-      ctx.shadowBlur = lineWidth * 2;
+      ctx.shadowBlur = 0.5;
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
     } else {
       ctx.strokeStyle = "#ffffff";
       ctx.lineWidth = lineWidth * 10;
       ctx.globalAlpha = 1;
       ctx.shadowBlur = 0;
+    }
+
+    // 시작점에서 바로 그리기 시작
+    ctx.lineTo(x, y);
+    ctx.stroke();
+  };
+
+  const handleMouseEnter = (e: React.MouseEvent | React.TouchEvent) => {
+    if (isDrawing) {
+      const ctx = canvasRef.current?.getContext("2d");
+      if (!ctx) return;
+      const { x, y } = getCoordinates(e);
+      ctx.beginPath();
+      ctx.moveTo(x, y);     
     }
   };
 
@@ -175,13 +164,15 @@ export const Canvas = ({
     if (!("touches" in e)) {
       e.preventDefault();
     }
-    if (!isDrawing || !canvasRef.current || !lastPoint.current) return;
+    if (!isDrawing || !canvasRef.current) return;
     const ctx = canvasRef.current.getContext("2d");
     if (!ctx) return;
 
-    const currentPoint = getCoordinates(e);
-    drawLine(ctx, lastPoint.current, currentPoint);
-    lastPoint.current = currentPoint;
+    const { x, y } = getCoordinates(e);
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.lineTo(x, y);
+    ctx.stroke();
   };
 
   const stopDrawing = (saveToHistoryFlag: boolean = true) => {
@@ -189,7 +180,6 @@ export const Canvas = ({
       saveToHistory();
     }
     setIsDrawing(false);
-    lastPoint.current = null;
     const ctx = canvasRef.current?.getContext("2d");
     if (!ctx) return;
     ctx.closePath();
@@ -200,38 +190,6 @@ export const Canvas = ({
       const ctx = canvasRef.current?.getContext("2d");
       if (!ctx) return;
       ctx.closePath();
-    }
-  };
-
-  const handleMouseEnter = (e: React.MouseEvent | React.TouchEvent) => {
-    if (isDrawing) {
-      const ctx = canvasRef.current?.getContext("2d");
-      if (!ctx) return;
-      const coords = getCoordinates(e);
-      lastPoint.current = coords;
-      ctx.beginPath();
-      ctx.moveTo(coords.x, coords.y);
-      ctx.lineCap = "round";
-      ctx.lineJoin = "round";
-      if (tool === "pen") {
-        ctx.strokeStyle = color;
-        ctx.lineWidth = lineWidth;
-        ctx.globalAlpha = 1;
-        ctx.shadowBlur = 1;
-        ctx.imageSmoothingEnabled = true;
-        ctx.imageSmoothingQuality = "high";
-      } else if (tool === "brush") {
-        ctx.strokeStyle = color;
-        ctx.lineWidth = lineWidth;
-        ctx.globalAlpha = 0.1;
-        ctx.shadowColor = color;
-        ctx.shadowBlur = lineWidth * 2;
-      } else {
-        ctx.strokeStyle = "#ffffff";
-        ctx.lineWidth = lineWidth * 10;
-        ctx.globalAlpha = 1;
-        ctx.shadowBlur = 0;
-      }
     }
   };
 
@@ -252,15 +210,17 @@ export const Canvas = ({
 
     // 터치 꾹 눌림 방지
     const preventTouchHold = (e: Event) => e.preventDefault();
-    canvas?.addEventListener('touchstart', preventTouchHold, { passive: false });
-    canvas?.addEventListener('contextmenu', preventTouchHold);
+    canvas?.addEventListener("touchstart", preventTouchHold, {
+      passive: false,
+    });
+    canvas?.addEventListener("contextmenu", preventTouchHold);
 
     return () => {
-      canvas?.removeEventListener('touchstart', preventTouchHold);
-      canvas?.removeEventListener('contextmenu', preventTouchHold);
+      canvas?.removeEventListener("touchstart", preventTouchHold);
+      canvas?.removeEventListener("contextmenu", preventTouchHold);
     };
   }, []);
-  
+
   return (
     <div>
       <div className="mb-4 flex gap-2">
