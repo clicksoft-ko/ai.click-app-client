@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export interface CanvasProps {
   tool: "pen" | "eraser" | "brush";
@@ -247,19 +247,19 @@ export const Canvas = ({
     setCurrentStep(-1);
   };
 
-  // useEffect(() => {
-  //   const canvas = canvasRef.current;
+  useEffect(() => {
+    const canvas = canvasRef.current;
 
-  //   // 터치 꾹 눌림 방지
-  //   const preventTouchHold = (e: Event) => e.preventDefault();
-  //   canvas?.addEventListener('touchstart', preventTouchHold, { passive: false });
-  //   canvas?.addEventListener('contextmenu', preventTouchHold);
+    // 터치 꾹 눌림 방지
+    const preventTouchHold = (e: Event) => e.preventDefault();
+    canvas?.addEventListener('touchstart', preventTouchHold, { passive: false });
+    canvas?.addEventListener('contextmenu', preventTouchHold);
 
-  //   return () => {
-  //     canvas?.removeEventListener('touchstart', preventTouchHold);
-  //     canvas?.removeEventListener('contextmenu', preventTouchHold);
-  //   };
-  // }, []);
+    return () => {
+      canvas?.removeEventListener('touchstart', preventTouchHold);
+      canvas?.removeEventListener('contextmenu', preventTouchHold);
+    };
+  }, []);
   
   return (
     <div>
