@@ -108,7 +108,9 @@ export const Canvas = ({
   };
 
   const startDrawing = (e: React.MouseEvent | React.TouchEvent) => {
-    // e.preventDefault();
+    if (!("touches" in e)) {
+      e.preventDefault();
+    }
     setIsDrawing(true);
     const ctx = canvasRef.current?.getContext("2d");
     if (!ctx) return;
@@ -134,9 +136,16 @@ export const Canvas = ({
       ctx.strokeStyle = "#ffffff";
       ctx.lineWidth = lineWidth * 10;
     }
+    
+    // 시작점에서 바로 그리기 시작
+    ctx.lineTo(x, y);
+    ctx.stroke();
   };
 
   const draw = (e: React.MouseEvent | React.TouchEvent) => {
+    if (!("touches" in e)) {
+      e.preventDefault();
+    }
     if (!isDrawing || !canvasRef.current) return;
     const ctx = canvasRef.current.getContext("2d");
     if (!ctx) return;
@@ -197,6 +206,7 @@ export const Canvas = ({
     setCurrentStep(-1);
   };
 
+  
   return (
     <div>
       <div className="mb-4 flex gap-2">
