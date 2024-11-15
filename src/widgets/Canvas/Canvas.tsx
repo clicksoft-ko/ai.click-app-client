@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 export interface CanvasProps {
   tool: "pen" | "eraser" | "brush";
