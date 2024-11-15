@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export interface CanvasProps {
   tool: "pen" | "eraser";
@@ -21,11 +21,6 @@ export const Canvas = ({
   const [history, setHistory] = useState<string[]>([]);
   const [currentStep, setCurrentStep] = useState(-1);
   const [canvasSize, setCanvasSize] = useState(initialCanvasSize);
-
-  // 모바일에서 꾹누르기 방지
-  const preventLongPress = (e: React.TouchEvent) => {
-    e.preventDefault();
-  };
 
   const saveToHistory = () => {
     const canvas = canvasRef.current;
@@ -81,11 +76,11 @@ export const Canvas = ({
     img.onload = () => {
       // 캔버스 크기 설정
       setCanvasSize({ width: img.width, height: img.height });
-      
+
       // 캔버스 리렌더링을 위해 requestAnimationFrame 사용
       requestAnimationFrame(() => {
         if (!canvas || !ctx) return;
-        
+
         canvas.width = 800;
         canvas.height = 600;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -141,7 +136,7 @@ export const Canvas = ({
       ctx.strokeStyle = "#ffffff";
       ctx.lineWidth = lineWidth * 10;
     }
-    
+
     // 시작점에서 바로 그리기 시작
     ctx.lineTo(x, y);
     ctx.stroke();
@@ -211,6 +206,19 @@ export const Canvas = ({
     setCurrentStep(-1);
   };
 
+  useEffect(() => {
+    const canvas = canvasRef.current;
+
+    // 터치 꾹 눌림 방지
+    const preventTouchHold = (e: Event) => e.preventDefault();
+    canvas?.addEventListener('touchstart', preventTouchHold, { passive: false });
+    canvas?.addEventListener('contextmenu', preventTouchHold);
+
+    return () => {
+      canvas?.removeEventListener('touchstart', preventTouchHold);
+      canvas?.removeEventListener('contextmenu', preventTouchHold);
+    };
+  }, []);
   
   return (
     <div>
