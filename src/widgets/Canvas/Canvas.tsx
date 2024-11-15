@@ -21,6 +21,7 @@ export const Canvas = ({
   const [history, setHistory] = useState<string[]>([]);
   const [currentStep, setCurrentStep] = useState(-1);
   const [canvasSize, setCanvasSize] = useState(initialCanvasSize);
+  const lastPoint = useRef<{x: number, y: number} | null>(null);
 
   const saveToHistory = () => {
     const canvas = canvasRef.current;
@@ -107,6 +108,24 @@ export const Canvas = ({
     return { x, y };
   };
 
+  const drawLine = (ctx: CanvasRenderingContext2D, start: {x: number, y: number}, end: {x: number, y: number}) => {
+    const dx = end.x - start.x;
+    const dy = end.y - start.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    
+    // 부드러운 선을 위해 중간점들을 보간
+    const steps = Math.max(dist * 2, 1);
+    for(let i = 0; i < steps; i++) {
+      const t = i / steps;
+      const x = start.x + dx * t;
+      const y = start.y + dy * t;
+      ctx.lineTo(x, y);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+    }
+  };
+
   const startDrawing = (e: React.MouseEvent | React.TouchEvent) => {
     if (!("touches" in e)) {
       e.preventDefault();
@@ -123,9 +142,10 @@ export const Canvas = ({
       }
     }
 
-    const { x, y } = getCoordinates(e);
+    const coords = getCoordinates(e);
+    lastPoint.current = coords;
     ctx.beginPath();
-    ctx.moveTo(x, y);
+    ctx.moveTo(coords.x, coords.y);
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
 
@@ -149,25 +169,19 @@ export const Canvas = ({
       ctx.globalAlpha = 1;
       ctx.shadowBlur = 0;
     }
-
-    // 시작점에서 바로 그리기 시작
-    ctx.lineTo(x, y);
-    ctx.stroke();
   };
 
   const draw = (e: React.MouseEvent | React.TouchEvent) => {
     if (!("touches" in e)) {
       e.preventDefault();
     }
-    if (!isDrawing || !canvasRef.current) return;
+    if (!isDrawing || !canvasRef.current || !lastPoint.current) return;
     const ctx = canvasRef.current.getContext("2d");
     if (!ctx) return;
 
-    const { x, y } = getCoordinates(e);
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-    ctx.lineTo(x, y);
-    ctx.stroke();
+    const currentPoint = getCoordinates(e);
+    drawLine(ctx, lastPoint.current, currentPoint);
+    lastPoint.current = currentPoint;
   };
 
   const stopDrawing = (saveToHistoryFlag: boolean = true) => {
@@ -175,6 +189,7 @@ export const Canvas = ({
       saveToHistory();
     }
     setIsDrawing(false);
+    lastPoint.current = null;
     const ctx = canvasRef.current?.getContext("2d");
     if (!ctx) return;
     ctx.closePath();
@@ -192,9 +207,10 @@ export const Canvas = ({
     if (isDrawing) {
       const ctx = canvasRef.current?.getContext("2d");
       if (!ctx) return;
-      const { x, y } = getCoordinates(e);
+      const coords = getCoordinates(e);
+      lastPoint.current = coords;
       ctx.beginPath();
-      ctx.moveTo(x, y);
+      ctx.moveTo(coords.x, coords.y);
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
       if (tool === "pen") {
@@ -231,19 +247,19 @@ export const Canvas = ({
     setCurrentStep(-1);
   };
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
+  // useEffect(() => {
+  //   const canvas = canvasRef.current;
 
-    // 터치 꾹 눌림 방지
-    const preventTouchHold = (e: Event) => e.preventDefault();
-    canvas?.addEventListener('touchstart', preventTouchHold, { passive: false });
-    canvas?.addEventListener('contextmenu', preventTouchHold);
+  //   // 터치 꾹 눌림 방지
+  //   const preventTouchHold = (e: Event) => e.preventDefault();
+  //   canvas?.addEventListener('touchstart', preventTouchHold, { passive: false });
+  //   canvas?.addEventListener('contextmenu', preventTouchHold);
 
-    return () => {
-      canvas?.removeEventListener('touchstart', preventTouchHold);
-      canvas?.removeEventListener('contextmenu', preventTouchHold);
-    };
-  }, []);
+  //   return () => {
+  //     canvas?.removeEventListener('touchstart', preventTouchHold);
+  //     canvas?.removeEventListener('contextmenu', preventTouchHold);
+  //   };
+  // }, []);
   
   return (
     <div>
