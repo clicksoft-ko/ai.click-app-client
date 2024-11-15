@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 export interface CanvasProps {
-  tool: "pen" | "eraser";
+  tool: "pen" | "eraser" | "brush";
   color: string;
   lineWidth: number;
   onSave: (dataUrl: string) => void;
@@ -132,9 +132,22 @@ export const Canvas = ({
     if (tool === "pen") {
       ctx.strokeStyle = color;
       ctx.lineWidth = lineWidth;
+      ctx.globalAlpha = 1;
+      ctx.shadowColor = "transparent"; 
+      ctx.shadowBlur = 0;  
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high"; 
+    } else if (tool === "brush") {
+      ctx.strokeStyle = color;
+      ctx.lineWidth = lineWidth;
+      ctx.globalAlpha = 0.1;
+      ctx.shadowColor = color;
+      ctx.shadowBlur = lineWidth * 2;
     } else {
       ctx.strokeStyle = "#ffffff";
       ctx.lineWidth = lineWidth * 10;
+      ctx.globalAlpha = 1;
+      ctx.shadowBlur = 0;
     }
 
     // 시작점에서 바로 그리기 시작
@@ -187,9 +200,21 @@ export const Canvas = ({
       if (tool === "pen") {
         ctx.strokeStyle = color;
         ctx.lineWidth = lineWidth;
+        ctx.globalAlpha = 1;
+        ctx.shadowBlur = 1;
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
+      } else if (tool === "brush") {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = lineWidth;
+        ctx.globalAlpha = 0.1;
+        ctx.shadowColor = color;
+        ctx.shadowBlur = lineWidth * 2;
       } else {
         ctx.strokeStyle = "#ffffff";
         ctx.lineWidth = lineWidth * 10;
+        ctx.globalAlpha = 1;
+        ctx.shadowBlur = 0;
       }
     }
   };
