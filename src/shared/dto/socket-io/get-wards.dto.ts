@@ -7,6 +7,7 @@ export interface WardPatient {
   name: string;
   gender: string;
   age: number;
+  pcpName: string;
 }
 
 export interface Ward {

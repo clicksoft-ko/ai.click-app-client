@@ -23,7 +23,7 @@ export const VsInputTable = ({
   const setVss = useVsInputStore((state) => state.setVss);
   const { columns } = useColumns({ viewMenus });
   const { table } = useTable({ vss, columns });
-
+  
   useEffect(() => {
     setVss([{ auto: 0 }, ...(originalVss ?? [])]);
   }, [originalVss]);

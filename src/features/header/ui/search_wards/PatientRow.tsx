@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 
 export interface PatientRowProps extends WardPatient {}
 
-const PatientRow = ({ bed, name, gender, age, chart }: PatientRowProps) => {
+const PatientRow = ({ bed, name, gender, age, chart, pcpName }: PatientRowProps) => {
   const { setSelectPatient } = useSelectPatient();
   const {
     data: patientData,
@@ -27,10 +27,11 @@ const PatientRow = ({ bed, name, gender, age, chart }: PatientRowProps) => {
         className="flex items-center gap-1 rounded-lg bg-gray-50 py-1.5 hover:bg-gray-100"
         onClick={() => emitPatient({ chartNo: chart })}
       >
-        <div className="w-10 text-center font-medium text-blue-600">{bed}</div>
+        <div className="w-8 text-center font-medium text-blue-600">{bed}</div>
         <div className="w-20 text-center">{name}</div>
         <div className="w-12 text-center">{gender}</div>
         <div className="w-12 text-center">{age}세</div>
+        <div className="w-20 text-center">{pcpName}</div>
       </div>
       {patientIsPending && <Loading />}
     </>

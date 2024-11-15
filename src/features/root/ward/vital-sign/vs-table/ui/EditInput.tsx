@@ -12,22 +12,13 @@ import { useVsWriteMenus } from "../../hooks";
 import { VsKeyboardHeader } from "./VsKeyboardHeader";
 import { VsKeyboardWrapper } from "./VsKeyboardWrapper";
 import { columnSettings } from "../consts";
+import { useColumnType } from "../hooks";
 
 interface EditInputProps {
   row: Row<Vs>;
   column: Column<Vs>;
   onFocus: (focused: boolean) => void;
 }
-
-const useColumnType = (columnId: string) => {
-  const { type } = columnSettings[columnId as keyof Vs] ?? {};
-  return {
-    isTimeColumn: type === "time",
-    isNurseColumn: type === "nurse",
-    isTextColumn: type === "text",
-    isNumberColumn: type === "number",
-  };
-};
 
 export const EditInput = ({ row, column, onFocus }: EditInputProps) => {
   const setVsByRow = useVsInputStore((state) => state.setVsByRow);
@@ -75,11 +66,14 @@ export const EditInput = ({ row, column, onFocus }: EditInputProps) => {
 
   const handleNextColumnFocus = (row: Row<Vs>, column: Column<Vs>) => {
     const index = viewMenus.findIndex((menu) => menu === column.id);
-    const nextColumn = isTimeColumn
-      ? viewMenus?.[0]
-      : index === -1
-        ? undefined
-        : viewMenus?.[index + 1];
+    let nextColumn: string | undefined;
+    if (isTimeColumn) {
+      nextColumn = "nurse";
+    } else if (isNurseColumn) {
+      nextColumn = viewMenus?.[0];
+    } else {
+      nextColumn = index === -1 ? undefined : viewMenus?.[index + 1];
+    }
 
     if (!nextColumn) {
       setFocused(false);
@@ -112,7 +106,7 @@ export const EditInput = ({ row, column, onFocus }: EditInputProps) => {
           (focused || showKeyboard) && "border border-blue-500 bg-white",
         )}
         type="text"
-        readOnly={!isTextColumn}
+        readOnly={!isTextColumn && !isNurseColumn}
         onChange={(e) => {
           setVsByRow(row.index, vsKey, e.target.value);
         }}

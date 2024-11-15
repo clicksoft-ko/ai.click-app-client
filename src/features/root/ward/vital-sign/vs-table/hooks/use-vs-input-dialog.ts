@@ -52,6 +52,12 @@ export const useVsInputDialog = ({ onSave }: UseVsInputDialogProps) => {
   };
 
   const handleSave = () => {
+    const nurseMissingIndex = vss.findIndex(vs => vs.time && !vs.nurse);
+    if (nurseMissingIndex > -1) {
+      toast.error(`${nurseMissingIndex + 1}번째 줄의 담당간호사를 입력해주세요.`);
+      return;
+    }
+
     saveVssOfDayEmit({
       chartNo: patient?.chartNo ?? "",
       ymd: dayjs(date).format("YYYYMMDD"),

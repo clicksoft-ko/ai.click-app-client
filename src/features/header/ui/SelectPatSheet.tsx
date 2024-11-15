@@ -10,6 +10,7 @@ import {
 import { useSelectPatient } from "../contexts";
 import SearchPatientList from "./search-patients/SearchPatientList";
 import SearchWardList from "./search_wards/SearchWardList";
+import { X } from "lucide-react";
 
 export const SelectPatSheet = () => {
   const { open, setOpen } = useSelectPatient();
@@ -17,7 +18,7 @@ export const SelectPatSheet = () => {
   const isWardView = defaultSearch === "wards";
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetContent className="flex min-w-[70%] flex-col overflow-hidden p-0">
+      <SheetContent className="flex min-w-[85%] flex-col overflow-hidden p-0">
         <SheetHeader className="sticky top-0 z-10 bg-white p-4 pb-0">
           <SheetTitle className="relative flex items-center gap-2">
             <span className="min-w-28">
@@ -29,6 +30,12 @@ export const SelectPatSheet = () => {
                 setDefaultSearch(checked ? "wards" : "patients")
               }
             />
+            <button
+              onClick={() => setOpen(false)}
+              className="ml-auto rounded-full p-1.5 hover:bg-gray-100"
+            >
+              <X size={20} />
+            </button>
           </SheetTitle>
           <SheetDescription>인적사항을 조회하고 선택하세요.</SheetDescription>
         </SheetHeader>
