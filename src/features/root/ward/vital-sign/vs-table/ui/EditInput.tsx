@@ -91,32 +91,34 @@ export const EditInput = ({ row, column, onFocus }: EditInputProps) => {
 
   return (
     <>
-      <input
-        id={getInputId(row.index, column.id)}
-        ref={inputRef}
-        onFocus={() => {
-          inputRef.current?.select();
-          setFocused(true);
-        }}
-        onBlur={() => {
-          setFocused(false);
-        }}
-        className={cn(
-          "flex h-full w-full bg-transparent text-center",
-          (focused || showKeyboard) && "border border-blue-500 bg-white",
-        )}
-        type="text"
-        readOnly={!isTextColumn && !isNurseColumn}
-        onChange={(e) => {
-          setVsByRow(row.index, vsKey, e.target.value);
-        }}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            handleNextColumnFocus(row, column);
-          }
-        }}
-        value={(isTimeColumn ? formatTime(value as string) : value) ?? ""}
-      />
+      <form className="h-full w-full" onSubmit={(e) => e.preventDefault()}>
+        <input
+          id={getInputId(row.index, column.id)}
+          ref={inputRef}
+          onFocus={() => {
+            inputRef.current?.select();
+            setFocused(true);
+          }}
+          onBlur={() => {
+            setFocused(false);
+          }}
+          className={cn(
+            "flex h-full w-full bg-transparent text-center",
+            (focused || showKeyboard) && "border border-blue-500 bg-white",
+          )}
+          type="text"
+          readOnly={!isTextColumn && !isNurseColumn}
+          onChange={(e) => {
+            setVsByRow(row.index, vsKey, e.target.value);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleNextColumnFocus(row, column);
+            }
+          }}
+          value={(isTimeColumn ? formatTime(value as string) : value) ?? ""}
+        />
+      </form>
 
       <VsKeyboardWrapper ref={keyboardRef} showKeyboard={showKeyboard}>
         <VsKeyboardHeader
