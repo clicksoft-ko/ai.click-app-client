@@ -14,7 +14,7 @@ export const ProtectGeoLocation = ({ element }: { element: JSX.Element }) => {
   const { location, isLoading, isGeoAccess } = useGeoLocation({
     use: isAuthenticated,
   });
-
+  const isDev = import.meta.env.DEV;
   const { data, error, isPending } = useQuery({
     queryFn: () => fetchGeoRange(location!.lat, location!.lng),
     queryKey: [apiPaths.auth.geoRange(0, 0)],
@@ -49,7 +49,7 @@ export const ProtectGeoLocation = ({ element }: { element: JSX.Element }) => {
       />
     );
   if (isLoading || !user) return element;
-  if (data?.message)
+  if (!isDev && data?.message)
     return (
       <GeoAccessMessage
         message={data.message}

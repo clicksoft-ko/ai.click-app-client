@@ -265,5 +265,5 @@ const VsInputKeyboard = ({
 };
 
 function getInputId(rowIndex: number, columnId: string) {
-  return `input-${rowIndex}-${columnId}`;
+  return `input_${rowIndex}_${columnId}`;
 }
