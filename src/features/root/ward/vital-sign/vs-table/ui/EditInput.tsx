@@ -91,6 +91,8 @@ export const EditInput = ({ row, column, onFocus }: EditInputProps) => {
 
   return (
     <>
+      {/* 굳이 form으로 감싼 이유는 모바일 키보드에서 Enter 키 이벤트가 onKeyDown에 걸리게 끔 하기 위해서 */}
+      {/* 감싸 주지 않으면 맨 마지막 Input만 키보드 이벤트가 발생하기 때문 */}
       <form className="h-full w-full" onSubmit={(e) => e.preventDefault()}>
         <input
           id={getInputId(row.index, column.id)}
