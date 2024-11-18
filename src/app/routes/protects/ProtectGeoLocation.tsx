@@ -23,7 +23,7 @@ export const ProtectGeoLocation = ({ element }: { element: JSX.Element }) => {
 
   if (pathname === paths.test) return element;
 
-  if (!isLoading && !isGeoAccess)
+  if (!isDev && !isLoading && !isGeoAccess)
     return (
       <GeoAccessMessage
         message="위치 엑세스를 허용으로 설정해주세요."
@@ -39,7 +39,7 @@ export const ProtectGeoLocation = ({ element }: { element: JSX.Element }) => {
         showSignout={true}
       />
     );
-  if (isPending)
+  if (!isDev && isPending)
     return (
       <GeoAccessMessage
         message="로딩 중..."
