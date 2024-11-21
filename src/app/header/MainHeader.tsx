@@ -1,4 +1,5 @@
 import {
+  MemoButton,
   SelectPatButton,
   UserAvatar,
   WeIbRadioGroup,
@@ -8,8 +9,8 @@ import { cn } from "@/shared/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/widgets/ui";
 import { useState } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { Links } from "./Links";
 import { useNavigate } from "react-router-dom";
+import { Links } from "./Links";
 
 export const MainHeader = () => {
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ export const MainHeader = () => {
         <HamMenu />
       </nav>
       <div className="flex gap-1">
+        <MemoButton />
         <WeIbRadioGroup />
         <SelectPatButton />
         <UserAvatar />

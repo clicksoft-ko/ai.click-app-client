@@ -1,0 +1,1 @@
+export type CanvasKind = "진료" | "병동";

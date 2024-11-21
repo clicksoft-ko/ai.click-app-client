@@ -12,9 +12,17 @@ interface DatePickerProps {
   value: Date;
   onChange?: (date: Date) => void;
   disabled?: boolean;
+  toDate?: Date;
+  fromDate?: Date;
 }
 
-export function DatePicker({ value, onChange, disabled }: DatePickerProps) {
+export function DatePicker({
+  value,
+  onChange,
+  disabled,
+  toDate,
+  fromDate,
+}: DatePickerProps) {
   const [date, setDate] = React.useState<Date>(value);
   const [open, setOpen] = React.useState(false);
 
@@ -64,6 +72,8 @@ export function DatePicker({ value, onChange, disabled }: DatePickerProps) {
           }}
           today={new Date()}
           disabled={disabled}
+          fromDate={fromDate}
+          toDate={toDate}
         />
       </PopoverContent>
     </Popover>

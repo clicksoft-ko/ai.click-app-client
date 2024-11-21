@@ -1,4 +1,4 @@
-import { DeleteVsDto, DeleteVsResultDto, GetConsultationsDto, GetConsultationsResultDto, GetFirstChartsDto, GetFirstChartsResultDto, GetInsulinsDto, GetInsulinsResultDto, GetIOSheetsDto, GetIOSheetsResultDto, GetLabsDto, GetLabsResultDto, GetNursingRecordsDto, GetNursingRecordsResultDto, GetPatientDto, GetPatientResultDto, GetPatientsDto, GetPatientsResultDto, GetPrescriptionsDto, GetPrescriptionsResultDto, GetProgressNotesDto, GetProgressNotesResultDto, GetVitalSignsDto, GetVitalSignsResultDto, GetVssOfDayDto, GetVssOfDayResultDto, GetWardsDto, GetWardsResultDto, SaveVssOfDayDto, SaveVssOfDayResultDto, WinAccountVerificationDto, WinAccountVerificationResultDto } from "@/shared/dto/socket-io";
+import { DeleteTnoteDto, DeleteTnoteResultDto, DeleteVsDto, DeleteVsResultDto, GetConsultationsDto, GetConsultationsResultDto, GetFirstChartsDto, GetFirstChartsResultDto, GetInsulinsDto, GetInsulinsResultDto, GetIOSheetsDto, GetIOSheetsResultDto, GetLabsDto, GetLabsResultDto, GetNursingRecordsDto, GetNursingRecordsResultDto, GetPatientDto, GetPatientResultDto, GetPatientsDto, GetPatientsResultDto, GetPrescriptionsDto, GetPrescriptionsResultDto, GetProgressNotesDto, GetProgressNotesResultDto, GetTnoteItemsDto, GetTnoteItemsResultDto, GetVitalSignsDto, GetVitalSignsResultDto, GetVssOfDayDto, GetVssOfDayResultDto, GetWardsDto, GetWardsResultDto, SaveTnoteDto, SaveTnoteResultDto, SaveVssOfDayDto, SaveVssOfDayResultDto, WinAccountVerificationDto, WinAccountVerificationResultDto } from "@/shared/dto/socket-io";
 
 export interface PathTypeMap {
   winAccountVerification: {
@@ -64,6 +64,18 @@ export interface PathTypeMap {
   getWards: {
     dto: GetWardsDto;
     result: GetWardsResultDto;
+  }
+  saveTnote: {
+    dto: SaveTnoteDto;
+    result: SaveTnoteResultDto;
+  }
+  getTnoteItems: {
+    dto: GetTnoteItemsDto;
+    result: GetTnoteItemsResultDto;
+  }
+  deleteTnote: {
+    dto: DeleteTnoteDto;
+    result: DeleteTnoteResultDto;
   }
 }
 

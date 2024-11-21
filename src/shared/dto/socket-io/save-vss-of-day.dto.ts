@@ -1,3 +1,4 @@
+import { SaveOrUpdateResultDto } from ".";
 import { Vs } from "./get-vss-of-day.dto";
 
 export interface SaveVssOfDayDto {
@@ -6,9 +7,6 @@ export interface SaveVssOfDayDto {
   vss: Vs[];
 }
 
-export type SaveVssOfDayResultDto = {
-  success: boolean;
-  saveCount: number;
-  updateCount: number;
-  message?: string;
-};
+export interface SaveVssOfDayResultDto extends SaveOrUpdateResultDto {
+
+}
