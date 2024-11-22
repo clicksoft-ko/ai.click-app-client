@@ -1,7 +1,7 @@
 import { cn } from "@/shared/utils";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaPen } from "react-icons/fa";
-import { MemoCanvas } from "./MemoCanvas";
+import { MemoCanvas } from "./NoteCanvas";
 import { usePatientStore } from "@/shared/stores";
 
 const MemoModal = ({
@@ -13,6 +13,7 @@ const MemoModal = ({
 }) => {
   const [isOpening, setIsOpening] = useState(true);
   const [isClosing, setIsClosing] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -43,13 +44,20 @@ const MemoModal = ({
       )}
     >
       <div
+        ref={scrollRef}
         className={cn(
           "relative h-full w-full overflow-auto bg-white",
           "transition-all duration-200",
           isOpening || isClosing ? "scale-75" : "scale-100",
         )}
       >
-        <MemoCanvas open={isOpen} onClose={handleClose} />
+        <MemoCanvas
+          open={isOpen}
+          onClose={handleClose}
+          onGetSuccess={() => {
+            scrollRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+        />
       </div>
     </div>
   );

@@ -3,6 +3,6 @@ export * from './UserAvatar';
 export * from './SelectPatSheet';
 export * from './search-patients/PatBox';
 export * from "./WeIbRadioGroup";
-export * from "./memo/MemoButton";
+export * from "./notes/NoteButton";
 
 

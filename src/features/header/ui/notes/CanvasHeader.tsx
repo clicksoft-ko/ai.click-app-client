@@ -45,7 +45,7 @@ export const CanvasHeader = ({
   }
 
   return (
-    <div className="sticky top-0 mb-4 flex w-full items-center justify-between gap-4 rounded-lg bg-gray-50 p-2 shadow-sm">
+    <div className="sticky top-0 z-50 mb-4 flex w-full items-center justify-between gap-4 rounded-lg bg-gray-50 p-2 shadow-sm">
       <div className="flex items-center gap-2">
         <div className="w-20">
           <Select value={kind} onValueChange={onKindChange}>

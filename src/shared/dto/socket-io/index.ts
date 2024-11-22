@@ -23,3 +23,4 @@ export * from './tnote/get-tnote-items.dto';
 export * from './tnote/tnote-item';
 export * from './base/save-or-update-result.dto';
 export * from './tnote/delete-tnote.dto';
+export * from './tnote/get-tnote-histories.dto';

@@ -1,12 +1,15 @@
-import { MedicalTab } from "@/features/root/enums";
+import {
+  GetTnoteItemsResultDto,
+  SocketErrorResponse,
+} from "@/shared/dto/socket-io";
 import { useEmitWithAck } from "@/shared/hooks/socket-io";
 import { usePatientStore, useSearchStore } from "@/shared/stores";
 import { CanvasKind } from "@/shared/types/canvas-type";
 import { format } from "date-fns";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { SaveCanvasResult } from "../types/save-canvas-result";
-import { SocketErrorResponse } from "@/shared/dto/socket-io";
+import { MedicalTab } from "@/features/root/enums";
 
 export function useCanvasState() {
   const [date, setDate] = useState<Date>(new Date());
@@ -14,22 +17,20 @@ export function useCanvasState() {
   const tab = useSearchStore((state) => state.tab) ?? "";
   const isTabMedical = tab in MedicalTab;
 
-  useEffect(() => {
-    setKind(isTabMedical ? "진료" : "병동");
-  }, [isTabMedical]);
-
-  return { date, kind, setDate, setKind };
+  return { date, kind, setDate, setKind, isTabMedical };
 }
 
 interface UseCanvasEmitsProps {
   date: Date;
   kind: CanvasKind;
+  onGetSuccess: (data: GetTnoteItemsResultDto) => void;
   onGetError: (error: SocketErrorResponse) => void;
 }
 
 export function useCanvasEmits({
   date,
   kind,
+  onGetSuccess,
   onGetError,
 }: UseCanvasEmitsProps) {
   const {
@@ -37,6 +38,7 @@ export function useCanvasEmits({
     emit: getTnoteItemsEmit,
     isPending: isGetting,
   } = useEmitWithAck("getTnoteItems", {
+    onSuccess: onGetSuccess,
     onError(error) {
       toast.error(error.message);
       onGetError(error);
@@ -73,8 +75,10 @@ export function useCanvasEmits({
   function loadTnoteItems(args?: {
     newKind?: CanvasKind;
     newDate?: Date;
+    tnoteId?: number;
   }): void {
     getTnoteItemsEmit({
+      tnoteId: args?.tnoteId,
       chartNo: patient!.chartNo,
       ymd: format(args?.newDate ?? date, "yyyyMMdd"),
       kind: args?.newKind ?? kind,

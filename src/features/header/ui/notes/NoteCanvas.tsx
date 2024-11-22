@@ -1,21 +1,30 @@
+import { TnoteHistory } from "@/shared/dto/socket-io";
 import { cn } from "@/shared/utils";
 import { Canvas } from "@/widgets/canvas";
-import { useEffect, useMemo } from "react";
+import { Loading } from "@/widgets/loadings";
+import { parseISO } from "date-fns";
+import { useEffect, useMemo, useRef } from "react";
 import { CanvasKind } from "../../../../shared/types/canvas-type";
 import { useCanvas } from "../../hooks/use-canvas";
 import { useCanvasEmits, useCanvasState } from "../../hooks/use-canvas-emits";
 import { CanvasController } from "./CanvasController";
 import { CanvasHeader } from "./CanvasHeader";
+import { NoteHistorys, NoteHistorysRef } from "./NoteHistorys";
 import { PageController } from "./PageController";
-import { Loading } from "@/widgets/loadings";
 
 interface MemoCanvasProps {
   open: boolean;
   onClose: () => void;
+  onGetSuccess: () => void;
 }
 
-export const MemoCanvas = ({ open, onClose }: MemoCanvasProps) => {
-  const { date, kind, setDate, setKind } = useCanvasState();
+export const MemoCanvas = ({
+  open,
+  onClose,
+  onGetSuccess,
+}: MemoCanvasProps) => {
+  const noteHistorysRef = useRef<NoteHistorysRef>(null);
+  const { date, kind, setDate, setKind, isTabMedical } = useCanvasState();
   const {
     isGetting,
     isPending,
@@ -23,7 +32,15 @@ export const MemoCanvas = ({ open, onClose }: MemoCanvasProps) => {
     deleteTnoteEmit,
     loadTnoteItems,
     handleSaveImages,
-  } = useCanvasEmits({ date, kind, onGetError: onClose });
+  } = useCanvasEmits({
+    date,
+    kind,
+    onGetError: onClose,
+    onGetSuccess: () => {
+      noteHistorysRef.current?.reload();
+      onGetSuccess();
+    },
+  });
 
   const { tnoteId, items } = useMemo(
     () => ({ tnoteId: data?.tnoteId ?? 0, items: data?.items ?? [] }),
@@ -64,20 +81,34 @@ export const MemoCanvas = ({ open, onClose }: MemoCanvasProps) => {
 
   useEffect(() => {
     if (open) {
-      loadTnoteItems();
+      const kind = isTabMedical ? "진료" : "병동";
+      setKind(kind);
+      loadTnoteItems({ newKind: kind });
     }
   }, [open]);
+
+  function handleSelectHistory(tnoteHistory: TnoteHistory): void {
+    const newDate = parseISO(tnoteHistory.ymd);
+    const newKind = tnoteHistory.kind as CanvasKind;
+    loadTnoteItems({
+      tnoteId: tnoteHistory.tnoteId,
+      newDate,
+      newKind,
+    });
+    setDate(newDate);
+    setKind(newKind);
+  }
 
   return (
     <div
       className={cn(
-        "flex flex-col items-center rounded-lg bg-white",
+        "flex min-w-[800px] flex-col items-center rounded-lg bg-white",
         "xl:items-start",
       )}
     >
       {isGetting && (
         <Loading showCloseButton onClose={onClose} pointerEventsNone={false}>
-          메모 불러오는 중...
+          노트 불러오는 중...
         </Loading>
       )}
       <CanvasHeader
@@ -92,7 +123,10 @@ export const MemoCanvas = ({ open, onClose }: MemoCanvasProps) => {
       />
       <div>
         <div
-          className={cn("flex w-full flex-col gap-4", "xl:mr-auto xl:flex-row")}
+          className={cn(
+            "flex w-full flex-col gap-2 pb-4",
+            "xl:mr-auto xl:flex-row",
+          )}
         >
           <div
             className={cn(
@@ -142,6 +176,7 @@ export const MemoCanvas = ({ open, onClose }: MemoCanvasProps) => {
               />
             </div>
           ))}
+          <NoteHistorys ref={noteHistorysRef} onSelect={handleSelectHistory} />
         </div>
       </div>
     </div>
