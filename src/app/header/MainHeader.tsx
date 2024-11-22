@@ -4,17 +4,14 @@ import {
   UserAvatar,
   WeIbRadioGroup,
 } from "@/features/header/ui";
-import { imgPaths } from "@/shared/paths";
+import { imgPaths, paths } from "@/shared/paths";
 import { cn } from "@/shared/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/widgets/ui";
 import { useState } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { useNavigate } from "react-router-dom";
 import { Links } from "./Links";
 
 export const MainHeader = () => {
-  const navigate = useNavigate();
-
   return (
     <header className="flex h-header w-full items-center justify-between bg-gray-100 px-2">
       <nav className="flex items-center gap-2">
@@ -27,7 +24,7 @@ export const MainHeader = () => {
             src={imgPaths.logo.small}
             alt="user"
             onClick={() => {
-              navigate("/");
+              window.location.href = paths.root;
             }}
           />
           <Links />
