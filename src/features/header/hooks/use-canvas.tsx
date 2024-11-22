@@ -6,29 +6,61 @@ import { RandomUtil } from "@/shared/utils/consts";
 interface Item {
   id: string | number;
   image: ArrayBuffer;
+  page: number;
 }
 
-export function useCanvas<TItem extends Item>(items: TItem[]) {
+interface CanvasProps<TItem extends Item> {
+  items: TItem[];
+  maxPage?: number;
+}
+
+export function useCanvas<TItem extends Item>({
+  items,
+  maxPage = 5,
+}: CanvasProps<TItem>) {
   const canvasRefs = useRef<(CanvasRef | null)[]>([]);
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [pageItems, setPageItems] = useState(items);
+  const [deletedPageItems, setDeletedPageItems] = useState<TItem[]>([]);
   const [tool, setTool] = useState<"pen" | "eraser">("pen");
   const [color, setColor] = useState("black");
   const [lineWidth, setLineWidth] = useState(1);
   const [eraserWidth, setEraserWidth] = useState(10);
 
-  const handleSave = (onSave: (saveResults: SaveCanvasResult[]) => void) => {
+  const handleSave = (
+    onSave: (saveResults: SaveCanvasResult[], isDeleting: boolean) => void,
+  ) => {
     const imageBuffers: SaveCanvasResult[] = [];
+
+    let currentPage: number = 0;
     canvasRefs.current.forEach((canvasRef, index) => {
       const imageBuffer = canvasRef?.save();
+      const currentStep = canvasRef?.currentStep;
+
       if (imageBuffer) {
-        const item = items[index];
+        const item = pageItems[index];
+
+        // 새로 생성된 페이지인데 작성 안한 경우 저장하지 않음
+        if (!Number.isInteger(item?.id) && currentStep === 0) {
+          return;
+        }
+        currentPage++;
+
+        const isChanged = deletedPageItems.some(
+          (deletedItem) => deletedItem.page === currentPage,
+        );
         imageBuffers.push(
-          new SaveCanvasResult(item?.id, imageBuffer, index + 1, item?.image),
+          new SaveCanvasResult(
+            item?.id,
+            imageBuffer,
+            currentPage,
+            item?.image,
+            isChanged,
+          ),
         );
       }
     });
-    onSave(imageBuffers);
+    onSave(imageBuffers, deletedPageItems.length > 0);
   };
 
   const handleUndo = () => {
@@ -44,6 +76,7 @@ export function useCanvas<TItem extends Item>(items: TItem[]) {
   };
 
   const handleAddPage = () => {
+    if (pageItems.length >= maxPage) return;
     setPageItems([...pageItems, { id: RandomUtil.getRandomId() } as TItem]);
     canvasRefs.current = [...canvasRefs.current, null];
     setCurrentPageIndex(pageItems.length);
@@ -56,6 +89,12 @@ export function useCanvas<TItem extends Item>(items: TItem[]) {
       (_, page) => page !== currentPageIndex,
     );
     setPageItems(newPageKeys);
+
+    const deletedItem = pageItems[currentPageIndex];
+    if (Number.isInteger(deletedItem.id)) {
+      setDeletedPageItems([...deletedPageItems, deletedItem]);
+    }
+
     canvasRefs.current = canvasRefs.current.filter(
       (_, index) => index !== currentPageIndex,
     );
@@ -80,6 +119,9 @@ export function useCanvas<TItem extends Item>(items: TItem[]) {
     } else {
       setPageItems(items);
     }
+
+    canvasRefs.current = [];
+    setDeletedPageItems([]);
     setCurrentPageIndex(0);
   }, [items]);
 

@@ -38,6 +38,7 @@ export const CanvasHeader = ({
 }: CanvasHeaderProps) => {
   const patient = usePatientStore((state) => state.patient);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  
   function handleSave(): void {
     if (!patient) {
       toast.error("환자 정보가 없습니다.");
@@ -45,10 +46,6 @@ export const CanvasHeader = ({
     }
 
     onSave();
-  }
-
-  function handleDelete(): void {
-    // onDelete();
   }
 
   return (

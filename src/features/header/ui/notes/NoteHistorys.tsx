@@ -45,20 +45,26 @@ export const NoteHistorys = ({ onSelect, onLoad, ref }: NoteHistorysProps) => {
       >
         <div className="text-lg font-medium text-gray-700">히스토리</div>
         <div className="grid grid-cols-3 gap-2 overflow-auto px-4 xl:grid-cols-1">
-          {data?.histories.map((item) => (
-            <div
-              key={item.tnoteId}
-              onClick={() => onSelect(item)}
-              className="flex cursor-pointer items-center justify-between rounded-md border border-gray-200 p-2 hover:border-gray-400 hover:bg-gray-100 hover:shadow-sm"
-            >
-              <div className="flex items-center gap-2">
-                <span className="font-medium text-gray-600">{item.kind}</span>
-                <span className="text-sm text-gray-500">
-                  {format(parseISO(item.ymd), "yyyy.MM.dd")}
-                </span>
+          {data?.histories && data.histories.length > 0 ? (
+            data.histories.map((item) => (
+              <div
+                key={item.tnoteId}
+                onClick={() => onSelect(item)}
+                className="flex cursor-pointer items-center justify-between rounded-md border border-gray-200 p-2 hover:border-gray-400 hover:bg-gray-100 hover:shadow-sm"
+              >
+                <div className="flex items-center gap-2">
+                  <span className="font-medium text-gray-600">{item.kind}</span>
+                  <span className="text-sm text-gray-500">
+                    {format(parseISO(item.ymd), "yyyy.MM.dd")}
+                  </span>
+                </div>
               </div>
+            ))
+          ) : (
+            <div className="col-span-3 text-center text-gray-500">
+              히스토리가 없습니다
             </div>
-          ))}
+          )}
         </div>
       </div>
     </div>

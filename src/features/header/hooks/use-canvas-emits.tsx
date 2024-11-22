@@ -24,7 +24,7 @@ interface UseCanvasEmitsProps {
   date: Date;
   kind: CanvasKind;
   onGetSuccess: (data: GetTnoteItemsResultDto) => void;
-  onGetError: (error: SocketErrorResponse) => void;
+  onGetError?: (error: SocketErrorResponse) => void;
 }
 
 export function useCanvasEmits({
@@ -41,7 +41,7 @@ export function useCanvasEmits({
     onSuccess: onGetSuccess,
     onError(error) {
       toast.error(error.message);
-      onGetError(error);
+      onGetError?.(error);
     },
   });
   const patient = usePatientStore((state) => state.patient);
@@ -49,9 +49,13 @@ export function useCanvasEmits({
   const { emit: deleteTnoteEmit, isPending: isDeleting } = useEmitWithAck(
     "deleteTnote",
     {
-      onSuccess() {
-        toast.success("삭제되었습니다.");
-        loadTnoteItems();
+      onSuccess({ success, message }) {
+        if (success) {
+          toast.success(message);
+          loadTnoteItems();
+        } else {
+          toast.error(message);
+        }
       },
       onError(error) {
         toast.error(error.message);
@@ -85,7 +89,27 @@ export function useCanvasEmits({
     });
   }
 
-  function handleSaveImages(saveResults: SaveCanvasResult[]): void {
+  function handleDeleteTnote(): void {
+    deleteTnoteEmit({
+      chartNo: patient!.chartNo,
+      ymd: format(date, "yyyyMMdd"),
+      kind,
+    });
+  }
+
+  function handleSaveImages(
+    saveResults: SaveCanvasResult[],
+    isDeleting: boolean,
+  ): void {
+    if (
+      !isDeleting &&
+      (saveResults.length === 0 ||
+        saveResults.every((result) => !result.isChanged))
+    ) {
+      toast.error("변경된 내용이 없습니다.");
+      return;
+    }
+
     saveTnoteEmit({
       kind,
       chartNo: patient!.chartNo,
@@ -105,6 +129,7 @@ export function useCanvasEmits({
     saveTnoteEmit,
     loadTnoteItems,
     handleSaveImages,
+    handleDeleteTnote,
     isPending: isSaving || isDeleting || isGetting,
     isGetting,
   };

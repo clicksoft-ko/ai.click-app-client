@@ -1,5 +1,5 @@
 export interface TnoteItem {
   id: number;
-  page: string;
+  page: number;
   image: Buffer;
 }

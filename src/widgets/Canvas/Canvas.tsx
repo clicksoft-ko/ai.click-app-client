@@ -13,6 +13,7 @@ export interface CanvasRef {
   clear: () => void;
   save: () => ArrayBuffer | undefined;
   load: (dataUrl: string) => void;
+  get currentStep(): number;
 }
 
 export interface CanvasProps {
@@ -208,6 +209,9 @@ export const Canvas = forwardRef<CanvasRef, CanvasProps>(
       clear,
       save,
       load,
+      get currentStep() {
+        return currentStep;
+      },
     }));
 
     return (

@@ -9,11 +9,16 @@ export class SaveCanvasResult {
     image: ArrayBuffer,
     page: number,
     originalImage: ArrayBuffer | undefined,
-
+    isChanged: boolean,
   ) {
     this.id = id;
     this.image = image;
     this.page = page;
+
+    if (isChanged) {
+      this.isChanged = true;
+      return;
+    }
 
     if (isNaN(Number(id))) {
       this.id = 0;

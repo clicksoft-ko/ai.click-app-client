@@ -29,13 +29,12 @@ export const MemoCanvas = ({
     isGetting,
     isPending,
     data,
-    deleteTnoteEmit,
     loadTnoteItems,
+    handleDeleteTnote,
     handleSaveImages,
   } = useCanvasEmits({
     date,
     kind,
-    onGetError: onClose,
     onGetSuccess: () => {
       noteHistorysRef.current?.reload();
       onGetSuccess();
@@ -67,7 +66,7 @@ export const MemoCanvas = ({
     handleDeletePage,
     handlePrevPage,
     handleNextPage,
-  } = useCanvas(items);
+  } = useCanvas({ items });
 
   function handleKindChange(kind: CanvasKind): void {
     setKind(kind);
@@ -116,7 +115,7 @@ export const MemoCanvas = ({
         date={date}
         setDate={handleDateChange}
         onSave={() => handleSave(handleSaveImages)}
-        onDelete={() => deleteTnoteEmit({ tnoteId })}
+        onDelete={handleDeleteTnote}
         isPending={isPending}
         onClose={onClose}
         onKindChange={handleKindChange}
