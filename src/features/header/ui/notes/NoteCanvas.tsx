@@ -29,6 +29,7 @@ export const MemoCanvas = ({
     isGetting,
     isPending,
     data,
+    isDifferentUser,
     loadTnoteItems,
     handleDeleteTnote,
     handleSaveImages,
@@ -41,7 +42,7 @@ export const MemoCanvas = ({
     },
   });
 
-  const { tnoteId, items } = useMemo(
+  const { items } = useMemo(
     () => ({ tnoteId: data?.tnoteId ?? 0, items: data?.items ?? [] }),
     [data],
   );
@@ -91,6 +92,7 @@ export const MemoCanvas = ({
     const newKind = tnoteHistory.kind as CanvasKind;
     loadTnoteItems({
       tnoteId: tnoteHistory.tnoteId,
+      userId: tnoteHistory.userId,
       newDate,
       newKind,
     });
@@ -117,8 +119,10 @@ export const MemoCanvas = ({
         onSave={() => handleSave(handleSaveImages)}
         onDelete={handleDeleteTnote}
         isPending={isPending}
+        isDifferentUser={isDifferentUser}
         onClose={onClose}
         onKindChange={handleKindChange}
+        onReload={loadTnoteItems}
       />
       <div>
         <div
@@ -133,19 +137,21 @@ export const MemoCanvas = ({
               "xl:max-w-44 xl:flex-col",
             )}
           >
-            <CanvasController
-              tool={tool}
-              setTool={setTool}
-              color={color}
-              setColor={setColor}
-              lineWidth={lineWidth}
-              setLineWidth={setLineWidth}
-              eraserWidth={eraserWidth}
-              setEraserWidth={setEraserWidth}
-              onUndo={handleUndo}
-              onRedo={handleRedo}
-              onClear={handleClear}
-            />
+            {!isDifferentUser && (
+              <CanvasController
+                tool={tool}
+                setTool={setTool}
+                color={color}
+                setColor={setColor}
+                lineWidth={lineWidth}
+                setLineWidth={setLineWidth}
+                eraserWidth={eraserWidth}
+                setEraserWidth={setEraserWidth}
+                onUndo={handleUndo}
+                onRedo={handleRedo}
+                onClear={handleClear}
+              />
+            )}
             <PageController
               currentPage={currentPageIndex}
               totalPages={pageItems.length}
@@ -153,6 +159,9 @@ export const MemoCanvas = ({
               onNextPage={handleNextPage}
               onAddPage={handleAddPage}
               onDeletePage={handleDeletePage}
+              errorMessage={
+                isDifferentUser ? "다른 사용자가 작성한 노트입니다." : undefined
+              }
             />
           </div>
           {pageItems.map((pageItem, pageIndex) => (
@@ -168,6 +177,7 @@ export const MemoCanvas = ({
                 ref={(ref) => {
                   canvasRefs.current[pageIndex] = ref;
                 }}
+                disabled={isDifferentUser}
                 initialImage={pageItem.image}
                 tool={tool}
                 color={color}

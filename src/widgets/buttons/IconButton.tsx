@@ -4,8 +4,9 @@ import { cn } from "@/shared/utils/utils";
 interface IconButtonProps extends ClassNameProps {
   onClick?: () => void;
   variant: "red" | "blue" | "gray";
-  children: React.ReactNode;
+  children?: React.ReactNode;
   isLoading?: boolean;
+  disabled?: boolean;
   icon?: React.ReactNode;
 }
 
@@ -15,6 +16,7 @@ export const IconButton = ({
   variant,
   children,
   isLoading = false,
+  disabled = false,
   icon,
 }: IconButtonProps) => {
   const colors = {
@@ -26,9 +28,9 @@ export const IconButton = ({
   return (
     <button
       onClick={onClick}
-      disabled={isLoading}
+      disabled={disabled || isLoading}
       className={cn(
-        "flex items-center gap-2 rounded-md px-4 py-2 transition-colors",
+        "flex items-center gap-2 rounded-md px-4 py-2 transition-colors disabled:cursor-not-allowed disabled:opacity-50",
         colors[variant],
         isLoading ? "cursor-not-allowed opacity-50" : "",
         className,

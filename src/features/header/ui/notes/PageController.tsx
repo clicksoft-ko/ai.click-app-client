@@ -11,6 +11,7 @@ import { ClassNameProps } from "@/shared/interfaces/props";
 interface PageControllerProps extends ClassNameProps {
   currentPage: number;
   totalPages: number;
+  errorMessage?: string;
   onPrevPage: () => void;
   onNextPage: () => void;
   onAddPage: () => void;
@@ -21,26 +22,38 @@ export const PageController = ({
   className,
   currentPage,
   totalPages,
+  errorMessage,
   onPrevPage,
   onNextPage,
   onAddPage,
   onDeletePage,
 }: PageControllerProps) => {
   return (
-    <div className={cn("flex gap-2", "xl:grid xl:grid-cols-2", className)}>
-      <CommonButton
-        onClick={onAddPage}
-        className="bg-green-200 text-green-600 hover:bg-green-300"
-      >
-        <FaPlus />
-      </CommonButton>
-      <CommonButton
-        onClick={onDeletePage}
-        disabled={totalPages <= 1}
-        className="bg-red-100 text-red-600 hover:bg-red-200 disabled:opacity-50"
-      >
-        <FaMinusCircle />
-      </CommonButton>
+    <div
+      className={cn("ml-auto flex gap-2", "xl:grid xl:grid-cols-2", className)}
+    >
+      {errorMessage ? (
+        <div className="flex-center col-span-2 mr-auto text-sm text-red-500">
+          {errorMessage}
+        </div>
+      ) : (
+        <>
+          <CommonButton
+            onClick={onAddPage}
+            className="bg-green-200 text-green-600 hover:bg-green-300"
+          >
+            <FaPlus />
+          </CommonButton>
+          <CommonButton
+            onClick={onDeletePage}
+            disabled={totalPages <= 1}
+            className="bg-red-100 text-red-600 hover:bg-red-200 disabled:opacity-50"
+          >
+            <FaMinusCircle />
+          </CommonButton>
+        </>
+      )}
+
       <div className="col-span-2 flex items-center justify-between gap-2">
         <CommonButton
           onClick={onPrevPage}

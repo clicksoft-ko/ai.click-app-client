@@ -57,6 +57,7 @@ export const NoteHistorys = ({ onSelect, onLoad, ref }: NoteHistorysProps) => {
                   <span className="text-sm text-gray-500">
                     {format(parseISO(item.ymd), "yyyy.MM.dd")}
                   </span>
+                  <span className="text-sm text-gray-400">({item.userId})</span>
                 </div>
               </div>
             ))

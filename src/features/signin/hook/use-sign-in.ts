@@ -20,7 +20,6 @@ export const useSignIn = ({ onSuccess }: UseSignInProps) => {
   async function signIn(dto: AccountArgs) {
     const { eClickUser, roomKey } = (await verify(dto)) || {};
 
-
     if (eClickUser) {
       const { accessToken } = await signInMutate({
         hsUserId: dto.hsUserId, csUserId: dto.csUserId, roomKey: roomKey!,

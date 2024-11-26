@@ -14,31 +14,36 @@ import { CanvasKind } from "../../../../shared/types/canvas-type";
 import { ShowDialog } from "@/widgets/dialogs";
 import { useState } from "react";
 import { format } from "date-fns";
+import { FaRotate } from "react-icons/fa6";
 
 interface CanvasHeaderProps {
   date: Date;
   isPending: boolean;
+  isDifferentUser: boolean;
   kind: CanvasKind;
   setDate: (date: Date) => void;
   onSave: () => void;
   onDelete: () => void;
   onClose: () => void;
   onKindChange: (kind: CanvasKind) => void;
+  onReload: () => void;
 }
 
 export const CanvasHeader = ({
   date,
   isPending,
+  isDifferentUser,
   kind,
   setDate,
   onSave,
   onDelete,
   onClose,
   onKindChange,
+  onReload,
 }: CanvasHeaderProps) => {
   const patient = usePatientStore((state) => state.patient);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  
+
   function handleSave(): void {
     if (!patient) {
       toast.error("환자 정보가 없습니다.");
@@ -74,30 +79,42 @@ export const CanvasHeader = ({
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <IconButton
-            isLoading={isPending}
-            variant="blue"
-            icon={<FaSave />}
-            onClick={handleSave}
-          >
-            저장
-          </IconButton>
-          <ShowDialog
-            open={isDeleteDialogOpen}
-            onOpenChange={setIsDeleteDialogOpen}
-            title="삭제"
-            description={`${format(date, "yyyy-MM-dd")} ${kind} 노트를 삭제하시겠습니까?`}
-            onSubmit={onDelete}
-            trigger={
+          {isDifferentUser ? (
+            <IconButton
+              variant="gray"
+              icon={<FaRotate />}
+              onClick={onReload}
+            />
+          ) : (
+            <>
               <IconButton
                 isLoading={isPending}
-                variant="red"
-                icon={<FaTrash />}
+                disabled={isDifferentUser}
+                variant="blue"
+                icon={<FaSave />}
+                onClick={handleSave}
               >
-                삭제
+                저장
               </IconButton>
-            }
-          />
+              <ShowDialog
+                open={isDeleteDialogOpen}
+                onOpenChange={setIsDeleteDialogOpen}
+                title="삭제"
+                description={`${format(date, "yyyy-MM-dd")} ${kind} 노트를 삭제하시겠습니까?`}
+                onSubmit={onDelete}
+                trigger={
+                  <IconButton
+                    disabled={isDifferentUser}
+                    isLoading={isPending}
+                    variant="red"
+                    icon={<FaTrash />}
+                  >
+                    삭제
+                  </IconButton>
+                }
+              />
+            </>
+          )}
           <IconButton variant="gray" onClick={onClose}>
             ✕
           </IconButton>

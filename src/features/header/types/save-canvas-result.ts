@@ -15,16 +15,16 @@ export class SaveCanvasResult {
     this.image = image;
     this.page = page;
 
-    if (isChanged) {
-      this.isChanged = true;
-      return;
-    }
-
     if (isNaN(Number(id))) {
       this.id = 0;
       this.isChanged = true;
       return;
     }
+
+    if (isChanged) {
+      this.isChanged = true;
+      return;
+    }    
 
     if (typeof id === "number") {
       this.id = String(id);

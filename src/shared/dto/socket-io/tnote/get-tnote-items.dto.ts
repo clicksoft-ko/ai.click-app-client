@@ -3,6 +3,7 @@ import { CanvasKind } from "@/shared/types";
 export type GetTnoteItemsDto = GetTnoteItemsData | GetTnoteItemsId;
 export type GetTnoteItemsResultDto = {
   tnoteId: number;
+  userId: string;
   items: TnoteItem[];
 };
 type GetTnoteItemsData = { chartNo: string; ymd: string; kind: CanvasKind; };

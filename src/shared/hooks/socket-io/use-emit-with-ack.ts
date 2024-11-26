@@ -24,7 +24,7 @@ export function useEmitWithAck<TPath extends PathTypeKey>(path: TPath, args?: Ar
   const [data, setData] = useState<ResultType>();
 
   async function emit(
-    dto: DtoType & { key?: string },
+    dto: DtoType & { key?: string, userId?: string },
   ): Promise<ResultType | undefined> {
     if (!isConnected) {
       // setError({ message: "서버 연결이 실패했습니다." });
@@ -35,10 +35,10 @@ export function useEmitWithAck<TPath extends PathTypeKey>(path: TPath, args?: Ar
     args?.onPending?.(true);
     
     try {
-      const { key, ...dtoWithoutKey } = dto;
+      const { key, userId, ...dtoWithoutKey } = dto;
       const response: SocketResponse<any> = await socket?.emitWithAck(path as string, {
         key: args?.key ?? user?.roomKey ?? key,        
-        userId: user?.csUserId,
+        userId: userId ?? user?.csUserId,
         ...dtoWithoutKey,
       });
 
