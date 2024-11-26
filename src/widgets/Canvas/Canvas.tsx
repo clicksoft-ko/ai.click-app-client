@@ -1,12 +1,14 @@
+import { Buffer } from "buffer";
 import React, {
   forwardRef,
   useEffect,
   useImperativeHandle,
   useRef,
-  useState,
 } from "react";
-import { Buffer } from "buffer";
-import { cn } from "@/shared/utils/utils";
+import { NoteLine } from "./NoteLine";
+import { useCanvasDrawing } from "./hooks/useCanvasDrawing";
+import { useCanvasHistory } from "./hooks/useCanvasHistory";
+import { useCanvasOperations } from "./hooks/useCanvasOperations";
 
 export interface CanvasRef {
   undo: () => void;
@@ -42,11 +44,19 @@ export const Canvas = forwardRef<CanvasRef, CanvasProps>(
   ) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const backgroundCanvasRef = useRef<HTMLCanvasElement>(null);
-    const [isDrawing, setIsDrawing] = useState(false);
-    const [history, setHistory] = useState<string[]>([]);
-    const [currentStep, setCurrentStep] = useState(0);
-    const [lastPoint, setLastPoint] = useState<{ x: number; y: number } | null>(
-      null,
+    const noteLineRef = useRef<HTMLDivElement>(null);
+    const { isDrawing, lastPoint, setIsDrawing, setLastPoint, getCoordinates } =
+      useCanvasDrawing(canvasRef);
+
+    const { history, currentStep, setCurrentStep, addToHistory, setHistory } =
+      useCanvasHistory();
+
+    const { undo, redo, clear } = useCanvasOperations(
+      canvasRef,
+      canvasSize,
+      history,
+      currentStep,
+      setCurrentStep,
     );
 
     useEffect(() => {
@@ -66,23 +76,6 @@ export const Canvas = forwardRef<CanvasRef, CanvasProps>(
       }
     }, [initialImage]);
 
-    const getCoordinates = (e: React.MouseEvent | React.TouchEvent) => {
-      const canvas = canvasRef.current;
-      if (!canvas) return { x: 0, y: 0 };
-
-      const rect = canvas.getBoundingClientRect();
-      const x =
-        "touches" in e
-          ? e.touches[0].clientX - rect.left
-          : (e as React.MouseEvent).nativeEvent.offsetX;
-      const y =
-        "touches" in e
-          ? e.touches[0].clientY - rect.top
-          : (e as React.MouseEvent).nativeEvent.offsetY;
-
-      return { x, y };
-    };
-
     const startDrawing = (e: React.MouseEvent | React.TouchEvent) => {
       if (disabled) return;
       if (!("touches" in e)) e.preventDefault();
@@ -90,40 +83,35 @@ export const Canvas = forwardRef<CanvasRef, CanvasProps>(
       const ctx = canvasRef.current?.getContext("2d");
       if (!ctx) return;
 
-      const { x, y } = getCoordinates(e);
+      const coords = getCoordinates(e);
       ctx.beginPath();
-      ctx.moveTo(x, y);
-      setLastPoint({ x, y });
+      ctx.moveTo(coords.x, coords.y);
+      setLastPoint(coords);
     };
 
     const draw = (e: React.MouseEvent | React.TouchEvent) => {
-      if (disabled) return;
-      if (!isDrawing || !canvasRef.current) return;
+      if (disabled || !isDrawing || !canvasRef.current || !lastPoint) return;
       const ctx = canvasRef.current.getContext("2d");
-      if (!ctx || !lastPoint) return;
+      if (!ctx) return;
 
-      const { x, y } = getCoordinates(e);
+      const coords = getCoordinates(e);
 
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
-
       ctx.globalCompositeOperation =
         tool === "eraser" ? "destination-out" : "source-over";
       ctx.strokeStyle = tool === "eraser" ? "#000000" : color;
       ctx.lineWidth = tool === "eraser" ? lineWidth * 10 : lineWidth;
 
       ctx.beginPath();
-
-      // 곡선을 자연스럽게 만들기 위해 quadraticCurveTo를 사용
-      const midPointX = (lastPoint.x + x) / 2;
-      const midPointY = (lastPoint.y + y) / 2;
+      const midPointX = (lastPoint.x + coords.x) / 2;
+      const midPointY = (lastPoint.y + coords.y) / 2;
 
       ctx.moveTo(lastPoint.x, lastPoint.y);
-      ctx.quadraticCurveTo(midPointX, midPointY, x, y);
-
+      ctx.quadraticCurveTo(midPointX, midPointY, coords.x, coords.y);
       ctx.stroke();
 
-      setLastPoint({ x, y });
+      setLastPoint(coords);
     };
 
     const stopDrawing = () => {
@@ -132,51 +120,7 @@ export const Canvas = forwardRef<CanvasRef, CanvasProps>(
       setLastPoint(null);
 
       if (canvasRef.current) {
-        const canvas = canvasRef.current;
-        const newHistory = history.slice(0, currentStep + 1);
-        newHistory.push(canvas.toDataURL());
-        setHistory(newHistory);
-        setCurrentStep(currentStep + 1);
-      }
-    };
-
-    const undo = () => {
-      if (currentStep > 0) {
-        const newStep = currentStep - 1;
-        setCurrentStep(newStep);
-        const img = new Image();
-        img.src = history[newStep];
-        img.onload = () => {
-          const ctx = canvasRef.current?.getContext("2d");
-          if (ctx) {
-            ctx.clearRect(0, 0, canvasSize.width, canvasSize.height);
-            ctx.drawImage(img, 0, 0);
-          }
-        };
-      }
-    };
-
-    const redo = () => {
-      if (currentStep < history.length - 1) {
-        const newStep = currentStep + 1;
-        setCurrentStep(newStep);
-        const img = new Image();
-        img.src = history[newStep];
-        img.onload = () => {
-          const ctx = canvasRef.current?.getContext("2d");
-          if (ctx) {
-            ctx.clearRect(0, 0, canvasSize.width, canvasSize.height);
-            ctx.drawImage(img, 0, 0);
-          }
-        };
-      }
-    };
-
-    const clear = () => {
-      const ctx = canvasRef.current?.getContext("2d");
-      if (ctx && canvasRef.current) {
-        ctx.clearRect(0, 0, canvasSize.width, canvasSize.height);
-        setCurrentStep(0);
+        addToHistory(canvasRef.current.toDataURL());
       }
     };
 
@@ -249,7 +193,11 @@ export const Canvas = forwardRef<CanvasRef, CanvasProps>(
 
     return (
       <div className="relative">
-        <NoteLine lineStyle={lineStyle} canvasSize={canvasSize} />
+        <NoteLine
+          ref={noteLineRef}
+          lineStyle={lineStyle}
+          canvasSize={canvasSize}
+        />
         <canvas
           className="pointer-events-none absolute z-10"
           ref={backgroundCanvasRef}
@@ -283,35 +231,3 @@ export const Canvas = forwardRef<CanvasRef, CanvasProps>(
     );
   },
 );
-
-const NoteLine = ({
-  lineStyle,
-  canvasSize,
-}: {
-  lineStyle: "dotted" | "solid" | "none";
-  canvasSize: { width: number; height: number };
-}) => {
-  return (
-    <div
-      className="pointer-events-none absolute inset-0 flex flex-col justify-between opacity-50"
-      style={{
-        width: canvasSize.width,
-        height: canvasSize.height,
-      }}
-    >
-      {Array.from({ length: 12 }).map((_, index) => (
-        <div
-          className={cn(
-            "border-gray-300",
-            index === 0 || index === 11 ? "opacity-0" : "",
-          )}
-          style={{
-            borderStyle: lineStyle,
-            borderWidth: lineStyle === "dotted" ? "3px 0 0 0" : "1px 0 0 0", // 위쪽 테두리만 설정
-          }}
-          key={index}
-        ></div>
-      ))}
-    </div>
-  );
-};

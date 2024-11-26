@@ -31,9 +31,10 @@ export function useCanvas<TItem extends Item>({
     onSave: (saveResults: SaveCanvasResult[], isDeleting: boolean) => void,
   ) => {
     const imageBuffers: SaveCanvasResult[] = [];
-
     let currentPage: number = 0;
-    canvasRefs.current.forEach((canvasRef, index) => {
+
+    for (let index = 0; index < canvasRefs.current.length; index++) {
+      const canvasRef = canvasRefs.current[index];
       const imageBuffer = canvasRef?.save();
       const currentStep = canvasRef?.currentStep;
 
@@ -42,7 +43,7 @@ export function useCanvas<TItem extends Item>({
 
         // 새로 생성된 페이지인데 작성 안한 경우 저장하지 않음
         if (!Number.isInteger(item?.id) && currentStep === 0) {
-          return;
+          continue;
         }
         currentPage++;
 
@@ -59,7 +60,8 @@ export function useCanvas<TItem extends Item>({
           ),
         );
       }
-    });
+    }
+
     onSave(imageBuffers, deletedPageItems.length > 0);
   };
 
