@@ -8,6 +8,7 @@ import React, {
 import { useCanvasDrawing } from "./hooks/useCanvasDrawing";
 import { useCanvasHistory } from "./hooks/useCanvasHistory";
 import { useCanvasOperations } from "./hooks/useCanvasOperations";
+import { LineStyle } from "@/shared/stores";
 
 export interface CanvasRef {
   undo: () => void;
@@ -25,8 +26,100 @@ export interface CanvasProps {
   canvasSize: { width: number; height: number };
   disabled: boolean;
   initialImage?: ArrayBuffer;
-  lineStyle?: "dashed" | "solid" | "none";
+  lineStyle?: LineStyle;
 }
+
+interface UseCanvasProps {
+  canvasSize: { width: number; height: number };
+  setHistory: (history: string[]) => void;
+  setCurrentStep: (currentStep: number) => void;
+  lineStyle?: LineStyle;
+}
+
+const useCanvas = ({
+  canvasSize,
+  setHistory,
+  setCurrentStep,
+  lineStyle = "none",
+}: UseCanvasProps) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const backgroundCanvasRef = useRef<HTMLCanvasElement>(null);
+
+  const clearBackgroundCanvas = () => {
+    const bgCtx = backgroundCanvasRef.current?.getContext("2d");
+    if (bgCtx && backgroundCanvasRef.current) {
+      bgCtx.clearRect(0, 0, canvasSize.width, canvasSize.height);
+    }
+  };
+
+  const clearMainCanvas = () => {
+    const ctx = canvasRef.current?.getContext("2d");
+    if (ctx && canvasRef.current) {
+      ctx.clearRect(0, 0, canvasSize.width, canvasSize.height);
+      setHistory([canvasRef.current.toDataURL()]);
+      setCurrentStep(0);
+    }
+  };
+
+  const initializeBackgroundCanvas = (dataUrl: string) => {
+    const img = new Image();
+    img.src = dataUrl;
+    img.onload = () => {
+      // 배경 캔버스에 이미지 로드
+      const bgCtx = backgroundCanvasRef.current?.getContext("2d");
+      if (bgCtx && backgroundCanvasRef.current) {
+        bgCtx.clearRect(0, 0, canvasSize.width, canvasSize.height);
+        bgCtx.drawImage(img, 0, 0);
+      }
+    };
+  };
+
+  const initializeMainCanvas = () => {
+    // 메인 캔버스 초기화
+    const ctx = canvasRef.current?.getContext("2d");
+    if (ctx && canvasRef.current) {
+      ctx.clearRect(0, 0, canvasSize.width, canvasSize.height);
+      setHistory([canvasRef.current.toDataURL()]);
+      setCurrentStep(0);
+    }
+  };
+
+  const loadInitialImage = (initialImage: ArrayBuffer) => {
+    load(
+      `data:image/png;base64,${Buffer.from(initialImage).toString("base64")}`,
+    );
+  };
+
+  const load = (dataUrl?: string, isSettingChanged?: boolean) => {
+    if (!dataUrl) {
+      clearBackgroundCanvas(); // 배경 캔버스 초기화
+      if (!isSettingChanged) clearMainCanvas(); // 메인 캔버스 초기화
+      return;
+    }
+
+    initializeBackgroundCanvas(dataUrl);
+    if (!isSettingChanged) initializeMainCanvas();
+  };
+
+  const initializeBackgroundSettingsImage = () => {
+    switch (lineStyle) {
+      case "dashed":
+        return load("/images/note_dashed_line.png", true);
+      case "solid":
+        return load("/images/note_solid_line.png", true);
+      default:
+        return load(undefined, true);
+    }
+  };
+
+  return {
+    canvasRef,
+    backgroundCanvasRef,
+    load,
+    loadInitialImage,
+    initializeBackgroundSettingsImage,
+  };
+};
 
 export const Canvas = forwardRef<CanvasRef, CanvasProps>(
   (
@@ -41,14 +134,21 @@ export const Canvas = forwardRef<CanvasRef, CanvasProps>(
     },
     ref,
   ) => {
-    const canvasRef = useRef<HTMLCanvasElement>(null);
-    const backgroundCanvasRef = useRef<HTMLCanvasElement>(null);
-    const { isDrawing, lastPoint, setIsDrawing, setLastPoint, getCoordinates } =
-      useCanvasDrawing(canvasRef);
-
     const { history, currentStep, setCurrentStep, addToHistory, setHistory } =
       useCanvasHistory();
-
+    const {
+      canvasRef,
+      backgroundCanvasRef,
+      load,
+      loadInitialImage,
+      initializeBackgroundSettingsImage,
+    } = useCanvas({
+      canvasSize,
+      setHistory,
+      setCurrentStep,
+    });
+    const { isDrawing, lastPoint, setIsDrawing, setLastPoint, getCoordinates } =
+      useCanvasDrawing(canvasRef);
     const { undo, redo, clear } = useCanvasOperations(
       canvasRef,
       canvasSize,
@@ -57,23 +157,10 @@ export const Canvas = forwardRef<CanvasRef, CanvasProps>(
       setCurrentStep,
     );
 
-    const initializeBackgroundSettingsImage = () => {
-      switch (lineStyle) {
-        case "dashed":
-          return load("/images/note_dashed_line.png", true);
-        case "solid":
-          return load("/images/note_solid_line.png", true);
-        default:
-          return load(undefined, true);
-      }
-    };
-
     useEffect(() => {
       // Initialize with blank canvas
       if (initialImage) {
-        load(
-          `data:image/png;base64,${Buffer.from(initialImage).toString("base64")}`,
-        );
+        loadInitialImage(initialImage);
       } else if (canvasRef.current) {
         initializeBackgroundSettingsImage();
       }
@@ -150,56 +237,6 @@ export const Canvas = forwardRef<CanvasRef, CanvasProps>(
           return Buffer.from(tempCanvas.toDataURL().split(",")[1], "base64");
         }
       }
-    };
-
-    const clearBackgroundCanvas = () => {
-      const bgCtx = backgroundCanvasRef.current?.getContext("2d");
-      if (bgCtx && backgroundCanvasRef.current) {
-        bgCtx.clearRect(0, 0, canvasSize.width, canvasSize.height);
-      }
-    };
-
-    const clearMainCanvas = () => {
-      const ctx = canvasRef.current?.getContext("2d");
-      if (ctx && canvasRef.current) {
-        ctx.clearRect(0, 0, canvasSize.width, canvasSize.height);
-        setHistory([canvasRef.current.toDataURL()]);
-        setCurrentStep(0);
-      }
-    };
-
-    const initializeBackgroundCanvas = (dataUrl: string) => {
-      const img = new Image();
-      img.src = dataUrl;
-      img.onload = () => {
-        // 배경 캔버스에 이미지 로드
-        const bgCtx = backgroundCanvasRef.current?.getContext("2d");
-        if (bgCtx && backgroundCanvasRef.current) {
-          bgCtx.clearRect(0, 0, canvasSize.width, canvasSize.height);
-          bgCtx.drawImage(img, 0, 0);
-        }
-      };
-    };
-
-    const initializeMainCanvas = () => {
-      // 메인 캔버스 초기화
-      const ctx = canvasRef.current?.getContext("2d");
-      if (ctx && canvasRef.current) {
-        ctx.clearRect(0, 0, canvasSize.width, canvasSize.height);
-        setHistory([canvasRef.current.toDataURL()]);
-        setCurrentStep(0);
-      }
-    };
-
-    const load = (dataUrl?: string, isSettingChanged?: boolean) => {
-      if (!dataUrl) {
-        clearBackgroundCanvas(); // 배경 캔버스 초기화
-        if (!isSettingChanged) clearMainCanvas(); // 메인 캔버스 초기화
-        return;
-      }
-
-      initializeBackgroundCanvas(dataUrl);
-      if (!isSettingChanged) initializeMainCanvas();
     };
 
     useEffect(() => {
