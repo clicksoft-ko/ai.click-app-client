@@ -5,7 +5,7 @@ export const NoteLine = ({
   canvasSize,
   ref,
 }: {
-  lineStyle: "dotted" | "solid" | "none";
+  lineStyle: "dashed" | "solid" | "none";
   canvasSize: { width: number; height: number };
   ref?: React.RefObject<HTMLDivElement | null>;
 }) => {
@@ -26,7 +26,7 @@ export const NoteLine = ({
           )}
           style={{
             borderStyle: lineStyle,
-            borderWidth: lineStyle === "dotted" ? "3px 0 0 0" : "1px 0 0 0", // 위쪽 테두리만 설정
+            borderWidth: lineStyle === "dashed" ? "1px 0 0 0px" : "1px 0 0 0", // 위쪽 테두리만 설정
           }}
           key={index}
         ></div>

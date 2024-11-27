@@ -5,7 +5,6 @@ import React, {
   useImperativeHandle,
   useRef,
 } from "react";
-import { NoteLine } from "./NoteLine";
 import { useCanvasDrawing } from "./hooks/useCanvasDrawing";
 import { useCanvasHistory } from "./hooks/useCanvasHistory";
 import { useCanvasOperations } from "./hooks/useCanvasOperations";
@@ -26,7 +25,7 @@ export interface CanvasProps {
   canvasSize: { width: number; height: number };
   disabled: boolean;
   initialImage?: ArrayBuffer;
-  lineStyle?: "dotted" | "solid" | "none";
+  lineStyle?: "dashed" | "solid" | "none";
 }
 
 export const Canvas = forwardRef<CanvasRef, CanvasProps>(
@@ -44,7 +43,6 @@ export const Canvas = forwardRef<CanvasRef, CanvasProps>(
   ) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const backgroundCanvasRef = useRef<HTMLCanvasElement>(null);
-    const noteLineRef = useRef<HTMLDivElement>(null);
     const { isDrawing, lastPoint, setIsDrawing, setLastPoint, getCoordinates } =
       useCanvasDrawing(canvasRef);
 
@@ -59,6 +57,17 @@ export const Canvas = forwardRef<CanvasRef, CanvasProps>(
       setCurrentStep,
     );
 
+    const initializeBackgroundSettingsImage = () => {
+      switch (lineStyle) {
+        case "dashed":
+          return load("/images/note_dashed_line.png", true);
+        case "solid":
+          return load("/images/note_solid_line.png", true);
+        default:
+          return load(undefined, true);
+      }
+    };
+
     useEffect(() => {
       // Initialize with blank canvas
       if (initialImage) {
@@ -66,15 +75,14 @@ export const Canvas = forwardRef<CanvasRef, CanvasProps>(
           `data:image/png;base64,${Buffer.from(initialImage).toString("base64")}`,
         );
       } else if (canvasRef.current) {
-        const canvas = canvasRef.current;
-        const ctx = canvas.getContext("2d");
-        if (ctx) {
-          ctx.clearRect(0, 0, canvasSize.width, canvasSize.height);
-          setHistory([canvas.toDataURL()]);
-          setCurrentStep(0);
-        }
+        initializeBackgroundSettingsImage();
       }
     }, [initialImage]);
+
+    useEffect(() => {
+      if (initialImage) return;
+      initializeBackgroundSettingsImage();
+    }, [lineStyle]);
 
     const startDrawing = (e: React.MouseEvent | React.TouchEvent) => {
       if (disabled) return;
@@ -144,7 +152,23 @@ export const Canvas = forwardRef<CanvasRef, CanvasProps>(
       }
     };
 
-    const load = (dataUrl: string) => {
+    const clearBackgroundCanvas = () => {
+      const bgCtx = backgroundCanvasRef.current?.getContext("2d");
+      if (bgCtx && backgroundCanvasRef.current) {
+        bgCtx.clearRect(0, 0, canvasSize.width, canvasSize.height);
+      }
+    };
+
+    const clearMainCanvas = () => {
+      const ctx = canvasRef.current?.getContext("2d");
+      if (ctx && canvasRef.current) {
+        ctx.clearRect(0, 0, canvasSize.width, canvasSize.height);
+        setHistory([canvasRef.current.toDataURL()]);
+        setCurrentStep(0);
+      }
+    };
+
+    const initializeBackgroundCanvas = (dataUrl: string) => {
       const img = new Image();
       img.src = dataUrl;
       img.onload = () => {
@@ -154,15 +178,28 @@ export const Canvas = forwardRef<CanvasRef, CanvasProps>(
           bgCtx.clearRect(0, 0, canvasSize.width, canvasSize.height);
           bgCtx.drawImage(img, 0, 0);
         }
-
-        // 메인 캔버스 초기화
-        const ctx = canvasRef.current?.getContext("2d");
-        if (ctx && canvasRef.current) {
-          ctx.clearRect(0, 0, canvasSize.width, canvasSize.height);
-          setHistory([canvasRef.current.toDataURL()]);
-          setCurrentStep(0);
-        }
       };
+    };
+
+    const initializeMainCanvas = () => {
+      // 메인 캔버스 초기화
+      const ctx = canvasRef.current?.getContext("2d");
+      if (ctx && canvasRef.current) {
+        ctx.clearRect(0, 0, canvasSize.width, canvasSize.height);
+        setHistory([canvasRef.current.toDataURL()]);
+        setCurrentStep(0);
+      }
+    };
+
+    const load = (dataUrl?: string, isSettingChanged?: boolean) => {
+      if (!dataUrl) {
+        clearBackgroundCanvas(); // 배경 캔버스 초기화
+        if (!isSettingChanged) clearMainCanvas(); // 메인 캔버스 초기화
+        return;
+      }
+
+      initializeBackgroundCanvas(dataUrl);
+      if (!isSettingChanged) initializeMainCanvas();
     };
 
     useEffect(() => {
@@ -192,14 +229,12 @@ export const Canvas = forwardRef<CanvasRef, CanvasProps>(
     }));
 
     return (
-      <div className="relative">
-        <NoteLine
-          ref={noteLineRef}
-          lineStyle={lineStyle}
-          canvasSize={canvasSize}
-        />
+      <div
+        className="relative"
+        style={{ width: canvasSize.width, height: canvasSize.height }}
+      >
         <canvas
-          className="pointer-events-none absolute z-10"
+          className="pointer-events-none absolute"
           ref={backgroundCanvasRef}
           width={canvasSize.width}
           height={canvasSize.height}
@@ -210,6 +245,7 @@ export const Canvas = forwardRef<CanvasRef, CanvasProps>(
           }}
         />
         <canvas
+          className="absolute z-10"
           ref={canvasRef}
           width={canvasSize.width}
           height={canvasSize.height}

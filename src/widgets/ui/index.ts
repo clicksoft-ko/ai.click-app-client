@@ -15,3 +15,5 @@ export * from "./scroll-area";
 export * from "./DatePicker";
 export * from "./switch";
 export * from './select';
+export * from './radio-group';
+export * from './label';

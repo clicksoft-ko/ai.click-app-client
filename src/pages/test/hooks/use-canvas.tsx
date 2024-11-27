@@ -1,6 +1,5 @@
 import { CanvasRef } from "@/widgets/canvas/Canvas";
 import { useRef, useState } from "react";
-import { Buffer } from "buffer";
 
 export const useCanvas = () => {
   const canvasRefs = useRef<(CanvasRef | null)[]>([]);
@@ -11,8 +10,8 @@ export const useCanvas = () => {
   const [lineWidth, setLineWidth] = useState(1);
   const [eraserWidth, setEraserWidth] = useState(10);
 
-  const handleSave = (onSave: (imageBuffers: Buffer[]) => void) => {
-    const imageBuffers: Buffer[] = [];
+  const handleSave = (onSave: (imageBuffers: ArrayBuffer[]) => void) => {
+    const imageBuffers: ArrayBuffer[] = [];
     for (const canvasRef of canvasRefs.current) {
       const imageBuffer = canvasRef?.save();
       if (imageBuffer) {

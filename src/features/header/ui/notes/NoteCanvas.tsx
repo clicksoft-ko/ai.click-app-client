@@ -11,6 +11,7 @@ import { CanvasController } from "./CanvasController";
 import { CanvasHeader } from "./CanvasHeader";
 import { NoteHistorys, NoteHistorysRef } from "./NoteHistorys";
 import { PageController } from "./PageController";
+import { useTNoteSettingsStore } from "@/shared/stores";
 
 interface MemoCanvasProps {
   open: boolean;
@@ -68,6 +69,7 @@ export const MemoCanvas = ({
     handlePrevPage,
     handleNextPage,
   } = useCanvas({ items });
+  const lineStyle = useTNoteSettingsStore((state) => state.lineStyle);
 
   function handleKindChange(kind: CanvasKind): void {
     setKind(kind);
@@ -173,6 +175,7 @@ export const MemoCanvas = ({
               }}
             >
               <Canvas
+                lineStyle={lineStyle}
                 canvasSize={{ width: 780, height: 800 }}
                 ref={(ref) => {
                   canvasRefs.current[pageIndex] = ref;

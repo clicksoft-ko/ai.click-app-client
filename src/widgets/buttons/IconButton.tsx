@@ -1,7 +1,7 @@
 import { ClassNameProps } from "@/shared/interfaces/props";
 import { cn } from "@/shared/utils/utils";
 
-interface IconButtonProps extends ClassNameProps {
+export interface IconButtonProps extends ClassNameProps {
   onClick?: () => void;
   variant: "red" | "blue" | "gray";
   children?: React.ReactNode;

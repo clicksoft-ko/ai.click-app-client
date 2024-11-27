@@ -1,5 +1,6 @@
 import { usePatientStore } from "@/shared/stores";
 import { IconButton } from "@/widgets/buttons";
+import { ShowDialog } from "@/widgets/dialogs";
 import {
   Select,
   SelectContent,
@@ -8,13 +9,13 @@ import {
   SelectValue,
 } from "@/widgets/ui";
 import { DatePicker } from "@/widgets/ui/DatePicker";
+import { format } from "date-fns";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { FaSave, FaTrash } from "react-icons/fa";
-import { CanvasKind } from "../../../../shared/types/canvas-type";
-import { ShowDialog } from "@/widgets/dialogs";
-import { useState } from "react";
-import { format } from "date-fns";
 import { FaRotate } from "react-icons/fa6";
+import { CanvasKind } from "../../../../shared/types/canvas-type";
+import { NoteSettingsButton } from "./NoteSettingsButton";
 
 interface CanvasHeaderProps {
   date: Date;
@@ -80,11 +81,7 @@ export const CanvasHeader = ({
         </div>
         <div className="flex items-center gap-2">
           {isDifferentUser ? (
-            <IconButton
-              variant="gray"
-              icon={<FaRotate />}
-              onClick={onReload}
-            />
+            <IconButton variant="gray" icon={<FaRotate />} onClick={onReload} />
           ) : (
             <>
               <IconButton
@@ -112,6 +109,10 @@ export const CanvasHeader = ({
                     삭제
                   </IconButton>
                 }
+              />
+              <NoteSettingsButton
+                isLoading={isPending}
+                disabled={isDifferentUser}
               />
             </>
           )}
