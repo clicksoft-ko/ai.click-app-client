@@ -1,4 +1,4 @@
-import { CanvasRef } from "@/widgets/canvas/Canvas";
+import { CanvasRef } from "@/widgets/canvas/ui/Canvas";
 import { useRef, useState } from "react";
 
 export const useCanvas = () => {

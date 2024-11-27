@@ -1,4 +1,4 @@
-import { CanvasRef } from "@/widgets/canvas/Canvas";
+import { CanvasRef } from "@/widgets/canvas/ui/Canvas";
 import { useEffect, useRef, useState } from "react";
 import { SaveCanvasResult } from "..";
 import { RandomUtil } from "@/shared/utils/consts";
@@ -24,8 +24,8 @@ export function useCanvas<TItem extends Item>({
   const [deletedPageItems, setDeletedPageItems] = useState<TItem[]>([]);
   const [tool, setTool] = useState<"pen" | "eraser">("pen");
   const [color, setColor] = useState("black");
-  const [lineWidth, setLineWidth] = useState(1);
-  const [eraserWidth, setEraserWidth] = useState(10);
+  const [lineWidth, setLineWidth] = useState(2);
+  const [eraserWidth, setEraserWidth] = useState(7);
 
   const handleSave = (
     onSave: (saveResults: SaveCanvasResult[], isDeleting: boolean) => void,
