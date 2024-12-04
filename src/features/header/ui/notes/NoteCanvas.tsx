@@ -1,6 +1,6 @@
 import { TnoteHistory } from "@/shared/dto/socket-io";
 import { cn } from "@/shared/utils";
-import { Canvas } from "@/widgets/canvas";
+import { Canvas } from "@/widgets/canvas_";
 import { Loading } from "@/widgets/loadings";
 import { parseISO } from "date-fns";
 import { useEffect, useMemo, useRef } from "react";
