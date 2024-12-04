@@ -1,4 +1,4 @@
-import { CanvasRef } from "@/widgets/canvas_";
+import { CanvasRef } from "@/widgets/canvas";
 import { useEffect, useRef, useState } from "react";
 import { SaveCanvasResult } from "..";
 import { RandomUtil } from "@/shared/utils/consts";
