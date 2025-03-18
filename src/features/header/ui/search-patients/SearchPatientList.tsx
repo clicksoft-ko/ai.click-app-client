@@ -11,7 +11,7 @@ import { PatSearchInput } from "./PatSearchInput";
 
 const SearchPatientList = () => {
   const queryClient = useQueryClient();
-  const { open, setSelectPatient } = useSelectPatient();
+  const { open, loadPatient } = useSelectPatient();
   const [weib, setWeib] = useState(Weib.입원);
   const [searchString, setSearchString] = useState("");
   const { data, refetch, ...result } = useInfiniteSelectPat({
@@ -40,7 +40,7 @@ const SearchPatientList = () => {
           <PatBox
             key={patient!.id}
             patient={patient!}
-            onClick={setSelectPatient.bind(null, patient!)}
+            onClick={loadPatient.bind(null, patient!)}
           />
         ))}
       </InfiniteBodyWrapper>

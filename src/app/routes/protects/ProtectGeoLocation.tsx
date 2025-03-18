@@ -4,11 +4,10 @@ import { useAuth } from "@/shared/hooks/auth";
 import { apiPaths, paths } from "@/shared/paths";
 import { parseErrorMessage } from "@/shared/utils/error";
 import { useQuery } from "@tanstack/react-query";
-import { JSX } from "react";
+import { Outlet, useLocation } from "react-router-dom";
 import { GeoAccessMessage } from "../ui";
-import { useLocation } from "react-router-dom";
 
-export const ProtectGeoLocation = ({ element }: { element: JSX.Element }) => {
+export const ProtectGeoLocation = () => {
   const { user, isAuthenticated } = useAuth();
   const { pathname } = useLocation();
   const { location, isLoading, isGeoAccess } = useGeoLocation({
@@ -21,7 +20,7 @@ export const ProtectGeoLocation = ({ element }: { element: JSX.Element }) => {
     enabled: isAuthenticated && !isLoading && !!location && isGeoAccess,
   });
 
-  if (pathname === paths.test) return element;
+  if (pathname === paths.test) return <Outlet />;
 
   if (!isDev && !isLoading && !isGeoAccess)
     return (
@@ -48,7 +47,7 @@ export const ProtectGeoLocation = ({ element }: { element: JSX.Element }) => {
         showSignout={true}
       />
     );
-  if (isLoading || !user) return element;
+  if (isLoading || !user) return <Outlet />;
   if (!isDev && data?.message)
     return (
       <GeoAccessMessage
@@ -58,5 +57,5 @@ export const ProtectGeoLocation = ({ element }: { element: JSX.Element }) => {
       />
     );
 
-  return element;
+  return <Outlet />;
 };

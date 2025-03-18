@@ -1,37 +1,27 @@
 "use client";
 
-import * as React from "react";
-import { Calendar as CalendarIcon } from "lucide-react";
+import { DateRange, DateRangeType } from "@/shared/interfaces/shadcn";
+import { cn } from "@/shared/utils";
+import { PopoverClose } from "@radix-ui/react-popover";
 import { ko } from "date-fns/locale";
 import dayjs, { ManipulateType } from "dayjs";
-import { PopoverClose } from "@radix-ui/react-popover";
-import { Button, Calendar, Popover, PopoverContent, PopoverTrigger } from ".";
-import { cn } from "@/shared/utils";
-import { DateRange, DateRangeType } from "@/shared/interfaces/shadcn";
+import { Calendar as CalendarIcon } from "lucide-react";
+import * as React from "react";
 import "react-day-picker/dist/style.css";
+import { Button, Calendar, Popover, PopoverContent, PopoverTrigger } from ".";
 
 interface Props {
   onDateChange: (date: DateRange) => void;
+  dateRange?: DateRangeType;
   defaultDateRange?: DateRangeType;
 }
 
 export function DateRangePicker({
-  defaultDateRange,
+  dateRange,
   className,
   onDateChange,
 }: React.HTMLAttributes<HTMLDivElement> & Props) {
   const popupRef = React.useRef<HTMLDivElement>(null);
-  const [date, setDate] = React.useState<DateRangeType | undefined>(
-    defaultDateRange || {
-      from: new Date(),
-      to: new Date(),
-    },
-  );
-
-  React.useEffect(() => {
-    const dateRange = new DateRange(date?.from, date?.to);
-    onDateChange(dateRange);
-  }, [date, onDateChange]);
 
   return (
     <div className={cn("grid gap-2", className)}>
@@ -48,18 +38,18 @@ export function DateRangePicker({
             variant={"outline"}
             className={cn(
               "h-full w-fit justify-start border-primary/50 text-left font-normal",
-              !date && "text-muted-foreground",
+              !dateRange && "text-muted-foreground",
             )}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
-            {date?.from ? (
-              date.to ? (
+            {dateRange?.from ? (
+              dateRange.to ? (
                 <>
-                  {dayjs(date.from).format("YYYY-MM-DD")} -{" "}
-                  {dayjs(date.to).format("YYYY-MM-DD")}
+                  {dayjs(dateRange.from).format("YYYY-MM-DD")} -{" "}
+                  {dayjs(dateRange.to).format("YYYY-MM-DD")}
                 </>
               ) : (
-                dayjs(date.from).format("YYYY-MM-DD")
+                dayjs(dateRange.from).format("YYYY-MM-DD")
               )
             ) : (
               <span>Pick a date</span>
@@ -74,7 +64,12 @@ export function DateRangePicker({
           className="flex max-h-[34rem] w-auto flex-col p-0"
           align="start"
         >
-          <DropdownContent date={date} setDate={setDate} />
+          <DropdownContent
+            dateRange={dateRange}
+            onDateChange={(dtr) => {
+              onDateChange(new DateRange(dtr.from, dtr.to));
+            }}
+          />
         </PopoverContent>
       </Popover>
     </div>
@@ -82,11 +77,11 @@ export function DateRangePicker({
 }
 
 interface DropdownContentProps {
-  date: DateRangeType | undefined;
-  setDate: React.Dispatch<React.SetStateAction<DateRangeType | undefined>>;
+  dateRange: DateRangeType | undefined;
+  onDateChange: (date: DateRangeType) => void;
 }
 
-function DropdownContent({ date, setDate }: DropdownContentProps) {
+function DropdownContent({ dateRange, onDateChange }: DropdownContentProps) {
   const ref = React.useRef<HTMLDivElement>(null);
 
   // 스크롤이 하단으로 내려가는 버그현상이 있어서 추가
@@ -103,38 +98,46 @@ function DropdownContent({ date, setDate }: DropdownContentProps) {
   return (
     <div ref={ref} className="h-full overflow-y-auto">
       <PopoverClose className="mx-auto flex justify-center gap-1 py-1">
-        <TermButton setDate={setDate} value={-1} unit="week">
+        <TermButton onDateChange={onDateChange} value={-1} unit="week">
           1주
         </TermButton>
-        <TermButton setDate={setDate} value={-1} unit="month">
+        <TermButton onDateChange={onDateChange} value={-1} unit="month">
           1달
         </TermButton>
-        <TermButton setDate={setDate} value={-3} unit="month">
+        <TermButton onDateChange={onDateChange} value={-3} unit="month">
           3달
         </TermButton>
-        <TermButton setDate={setDate} value={-6} unit="month">
+        <TermButton onDateChange={onDateChange} value={-6} unit="month">
           6달
         </TermButton>
-        <TermButton setDate={setDate} value={-1} unit="year">
+        <TermButton onDateChange={onDateChange} value={-1} unit="year">
           1년
         </TermButton>
-        <TermButton setDate={setDate} value={-10} unit="year">
+        <TermButton onDateChange={onDateChange} value={-10} unit="year">
           10년
         </TermButton>
       </PopoverClose>
 
       <div className="flex flex-col sm:flex-row">
         <CustomCalendar
-          defaultMonth={date?.from}
-          selected={date?.from}
-          onSelect={(date) => setDate((prev) => ({ from: date, to: prev?.to }))}
+          defaultMonth={dateRange?.from}
+          selected={dateRange?.from}
+          onSelect={(date) => {
+            onDateChange({
+              from: date,
+              to: dateRange?.to,
+            });
+          }}
         />
         <CustomCalendar
-          defaultMonth={date?.to}
-          selected={date?.to}
-          onSelect={(date) =>
-            setDate((prev) => ({ from: prev?.from, to: date }))
-          }
+          defaultMonth={dateRange?.to}
+          selected={dateRange?.to}
+          onSelect={(date) => {
+            onDateChange({
+              from: dateRange?.from,
+              to: date,
+            });
+          }}
         />
       </div>
     </div>
@@ -179,15 +182,15 @@ function TermButton({
   value,
   unit,
   children,
-  setDate,
+  onDateChange,
 }: {
   value: number;
   unit: ManipulateType;
   children: React.ReactNode;
-  setDate: React.Dispatch<React.SetStateAction<DateRangeType | undefined>>;
+  onDateChange: (date: DateRangeType) => void;
 }) {
   function setTerm(value: number, unit: ManipulateType) {
-    setDate({
+    onDateChange({
       from: dayjs().add(value, unit).add(1, "d").toDate(),
       to: dayjs().toDate(),
     });

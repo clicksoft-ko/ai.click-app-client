@@ -3,4 +3,5 @@ export interface UserSettingsDto {
     key: string;
     order: number;
   }[];
+  changeSearchDateToIbwonDate?: boolean;
 }

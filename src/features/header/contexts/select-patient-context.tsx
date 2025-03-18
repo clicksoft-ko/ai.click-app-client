@@ -1,4 +1,7 @@
+import { useCurrentQueryKey } from "@/features/common/hooks";
+import { useFetchUserSettings } from "@/features/common/hooks/use-fetch-user-settings";
 import { Patient, Weib } from "@/shared/dto/socket-io";
+import { DateRange } from "@/shared/interfaces/shadcn";
 import { usePatientStore, useSearchStore } from "@/shared/stores";
 import { ReactNode, createContext, useContext, useState } from "react";
 
@@ -40,10 +43,26 @@ export const SelectPatientProvider = ({
 
 export const useSelectPatient = () => {
   const context = useContext(SelectPatientContext);
+  const { removeQuery } = useCurrentQueryKey();
+  const setDateRange = useSearchStore((state) => state.setDateRange);
+  const { data } = useFetchUserSettings();
+
   if (!context) {
     throw new Error(
       "useSelectPatient must be used within SelectPatientProvider",
     );
   }
-  return context;
+
+  function loadPatient(patient: Patient) {
+    if (patient.ibYmd && data?.changeSearchDateToIbwonDate) {
+      const dateRange = new DateRange(undefined, new Date());
+      dateRange.startYmd = patient.ibYmd!;
+
+      setDateRange(dateRange);
+      removeQuery();
+    }
+    context.setSelectPatient(patient);
+  }
+
+  return { ...context, loadPatient };
 };

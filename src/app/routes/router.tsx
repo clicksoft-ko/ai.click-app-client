@@ -13,6 +13,7 @@ import { Navigate, createBrowserRouter } from "react-router-dom";
 import { AccountsLayout, DefaultLayout, RootLayout } from "./layouts";
 import { ProtectedRoute, ProtectGeoLocation } from "./protects";
 import { CustomErrorPage } from "@/pages/error";
+import SettingPage from "@/pages/setting/SettingPage";
 
 const RedirectIfAuthenticated = ({ element }: { element: JSX.Element }) => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -31,23 +32,28 @@ const router: any = createBrowserRouter([
         element: <TestPage />,
       },
       {
-        element: (
-          <ProtectedRoute
-            element={<ProtectGeoLocation element={<RootLayout />} />}
-          />
-        ),
+        element: <ProtectedRoute element={<ProtectGeoLocation />} />,
         children: [
           {
-            path: paths.root,
-            element: <RootPage />,
+            element: <RootLayout />,
+            children: [
+              {
+                path: paths.root,
+                element: <RootPage />,
+              },
+              {
+                path: paths.medical,
+                element: <MedicalPage />,
+              },
+              {
+                path: paths.ward,
+                element: <WardPage />,
+              },
+            ],
           },
           {
-            path: paths.medical,
-            element: <MedicalPage />,
-          },
-          {
-            path: paths.ward,
-            element: <WardPage />,
+            path: paths.setting,
+            element: <SettingPage />,
           },
         ],
       },

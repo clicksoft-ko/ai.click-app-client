@@ -1,5 +1,5 @@
 export const paths = {
-  root: "/",  
+  root: "/",
   test: "/test",
   signIn: "/signin",
   signUp: "/signup",
@@ -8,4 +8,5 @@ export const paths = {
 
   medical: "/medical",
   ward: "/ward",
-}
+  setting: "/setting",
+};

@@ -60,10 +60,7 @@ export const SearchTabControl = ({ tabTypes }: Props) => {
             onChange={onSearchStringChange}
           />
         )}
-        <DateRangePicker
-          defaultDateRange={dateRange}
-          onDateChange={setDateRange}
-        />
+        <DateRangePicker dateRange={dateRange} onDateChange={setDateRange} />
         <Button type="submit" disabled={isPending} className="h-full">
           조회
         </Button>

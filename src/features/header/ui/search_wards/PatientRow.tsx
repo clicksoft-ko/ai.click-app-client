@@ -1,19 +1,26 @@
 import { WardPatient } from "@/shared/dto/socket-io";
 import { useEmitWithAck } from "@/shared/hooks/socket-io";
 import { Loading } from "@/widgets/loadings";
-import { useSelectPatient } from "../../contexts";
 import toast from "react-hot-toast";
+import { useSelectPatient } from "../../contexts";
 
 export interface PatientRowProps extends WardPatient {}
 
-const PatientRow = ({ bed, name, gender, age, chart, pcpName }: PatientRowProps) => {
-  const { setSelectPatient } = useSelectPatient();
+const PatientRow = ({
+  bed,
+  name,
+  gender,
+  age,
+  chart,
+  pcpName,
+}: PatientRowProps) => {
+  const { loadPatient } = useSelectPatient();
   const {
     data: patientData,
     isPending: patientIsPending,
     emit: emitPatient,
   } = useEmitWithAck("getPatient", {
-    onSuccess: setSelectPatient,
+    onSuccess: loadPatient,
     onError: ({ message }) => {
       toast.error(message);
     },

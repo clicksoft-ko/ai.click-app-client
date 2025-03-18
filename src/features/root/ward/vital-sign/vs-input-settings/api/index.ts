@@ -1,1 +1,1 @@
-export * from './upsert-user-settings';
+export * from '../../../../../common/api/upsert-user-settings';
