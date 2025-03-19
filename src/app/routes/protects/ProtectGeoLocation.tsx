@@ -17,6 +17,8 @@ export const ProtectGeoLocation = () => {
   const { data, error, isPending } = useQuery({
     queryFn: () => fetchGeoRange(location!.lat, location!.lng),
     queryKey: [apiPaths.auth.geoRange(0, 0)],
+    staleTime: 60,
+    gcTime: 60,
     enabled: isAuthenticated && !isLoading && !!location && isGeoAccess,
   });
 
